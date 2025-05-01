@@ -34,8 +34,7 @@ Data creaData(int giorno,int mese,int anno){
   return data;
 }
 
-void calcolaDataScadenza(Data data, int durata){
-  int scarto;
+Data calcolaDataScadenza(Data data, int durata){
 
   Data scadenza;
   scadenza=malloc(sizeof(Data));
@@ -44,12 +43,16 @@ void calcolaDataScadenza(Data data, int durata){
     exit(1);
   }
 
+  scadenza->giorno=data->giorno;
+  scadenza->mese=data->mese+durata;
+  scadenza->anno=data->anno;
+
   //Gestione rinnovo in anno successivo
-  if((data->mese+durata)>12){
-    scarto=(data->mese+durata)-12;
-    data->mese=scarto;
-    data->anno++;
+  if(scadenza->mese>12){
+    scadenza->mese-=12;
+    scadenza->anno++;
   }
+  return scadenza;
 }
 
 void stampaData(Data data){

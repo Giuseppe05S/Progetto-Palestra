@@ -4,5 +4,5 @@
 typedef struct data* Data;
 
 Data creaData(int giorno,int mese,int anno);
-void calcoloDataScadenza(Data data,int durata);
+Data calcoloDataScadenza(Data data,int durata);
 void stampaData(Data data);

@@ -5,4 +5,4 @@
 #include <data.h>
 typedef struct iscritto *Iscritto;
 
-Iscritto CreaIscritto(string nome,string cognome,Data dataIscrizione,int durata, string ID);
+Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata, string ID);

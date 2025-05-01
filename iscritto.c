@@ -12,10 +12,25 @@ struct iscritto{
   string cognome;
   Data dataIscrizione;
   Data dataScadenza;
-  int durata;
+  int durata; //espressa in Mesi
   string ID;
 };
 
-Iscritto CreaIscritto(string nome, string cognome, int durata, string ID){
+Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata, string ID){
 
+  Iscritto is=malloc(sizeof(Iscritto));
+  if(is==NULL){
+    printf("Errore allocazione memoria\n");
+    exit(1);
+  }
+  //Controlla data prima di invocare CreaIscritto
+  //quindi nell'ADT LIST
+  is->nome=nome;
+  is->cognome=cognome;
+  is->dataIscrizione=dataIscrizione;
+  is->dataScadenza=calcoloDataScadenza(Iscrizione,durata);
+  is->durata=durata;
+  is->ID=ID;
+
+  return is;
 }
