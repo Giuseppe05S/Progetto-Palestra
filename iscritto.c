@@ -17,20 +17,20 @@ struct iscritto{
 };
 
 Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata, string ID){
+  	Iscritto is=malloc(sizeof(Iscritto));
+  	if(is==NULL){
+    	printf("Errore allocazione memoria\n");
+    	exit(1);
+  	}
+	//Data viene creata prima
+  	//Controlla data prima di invocare CreaIscritto
+  	//quindi nell'ADT LIST
+  	strcpy(is->nome,nome);
+  	strcpy(is->cognome,cognome);
+	copiaData(is->dataIscrizione, dataIscrizione);
+  	is->dataScadenza=calcoloDataScadenza(dataIscrizione,durata);
+  	is->durata=durata;
+  	strcpy(is->ID,ID);
 
-  Iscritto is=malloc(sizeof(Iscritto));
-  if(is==NULL){
-    printf("Errore allocazione memoria\n");
-    exit(1);
-  }
-  //Controlla data prima di invocare CreaIscritto
-  //quindi nell'ADT LIST
-  is->nome=nome;
-  is->cognome=cognome;
-  is->dataIscrizione=dataIscrizione;
-  is->dataScadenza=calcoloDataScadenza(Iscrizione,durata);
-  is->durata=durata;
-  is->ID=ID;
-
-  return is;
+	return is;
 }

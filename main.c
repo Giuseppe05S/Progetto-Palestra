@@ -3,6 +3,34 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include "data.h"
+
+int testData(){
+	FILE *fp;
+	fp=fopen("testDataInput.txt","r");
+    if(fp==NULL){
+      	printf("Errore apertura file\n");
+        return 0;
+    }
+	int gg,mm,aa,durata;
+	Data d[10];
+    Data ds[10];
+	int i=0,j;
+	//Leggo le date e le durate degli abbonamenti dal file
+    while(fscanf(fp,"%d%d%d%d",&gg,&mm,&aa,&durata)!=EOF){
+		d[i]=creaData(gg,mm,aa);
+        ds[i]=calcoloDataScadenza(d[i],durata);
+        i++;
+    }
+
+	fclose(fp);
+    //Verifica delle date lette e delle date calcolate
+	for(j=0;j<i;j++){
+		stampaData(d[j]);
+        stampaData(ds[j]);
+	}
+	return 1;
+}
 void menuPrenotazione(){
   char selP;
   do{
@@ -83,6 +111,10 @@ void menuAbbonamento(){
   }while(selA>'6'||selA<'1');
 }
 int main(){
+	if(testData()==1)
+		printf("Test riuscito\n");
+	else
+		printf("Test fallito\n");
 
   char selettore;
   do{
@@ -106,5 +138,4 @@ int main(){
       printf("Scelta non valida \n");
     }
   }while(selettore!='3');
-
 }
