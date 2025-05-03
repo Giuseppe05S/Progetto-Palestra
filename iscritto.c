@@ -34,3 +34,10 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
 
 	return is;
 }
+void stampaCliente(Iscritto is){
+  printf("ID: %s\n",is->ID);
+  printf("Nome: %s\n",is->nome);
+  printf("Cognome: %s\n",is->cognome);
+  stampaData(is->dataIscrizione);
+  stampaData(is->dataScadenza);
+}
