@@ -4,6 +4,8 @@
 
 #include "iscritto.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "utils.h"
 #include "data.h"
 
@@ -22,6 +24,14 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
     	printf("Errore allocazione memoria\n");
     	exit(1);
   	}
+
+    is->nome=malloc(strlen(nome)+1);
+    is->cognome=malloc(strlen(cognome)+1);
+    is->ID=malloc(strlen(ID)+1);
+    if(is->nome==NULL || is->cognome==NULL || is->ID==NULL){
+      printf("Errore allocazione memoria\n");
+      exit(1);
+    }
 	//Data viene creata prima
   	//Controlla data prima di invocare CreaIscritto
   	//quindi nell'ADT LIST
