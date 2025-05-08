@@ -114,7 +114,7 @@ void menuPrenotazione(){
       break;
   }while(selP>'6'||selP<'1');
 }
-void menuAbbonamento(){
+void menuAbbonamento(list l){
 
   char selA;
   do{
@@ -130,7 +130,31 @@ void menuAbbonamento(){
 
     switch(selA){
       case '1':
-
+        Iscritto isc;
+        string nome=malloc(sizeof(char)*50);
+        string cognome=malloc(sizeof(char)*50);
+        string ID=malloc(sizeof(char)*10);
+        if(nome==NULL || cognome==NULL || ID==NULL){
+          printf("Errore nell'Allocazione\n");
+          exit(0);
+        }
+        int durata,gg,mm,anno;
+        Data dataIscrizione;
+        printf("Inserisci nome\n");
+        scanf("%s",nome);
+        printf("Inserisci cognome\n");
+        scanf("%s",cognome);
+        printf("Inserisci la nuova data (GG/MM/AAAA):\n");
+        scanf("%d/%d/%d",&gg,&mm,&anno);
+        dataIscrizione=creaData(gg,mm,anno);
+        printf("Inserisci durata\n");
+        scanf("%d",&durata);
+        printf("Inserisci ID\n");
+        scanf("%s",ID);
+        isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
+        if(insertList(l,0,isc)==0){
+          printf("Errore nell'inserimento\n");
+        }
         break;
       case '2':
 
@@ -170,7 +194,7 @@ int main(){
 
     switch(selettore){
       case '1':
-        menuAbbonamento();
+        menuAbbonamento(lIscritti);
         getchar();
         break;
       case '2':

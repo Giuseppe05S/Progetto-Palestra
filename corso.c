@@ -3,6 +3,11 @@
 //
 
 #include "corso.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "utils.h"
+#include "data.h"
 
 struct corso{
     string ID;
@@ -14,7 +19,7 @@ struct corso{
 };
 
 Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
-    Corso co=malloc(sizeof(Corso));
+    Corso co=malloc(sizeof(corso));
     if(co==NULL){
         printf("Errore allocazione memoria\n");
         exit(1);
@@ -28,4 +33,19 @@ Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
 
 
     return co;
+}
+
+void stampaCorso(Corso co){
+  printf("ID: %s\n" co->ID);
+  printf("Nome: %s\n" co->nome);
+  stampaData(co->dataLezione);
+  printf("Oario: %s\n" co->oario);
+  printf("Numpartecipanti: %d\n", co->Numppartecipanti);
+}
+
+int Disponibilita(Corso co){
+  if(co->Numpartecipanti<co->maxpartecipanti)
+    return 1
+  else
+     return 0;
 }
