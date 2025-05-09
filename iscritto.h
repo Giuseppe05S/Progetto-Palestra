@@ -5,4 +5,8 @@
 #include "data.h"
 typedef struct iscritto *Iscritto;
 
-Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata, string ID);
+Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata);
+Iscritto getNext(Iscritto is);
+string getID(Iscritto is);
+void setNext(Iscritto is, Iscritto next);
+void setIDCounter(int counter);

@@ -7,8 +7,9 @@
 #include "data.h"
 #include "liste.h"
 #include "utils.h"
+#include "hash.h"
 
-void caricaFileIscritti(list l){
+void caricaFileIscritti(hashtable h){
   FILE *fp;
   fp=fopen("iscritti.txt","r");
   if(fp==NULL){
@@ -31,17 +32,20 @@ void caricaFileIscritti(list l){
 
   while(fscanf(fp,"%s%s%s%d%d%d%d", ID, nome, cognome, &gg, &mm, &anno, &durata) != EOF){
     dataIscrizione=creaData(gg,mm,anno);
-    printf("Nome: %s\n", nome);
-    printf("Cognome: %s\n", cognome);
-    printf("Durata: %d\n", durata);
-    printf("ID: %s\n", ID);
-    printf("2\n");
     isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
-    printf("3\n");
-    if(insertList(l,0,isc)==0){
+
+    if(insertHash(h,isc)==0){
       printf("Errore nell'inserimento\n");
     }
+
   }
+  /*Tengo traccia dell'ultimo ID caricato dal cliente
+   *in modo da poter continuare la generazione di id che
+   *verranno poi inseriti a mano
+   */
+  int idCounter=atoi(ID+3);
+  setIDCounter(idCounter);
+
   fclose(fp);
   free(nome);
   free(cognome);
@@ -130,11 +134,12 @@ void menuAbbonamento(list l){
 
     switch(selA){
       case '1':
+
         Iscritto isc;
         string nome=malloc(sizeof(char)*50);
         string cognome=malloc(sizeof(char)*50);
-        string ID=malloc(sizeof(char)*10);
-        if(nome==NULL || cognome==NULL || ID==NULL){
+
+        if(nome==NULL || cognome==NULL){
           printf("Errore nell'Allocazione\n");
           exit(0);
         }
@@ -144,14 +149,12 @@ void menuAbbonamento(list l){
         scanf("%s",nome);
         printf("Inserisci cognome\n");
         scanf("%s",cognome);
-        printf("Inserisci la nuova data (GG/MM/AAAA):\n");
+        printf("Inserisci la data d'iscrizione(GG/MM/AAAA):\n");
         scanf("%d/%d/%d",&gg,&mm,&anno);
         dataIscrizione=creaData(gg,mm,anno);
-        printf("Inserisci durata\n");
+        printf("Inserisci la durata dell'abbonamento in mesi (ES. 1, 3, 6, ...)\n");
         scanf("%d",&durata);
-        printf("Inserisci ID\n");
-        scanf("%s",ID);
-        isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
+        isc=CreaIscritto(nome,cognome,dataIscrizione,durata);
         if(insertList(l,0,isc)==0){
           printf("Errore nell'inserimento\n");
         }
@@ -180,10 +183,10 @@ void menuAbbonamento(list l){
 }
 int main(){
 
-  list lIscritti=newList();
+  hashtable h=newHashtable();
 
-  caricaFileIscritti(lIscritti);
-
+  caricaFileIscritti(h);
+  stampaHash(h);
   char selettore;
   do{
     printf("Gestore Palestra\n");
@@ -194,7 +197,7 @@ int main(){
 
     switch(selettore){
       case '1':
-        menuAbbonamento(lIscritti);
+        menuAbbonamento(h);
         getchar();
         break;
       case '2':
