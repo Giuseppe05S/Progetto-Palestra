@@ -3,3 +3,8 @@
 //
 
 typedef char *string;
+
+string generaIDCliente();
+string generaIDCorso();
+void caricaFileClienti(hashtable h);
+void caricaFileCorso(list l);

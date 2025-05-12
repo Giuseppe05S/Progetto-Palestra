@@ -9,63 +9,6 @@
 #include "utils.h"
 #include "hash.h"
 
-static int idCouter=0;
-
-string generaID(){
-  idCouter++;
-  string IDCliente=malloc(sizeof(char)*7);
-  if(IDCliente==NULL){
-    printf("Errore allocazione memoria\n");
-    exit(1);
-  }
-
-  snprintf(IDCliente, 7, "CLT%03d", idCounter);
-  return IDCliente;
-  free(IDCliente);
-}
-
-void caricaFileIscritti(hashtable h){
-  FILE *fp;
-  fp=fopen("iscritti.txt","r");
-  if(fp==NULL){
-    printf("Errore apertura file\n");
-    exit(0);
-  }
-
-  string nome=malloc(sizeof(char)*50);
-  string cognome=malloc(sizeof(char)*50);
-  string ID=malloc(sizeof(char)*10);
-  if(nome==NULL || cognome==NULL || ID==NULL){
-    printf("Errore nell'Allocazione\n");
-    exit(0);
-  }
-
-  int gg,mm,anno;
-  Data dataIscrizione;
-  int durata;
-  Iscritto isc;
-
-  while(fscanf(fp,"%s%s%s%d%d%d%d", ID, nome, cognome, &gg, &mm, &anno, &durata) != EOF){
-    dataIscrizione=creaData(gg,mm,anno);
-    isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
-
-    if(insertHash(h,isc)==0){
-      printf("Errore nell'inserimento\n");
-    }
-
-  }
-  /*Tengo traccia dell'ultimo ID caricato dal cliente
-   *in modo da poter continuare la generazione di id che
-   *verranno poi inseriti a mano
-   */
-  idCounter=atoi(ID+3);
-
-  fclose(fp);
-  free(nome);
-  free(cognome);
-  free(ID);
-}
-
 int testData(){
 	FILE *fp;
 	fp=fopen("testDataInput.txt","r");
@@ -98,41 +41,51 @@ void menuPrenotazione(){
   do{
     getchar();
     printf("Gestore Prenotazioni\n");
-    printf("1. Crea Prenotazione\n");
-    printf("2. Modifica Prenotazione\n");
-    printf("3. Ricerca Prenotazione\n");
-    printf("4. Elenco Prenotazione\n");
-    printf("5. Elimina Prenotazione\n");
-    printf("6. Torna al Menù\n");
+    printf("1. Prenota Corso\n");
+    printf("2. Ricerca Prenotazione\n");
+    printf("3. Elenco Prenotazione\n");
+    printf("4. Elimina Prenotazione\n");
+    printf("5. Torna al Menù\n");
     scanf("%c",&selP);
 
     switch(selP){
       case '1':
-        string IDCliente=malloc(sizeof(char)*50);
-        string IDCorso=
+        string IDCliente=malloc(sizeof(char)*7);
+        string IDCorso=malloc(sizeof(char)*7);
+        Data dPrenotazione;
 
+        printf("Inserisci l'ID del cliente\n");
+        scanf("%s",IDCliente);
+
+        printf("Inserisci la data della prenotazione(GG/MM/AAAA):\n");
+        scanf("%d/%d/%d",&gg,&mm,&anno);
+        dPrenotazione=creaData(gg,mm,anno);
+           /*chiediamo l'id cliente
+             stampiamo i corsi disponibili
+            chiediamo l'ID del corso da prenotare
+            Data=oggi
+            creiamo la prenotazione
+            */
         break;
       case '2':
 
         break;
       case '3':
-
+            //scorri la coda e stampi tutte le prenotazioni di un determinato utente
         break;
       case '4':
-
+            // scorri la coda affinche non trovi la prenotazione da cancellare
         break;
       case '5':
 
-        break;
-      case '6':
         break;
       default:
         printf("Scelta non valida \n");
         break;
     }
-    if(selP=='6')
+    if(selP=='5')
       break;
-  }while(selP>'6'||selP<'1');
+  }while(selP>'5'||selP<'1');
 }
 
 void menuAbbonamento(hashtable h){
@@ -142,7 +95,7 @@ void menuAbbonamento(hashtable h){
     getchar();
     printf("Gestore Abbonamenti\n");
     printf("1. Crea Abbonamento\n");
-    printf("2. Modifica Abbonamento\n");
+    printf("2. Rinnova Abbonamento\n");
     printf("3. Ricerca Abbonamento\n");
     printf("4. Elenco Abbonamenti\n");
     printf("5. Elimina Abbonamento\n");
@@ -176,7 +129,7 @@ void menuAbbonamento(hashtable h){
         printf("Inserisci la durata dell'abbonamento in mesi (ES. 1, 3, 6, ...)\n");
         scanf("%d",&durata);
 
-        strcpy(ID,generaID());
+        strcpy(ID,generaIDCliente());
         isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
 
         if(insertHash(h,0,isc)==0){
@@ -207,9 +160,13 @@ void menuAbbonamento(hashtable h){
 }
 int main(){
 
-  hashtable h=newHashtable();
+  hashtable hClienti=newHashtable();
+  list listaCorsi=newList();
 
-  caricaFileIscritti(h);
+  caricaFileClienti(h);
+  caricaFileCorsi(listaCorsi);
+
+
   stampaHash(h);
   char selettore;
   do{
@@ -221,7 +178,7 @@ int main(){
 
     switch(selettore){
       case '1':
-        menuAbbonamento(h);
+        menuAbbonamento(hClienti);
         getchar();
         break;
       case '2':

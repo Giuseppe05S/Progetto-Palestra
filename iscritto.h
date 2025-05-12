@@ -9,4 +9,3 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
 Iscritto getNext(Iscritto is);
 string getID(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
-void setIDCounter(int counter);

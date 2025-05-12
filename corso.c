@@ -13,7 +13,7 @@ struct corso{
     string ID;
     string nome;
     Data dataLezione;
-    string oario;
+    string orario;
     int Maxpartecipanti=20;
     int Numpartecipanti;
 };
