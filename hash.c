@@ -106,6 +106,7 @@ Iscritto hashSearch(hashtable h, string key) {
   }
   return NULL;  // Non trovato
 }
+
 void stampaHash(hashtable h) {
   if(h == NULL){
     printf("Tabella vuota\n");

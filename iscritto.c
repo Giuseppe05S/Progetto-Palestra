@@ -21,19 +21,7 @@ struct iscritto{
   Iscritto next;
 };
 
-string generaID(){
-  idCounter++;
-  string IDCliente=malloc(sizeof(char)*7);
-  if(IDCliente==NULL){
-    printf("Errore allocazione memoria\n");
-    exit(1);
-  }
-
-  snprintf(IDCliente, 7, "USR%03d", idCounter);
-  return IDCliente;
-}
-
-Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata){
+Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata,string ID){
   	Iscritto is=malloc(sizeof(Iscritto));
   	if(is==NULL){
     	printf("Errore allocazione memoria\n");
@@ -55,23 +43,32 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
 	copiaData(is->dataIscrizione, dataIscrizione);
   	is->dataScadenza=calcoloDataScadenza(dataIscrizione,durata);
   	is->durata=durata;
-  	strcpy(is->ID,generaID());
-
+  	strcpy(is->ID,ID);
+    is->next=NULL;
 	return is;
 }
 
 Iscritto getNext(Iscritto is){
   return is->next;
 }
+
 string getID(Iscritto is){
   return is->ID;
 }
+
 void setNext(Iscritto is, Iscritto next){
   is->next=next;
 }
-void setIDCounter(int counter){
-      idCounter=counter;
+
+void eliminaIscritto(Iscritto is){
+  free(is->IDPrenotazione);
+  free(is->nome);
+  free(is->cognome);
+  free(is->dataPrenotazione);
+  free(is->dataScadenza);
+  free(is);
 }
+
 void stampaCliente(Iscritto is){
   printf("ID: %s\n",is->ID);
   printf("Nome: %s\n",is->nome);

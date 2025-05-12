@@ -9,6 +9,21 @@
 #include "utils.h"
 #include "hash.h"
 
+static int idCouter=0;
+
+string generaID(){
+  idCouter++;
+  string IDCliente=malloc(sizeof(char)*7);
+  if(IDCliente==NULL){
+    printf("Errore allocazione memoria\n");
+    exit(1);
+  }
+
+  snprintf(IDCliente, 7, "CLT%03d", idCounter);
+  return IDCliente;
+  free(IDCliente);
+}
+
 void caricaFileIscritti(hashtable h){
   FILE *fp;
   fp=fopen("iscritti.txt","r");
@@ -43,8 +58,7 @@ void caricaFileIscritti(hashtable h){
    *in modo da poter continuare la generazione di id che
    *verranno poi inseriti a mano
    */
-  int idCounter=atoi(ID+3);
-  setIDCounter(idCounter);
+  idCounter=atoi(ID+3);
 
   fclose(fp);
   free(nome);
@@ -94,6 +108,8 @@ void menuPrenotazione(){
 
     switch(selP){
       case '1':
+        string IDCliente=malloc(sizeof(char)*50);
+        string IDCorso=
 
         break;
       case '2':
@@ -118,7 +134,8 @@ void menuPrenotazione(){
       break;
   }while(selP>'6'||selP<'1');
 }
-void menuAbbonamento(list l){
+
+void menuAbbonamento(hashtable h){
 
   char selA;
   do{
@@ -138,24 +155,31 @@ void menuAbbonamento(list l){
         Iscritto isc;
         string nome=malloc(sizeof(char)*50);
         string cognome=malloc(sizeof(char)*50);
+		string ID=malloc(sizeof(char)*7);
 
-        if(nome==NULL || cognome==NULL){
+        if(nome==NULL || cognome==NULL || ID==NULL){
           printf("Errore nell'Allocazione\n");
           exit(0);
         }
+
         int durata,gg,mm,anno;
         Data dataIscrizione;
+
         printf("Inserisci nome\n");
         scanf("%s",nome);
         printf("Inserisci cognome\n");
         scanf("%s",cognome);
+
         printf("Inserisci la data d'iscrizione(GG/MM/AAAA):\n");
         scanf("%d/%d/%d",&gg,&mm,&anno);
         dataIscrizione=creaData(gg,mm,anno);
         printf("Inserisci la durata dell'abbonamento in mesi (ES. 1, 3, 6, ...)\n");
         scanf("%d",&durata);
-        isc=CreaIscritto(nome,cognome,dataIscrizione,durata);
-        if(insertList(l,0,isc)==0){
+
+        strcpy(ID,generaID());
+        isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
+
+        if(insertHash(h,0,isc)==0){
           printf("Errore nell'inserimento\n");
         }
         break;

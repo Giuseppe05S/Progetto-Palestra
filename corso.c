@@ -24,13 +24,21 @@ Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
         printf("Errore allocazione memoria\n");
         exit(1);
     }
+
+    co->ID=malloc(sizeof(char)*10);
+    co->nome=malloc(sizeof(char)*20);
+    co->orario=malloc(sizeof(char)*6);
+
+    if(co->nome==NULL || co->orario==NULL || co->ID==NULL){
+      printf("Errore allocazione memoria\n");
+      exit(1);
+    }
+
     strcpy(co->ID,ID);
     strcpy(co->nome,nome);
     copiaData(co->dataLezione, dataLezione);
     strcpy(co->oario,orario);
     co->Numpartecipanti=0;
-
-
 
     return co;
 }

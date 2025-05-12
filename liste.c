@@ -3,14 +3,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"liste.h"
-#include"iscritto.h"
+#include"corso.h"
 
 struct c_list {
     struct node *first;
     int size;
 };
 struct node{
-    Iscritto cliente;
+    Corso c;
     struct node *next;
 };
 
@@ -24,7 +24,7 @@ list newList(void){
     return l;
 }
 
-int insertList(list l, int pos, Iscritto val){
+int insertList(list l, int pos, Corso val){
     struct node* tmp = insertNode(l->first, pos, val); // Chiama insertNode per inserire un nuovo nodo nella lista
     if(tmp == NULL)
       return 0; // Se insertNode restituisce NULL, l'inserimento è fallito (es. errore di allocazione memoria), restituisce 0
@@ -34,7 +34,7 @@ int insertList(list l, int pos, Iscritto val){
     return 1; // Restituisce 1 per indicare che l'inserimento è avvenuto con successo
 }
 
-static struct node* insertNode(struct node* l, int pos, Iscritto val){
+static struct node* insertNode(struct node* l, int pos, Corso val){
     struct node *new, *prec = l; // 'new' è il nuovo nodo da inserire, 'prec' è il puntatore al nodo precedente nella lista
     int i = 0;
 
@@ -42,7 +42,7 @@ static struct node* insertNode(struct node* l, int pos, Iscritto val){
     if (!new)
       return NULL; // Se l'allocazione fallisce, restituisce NULL
 
-    new->cliente = val; // Imposta il valore del nuovo nodo
+    new->c = val; // Imposta il valore del nuovo nodo
 
     if (pos == 0){ // Se l'inserimento deve avvenire in testa alla lista
         new->next = l; // Il nuovo nodo punta al primo nodo attuale della lista
