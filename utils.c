@@ -23,7 +23,6 @@ string generaIDCliente(){
 
   snprintf(IDCliente, 7, "CLT%03d", IDCounterCliente);
   return IDCliente;
-  free(IDCliente);
 }
 
 string generaIDCorso(){
@@ -36,7 +35,6 @@ string generaIDCorso(){
 
   snprintf(IDCorso, 7, "CRS%03d", IDCounterCorso);
   return IDCorso;
-  free(IDCorso);
 }
 
 void caricaFileClienti(hashtable h){

@@ -13,6 +13,10 @@ struct node{
     Corso c;
     struct node *next;
 };
+//Prototipi dichiarati in quanto chiamati
+//prima di essere implementati
+static struct node* insertNode(struct node* l, int pos, Corso val);
+static struct node* removeNode(struct node* l, int pos);
 
 list newList(void){
     struct c_list *l;

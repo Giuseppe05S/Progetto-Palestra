@@ -1,4 +1,6 @@
 //file liste.h
+#ifndef LISTE_H
+#define LISTE_H
 
 #include "corso.h"
 
@@ -13,3 +15,5 @@ static struct node* insertNode(struct node* l, int pos, Corso val);
 int removeList(list l, int pos);
 
 static struct node* removeNode(struct node* l, int pos);
+
+#endif
