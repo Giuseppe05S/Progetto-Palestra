@@ -1,15 +1,12 @@
 //
 // Created by Giuseppe on 28/04/2025.
 //
-
+//#include "utils.h"
 #include "iscritto.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
 #include "data.h"
-
-static int idCounter;
 
 struct iscritto{
   string ID;
@@ -22,7 +19,7 @@ struct iscritto{
 };
 
 Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata,string ID){
-  	Iscritto is=malloc(sizeof(Iscritto));
+  	Iscritto is=malloc(sizeof(struct iscritto));
   	if(is==NULL){
     	printf("Errore allocazione memoria\n");
     	exit(1);
@@ -61,10 +58,10 @@ void setNext(Iscritto is, Iscritto next){
 }
 
 void eliminaIscritto(Iscritto is){
-  free(is->IDPrenotazione);
+  free(is->ID);
   free(is->nome);
   free(is->cognome);
-  free(is->dataPrenotazione);
+  free(is->dataIscrizione);
   free(is->dataScadenza);
   free(is);
 }

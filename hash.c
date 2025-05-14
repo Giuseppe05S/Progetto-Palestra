@@ -1,15 +1,12 @@
 //
 // Created by Giuseppe on 09/05/2025.
 //
-
+//#include "utils.h"
 #include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "iscritto.h"
-#include "utils.h"
 #include <string.h>
-//libreria per FNV-1a
-#include <stdint.h>
+#include <stdint.h>    //libreria per FNV-1a
 
 // Definizione della struttura della tabella hash.
 
@@ -17,6 +14,13 @@ struct hash {
     int size;              // Dimensione della tabella hash.
     Iscritto *table;   // Puntatore a un array di puntatori a 'item'.
 };
+
+//Prototipi dichiarati in quanto chiamati
+//prima di essere implementati
+static void deleteList(Iscritto p);
+static int hashFun(const char *key, int size);
+static uint32_t fnv1aHash32(const char *key);
+
 
 // Funzione per creare una nuova tabella hash.
 hashtable newHashtable(int size) {
@@ -84,7 +88,7 @@ void destroyHashtable(hashtable h) {
 
 // Versione iterativa di deleteList per evitare l'overflow dello stack su liste lunghe.
 static void deleteList(Iscritto p) {
-  if(p == NULL) 
+  if(p == NULL)
     return;
   deleteList(getNext(p));
   free(p);

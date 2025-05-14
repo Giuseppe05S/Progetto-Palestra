@@ -3,6 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "iscritto.h"
 #include "data.h"
 #include "liste.h"
@@ -53,6 +54,7 @@ void menuPrenotazione(){
         string IDCliente=malloc(sizeof(char)*7);
         string IDCorso=malloc(sizeof(char)*7);
         Data dPrenotazione;
+        int gg,mm,anno;
 
         printf("Inserisci l'ID del cliente\n");
         scanf("%s",IDCliente);
@@ -132,7 +134,7 @@ void menuAbbonamento(hashtable h){
         strcpy(ID,generaIDCliente());
         isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
 
-        if(insertHash(h,0,isc)==0){
+        if(insertHash(h,isc)==0){
           printf("Errore nell'inserimento\n");
         }
         break;
@@ -160,14 +162,14 @@ void menuAbbonamento(hashtable h){
 }
 int main(){
 
-  hashtable hClienti=newHashtable();
+  hashtable hClienti=newHashtable(30);
   list listaCorsi=newList();
 
-  caricaFileClienti(h);
-  caricaFileCorsi(listaCorsi);
+  caricaFileClienti(hClienti);
+  caricaFileCorso(listaCorsi);
 
 
-  stampaHash(h);
+  stampaHash(hClienti);
   char selettore;
   do{
     printf("Gestore Palestra\n");

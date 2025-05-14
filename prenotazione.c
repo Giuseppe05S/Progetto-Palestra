@@ -16,7 +16,7 @@ struct prenotazione{
   string IDCorso;
   string IDCliente;
   Data dataPrenotazione;
-}
+};
 
 
 Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCliente, Data dataPrenotazione){
@@ -33,7 +33,7 @@ Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCl
     exit(1);
   }
 
-  strcpy(pr.IDPrenotazione,IDPrenotazione);
+  strcpy(pr->IDPrenotazione,IDPrenotazione);
   strcpy(pr->IDCorso,IDCorso);
   strcpy(pr->IDCliente,IDCliente);
   copiaData(pr->dataPrenotazione, dataPrenotazione);
@@ -52,5 +52,5 @@ void stampaPrenotazione(Prenotazione p){
   printf("IDCorso: %s\n",p->IDCorso);
   printf("IDCliente: %s\n",p->IDCliente);
   printf("Data Prenotazione: ");
-  stampaData(pr->dataPrenotazione);
+  stampaData(p->dataPrenotazione);
 }

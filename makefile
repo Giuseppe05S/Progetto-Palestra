@@ -1,5 +1,5 @@
-main.exe: iscritto.o data.o liste.o hash.o main.o
-	gcc iscritto.o data.o liste.o main.o -o main.exe -lm
+main.exe: main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o
+	gcc main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o -o main.exe -lm
 iscritto.o: iscritto.c iscritto.h utils.h data.h
 	gcc -c iscritto.c
 corso.o: corso.c corso.h utils.h data.h
