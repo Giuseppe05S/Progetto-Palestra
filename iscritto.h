@@ -11,6 +11,9 @@ typedef struct iscritto *Iscritto;
 
 Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata,string ID);
 Iscritto getNext(Iscritto is);
+void stampaCliente(Iscritto is);
+void stampaMinimaCliente(Iscritto is);
 string getID(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
+void rinnovaAbbonamento(Iscritto is, int durata);
 #endif

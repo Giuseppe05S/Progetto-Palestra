@@ -102,3 +102,39 @@ static struct node* removeNode(struct node* l, int pos){
     }
     return l; // Restituisce il puntatore al primo nodo della lista, che potrebbe essere stato aggiornato
 }
+list reverseList(list l){
+  list rev=newList();
+  Corso temp;
+  struct node* curr = l->first;
+
+  while(curr != NULL){
+    temp = curr->c;
+    if(insertList(rev, 0, temp) == 0){
+      printf("Errore nell'inserimento\n");
+      exit(1);
+    }
+    curr = curr->next;
+  }
+  return rev;
+}
+
+// Stampa tutti gli elementi della lista di corsi
+void stampaLista(list l) {
+  if (l == NULL || l->first == NULL) {
+    printf("La lista è vuota o non inizializzata.\n");
+    return;
+  }
+
+  struct node* curr = l->first;
+  int i=0;
+  printf("==============================\n");
+  printf("\tElenco Corsi\n");
+  printf("==============================\n");
+  while (curr != NULL) {
+    printf("Corso %d:\n", i);
+      stampaCorso(curr->c);
+      curr = curr->next;
+      i++;
+    }
+  printf("\n");
+}

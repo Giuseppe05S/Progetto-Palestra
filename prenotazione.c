@@ -36,7 +36,7 @@ Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCl
   strcpy(pr->IDPrenotazione,IDPrenotazione);
   strcpy(pr->IDCorso,IDCorso);
   strcpy(pr->IDCliente,IDCliente);
-  copiaData(pr->dataPrenotazione, dataPrenotazione);
+  pr->dataPrenotazione=copiaData(dataPrenotazione);
 
   return pr;
 }
@@ -49,6 +49,7 @@ void eliminaPrenotazione(Prenotazione pr){
   free(pr);
 }
 void stampaPrenotazione(Prenotazione p){
+  printf("==============================\n");
   printf("IDCorso: %s\n",p->IDCorso);
   printf("IDCliente: %s\n",p->IDCliente);
   printf("Data Prenotazione: ");

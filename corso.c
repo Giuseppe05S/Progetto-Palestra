@@ -18,7 +18,7 @@ struct corso{
     int numPartecipanti;
 };
 
-Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
+Corso creaCorso(string ID, string nome, Data dataLezione, string orario){
     Corso co=malloc(sizeof(struct corso));
     if(co==NULL){
         printf("Errore allocazione memoria\n");
@@ -28,16 +28,15 @@ Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
     co->ID=malloc(sizeof(char)*10);
     co->nome=malloc(sizeof(char)*20);
     co->orario=malloc(sizeof(char)*6);
-    co->dataLezione=malloc(sizeof(struct data));
 
-    if(co->nome==NULL || co->orario==NULL || co->ID==NULL || co->dataLezione==NULL){
+    if(co->nome==NULL || co->orario==NULL || co->ID==NULL){
       printf("Errore allocazione memoria\n");
       exit(1);
     }
 
     strcpy(co->ID,ID);
     strcpy(co->nome,nome);
-    copiaData(co->dataLezione, dataLezione);
+    co->dataLezione=copiaData(dataLezione);
     strcpy(co->orario,orario);
     co->numPartecipanti=0;
 
@@ -45,11 +44,15 @@ Corso CreaCorso(string ID, string nome, Data dataLezione, string orario){
 }
 
 void stampaCorso(Corso co){
-  printf("ID: %s\n", co->ID);
-  printf("Nome: %s\n", co->nome);
-  stampaData(co->dataLezione);
-  printf("Orario: %s\n", co->orario);
-  printf("Numero Partecipanti: %d\n", co->numPartecipanti);
+  if(Disponibilita(co)){
+      printf("==============================\n");
+      printf("ID: %s\n", co->ID);
+      printf("Nome: %s\n", co->nome);
+      printf("Data Lezione: ");
+      stampaData(co->dataLezione);
+      printf("Orario: %s\n", co->orario);
+      printf("Numero Partecipanti: %d\n", co->numPartecipanti);
+  }
 }
 
 int Disponibilita(Corso co){

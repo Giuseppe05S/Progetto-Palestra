@@ -41,6 +41,7 @@ void menuPrenotazione(){
   char selP;
   do{
     getchar();
+    pulisciSchermo();
     printf("Gestore Prenotazioni\n");
     printf("1. Prenota Corso\n");
     printf("2. Ricerca Prenotazione\n");
@@ -51,10 +52,15 @@ void menuPrenotazione(){
 
     switch(selP){
       case '1':
+        pulisciSchermo();
         string IDCliente=malloc(sizeof(char)*7);
         string IDCorso=malloc(sizeof(char)*7);
         Data dPrenotazione;
         int gg,mm,anno;
+
+        printf("==============================\n");
+        printf("\tAGGIUNGI PRENOTAZIONE\n");
+        printf("==============================\n");
 
         printf("Inserisci l'ID del cliente\n");
         scanf("%s",IDCliente);
@@ -91,10 +97,12 @@ void menuPrenotazione(){
 }
 
 void menuAbbonamento(hashtable h){
-
+  string ID=malloc(sizeof(char)*7);
+  /* DA SPOSTARE TUTTE LE DICHIARAZIONI ALL'ESTERNO DEL DO WHILE*/
   char selA;
   do{
     getchar();
+    pulisciSchermo();
     printf("Gestore Abbonamenti\n");
     printf("1. Crea Abbonamento\n");
     printf("2. Rinnova Abbonamento\n");
@@ -106,11 +114,11 @@ void menuAbbonamento(hashtable h){
 
     switch(selA){
       case '1':
-
+        pulisciSchermo();
         Iscritto isc;
         string nome=malloc(sizeof(char)*50);
         string cognome=malloc(sizeof(char)*50);
-		string ID=malloc(sizeof(char)*7);
+
 
         if(nome==NULL || cognome==NULL || ID==NULL){
           printf("Errore nell'Allocazione\n");
@@ -120,6 +128,9 @@ void menuAbbonamento(hashtable h){
         int durata,gg,mm,anno;
         Data dataIscrizione;
 
+        printf("==============================\n");
+        printf("\tAGGIUNGI CLIENTE\n");
+        printf("==============================\n");
         printf("Inserisci nome\n");
         scanf("%s",nome);
         printf("Inserisci cognome\n");
@@ -133,19 +144,54 @@ void menuAbbonamento(hashtable h){
 
         strcpy(ID,generaIDCliente());
         isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
-
+        printf("\n==============================\n");
+        printf("\tCLIENTE AGGIUNTO\n");
+        stampaCliente(isc);
         if(insertHash(h,isc)==0){
           printf("Errore nell'inserimento\n");
         }
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
         break;
       case '2':
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tRINNOVO ABBONAMENTO\n");
+        printf("==============================\n");
+        Iscritto is;
+        int nuovaDurata;
+        printf("Inserisci l'ID del Cliente\n");
+        stampaHashMinima(h);
+        scanf("%s",ID);
+        is=hashSearch(h,ID);
 
+        do{
+        printf("Di quanti mesi vuoi espandere l'abbonamento?\n");
+        scanf("%d",&nuovaDurata);
+        }while(nuovaDurata<0);
+
+        rinnovaAbbonamento(is,nuovaDurata);
+        printf("==============================\n");
+        printf("\tCLIENTE AGGIORNATO\n");
+        stampaCliente(is);
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
         break;
       case '3':
+        pulisciSchermo();
 
+
+
+        printf("Premere invio per tornare indietro\n");
+        getchar();
         break;
       case '4':
+        pulisciSchermo();
 
+        stampaHash(h);
+
+        printf("Premere invio per tornare indietro\n");
+        getchar();
         break;
       case '5':
 
@@ -168,10 +214,13 @@ int main(){
   caricaFileClienti(hClienti);
   caricaFileCorso(listaCorsi);
 
+  listaCorsi=reverseList(listaCorsi);
 
-  stampaHash(hClienti);
+  stampaLista(listaCorsi);
+
   char selettore;
   do{
+    pulisciSchermo();
     printf("Gestore Palestra\n");
     printf("1. Gestione Abbonamenti\n");
     printf("2. Gestione Prenotazione\n");

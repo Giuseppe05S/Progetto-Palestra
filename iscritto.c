@@ -37,7 +37,7 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
   	//quindi nell'ADT LIST
   	strcpy(is->nome,nome);
   	strcpy(is->cognome,cognome);
-	copiaData(is->dataIscrizione, dataIscrizione);
+	is->dataIscrizione=copiaData(dataIscrizione);
   	is->dataScadenza=calcoloDataScadenza(dataIscrizione,durata);
   	is->durata=durata;
   	strcpy(is->ID,ID);
@@ -65,11 +65,23 @@ void eliminaIscritto(Iscritto is){
   free(is->dataScadenza);
   free(is);
 }
+void rinnovaAbbonamento(Iscritto is, int durata){
+  is->durata+=durata;
+  is->dataScadenza=calcoloDataScadenza(is->dataIscrizione,is->durata);
+
+}
+void stampaMinimaCliente(Iscritto is){
+  printf("%s\t%s\t%s\n",is->ID,is->cognome,is->nome);
+}
 
 void stampaCliente(Iscritto is){
+  printf("==============================\n");
   printf("ID: %s\n",is->ID);
   printf("Nome: %s\n",is->nome);
   printf("Cognome: %s\n",is->cognome);
+  printf("Data di Iscrizione: ");
   stampaData(is->dataIscrizione);
+  printf("Durata Abbonamento: %d Mesi\n", is->durata);
+  printf("Data di Scadenza: ");
   stampaData(is->dataScadenza);
 }

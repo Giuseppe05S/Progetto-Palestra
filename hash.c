@@ -116,20 +116,36 @@ void stampaHash(hashtable h) {
     printf("Tabella vuota\n");
     return;
   }
+  printf("==============================\n");
+  printf("\tElenco Clienti\n");
+  printf("==============================\n");
   int i;
   for(i=0; i < h->size; i++) {
     Iscritto curr = h->table[i];
-    if (curr != NULL) {
-      printf("Indice %d:\n", i);
-    }
     while (curr != NULL) {
-      // Usa le funzioni di accesso (getter) per rispettare l'information hiding
       stampaCliente(curr);
-      // Aggiungi altri campi se necessari, es. nome, data, ecc.
       curr = getNext(curr);
     }
   }
+  printf("\n");
+}
+void stampaHashMinima(hashtable h) {
+  if(h == NULL){
+    printf("Tabella vuota\n");
+    return;
+  }
+  printf("==============================\n");
+  printf("ID\tCognome\tNome\n");
 
+  int i;
+  for(i=0; i < h->size; i++) {
+    Iscritto curr = h->table[i];
+    while (curr != NULL) {
+      stampaMinimaCliente(curr);
+      curr = getNext(curr);
+    }
+  }
+  printf("\n");
 }
 // Funzione hash che calcola l'indice basato sulla chiave e sulla dimensione della tabella.
 static int hashFun(const char *key, int size) {

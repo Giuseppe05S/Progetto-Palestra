@@ -7,6 +7,6 @@ typedef struct data* Data;
 
 Data creaData(int giorno,int mese,int anno);
 Data calcoloDataScadenza(Data data,int durata);
-void copiaData(Data data1,Data data2);
+Data copiaData(Data dataOriginale);
 void stampaData(Data data);
 #endif

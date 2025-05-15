@@ -7,10 +7,9 @@
 #include "utils.h"
 #include "data.h"
 
-
 typedef struct corso *Corso;
 
-Corso CreaCorso(string ID, string nome, Data dataLezione, string orario);
+Corso creaCorso(string ID, string nome, Data dataLezione, string orario);
 void stampaCorso(Corso co);
 int Disponibilita(Corso co);
 

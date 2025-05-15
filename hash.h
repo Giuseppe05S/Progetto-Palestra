@@ -27,5 +27,6 @@ void destroyHashtable(hashtable h);
 Iscritto hashSearch(hashtable h, string key);
 
 void stampaHash(hashtable h);
+void stampaHashMinima(hashtable h);
 
 #endif

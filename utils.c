@@ -41,7 +41,7 @@ void caricaFileClienti(hashtable h){
   FILE *fp;
   fp=fopen("iscritti.txt","r");
   if(fp==NULL){
-    printf("Errore apertura file\n");
+    printf("Errore apertura file iscritti\n");
     exit(0);
   }
 
@@ -84,7 +84,7 @@ void caricaFileCorso(list l){
   FILE *fp;
   fp=fopen("corsi.txt","r");
   if(fp==NULL){
-    printf("Errore apertura file\n");
+    printf("Errore apertura file corsi\n");
     exit(0);
   }
   int gg,mm,anno;
@@ -118,4 +118,12 @@ void caricaFileCorso(list l){
   free(nome);
   free(orario);
   free(ID);
+}
+
+void pulisciSchermo(){
+  #ifdef _WIN32
+    system("cls"); //per Windows
+  #else
+    system("clear"); // per altri SO
+  #endif
 }

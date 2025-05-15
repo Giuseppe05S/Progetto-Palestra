@@ -1,18 +1,22 @@
-main.exe: main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o
-	gcc main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o -o main.exe -lm
-iscritto.o: iscritto.c iscritto.h utils.h data.h
+main.exe: main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o utils.o
+	gcc main.o iscritto.o data.o liste.o hash.o corso.o prenotazione.o utils.o -o main.exe -lm
+iscritto.o: iscritto.c iscritto.h data.h utils.h
 	gcc -c iscritto.c
-corso.o: corso.c corso.h utils.h data.h
+corso.o: corso.c corso.h data.h utils.h
 	gcc -c corso.c
-prenotazione.o: prenotazione.c corso.h iscritto.h utils.h data.h
+prenotazione.o: prenotazione.c prenotazione.h iscritto.h corso.h data.h
 	gcc -c prenotazione.c
 data.o: data.c data.h
 	gcc -c data.c
 liste.o: liste.c liste.h corso.h
 	gcc -c liste.c
-hash.o: hash.c hash.h iscritto.h utils.h
+hash.o: hash.c hash.h iscritto.h
 	gcc -c hash.c
-main.o: main.c iscritto.h liste.h data.h utils.h
+utils.o:utils.c utils.h iscritto.h data.h liste.h hash.h
+	gcc -c utils.c
+main.o: main.c utils.h iscritto.h data.h liste.h hash.h corso.h
 	gcc -c	main.c
 clean:
 	rm -f *.o main.exe
+run: main.exe
+	./main.exe

@@ -7,9 +7,7 @@
 
 typedef char *string;
 
-#include "liste.h"
-#include "hash.h"
-//aggiunte dall'ia
+// Forward declarations
 typedef struct hash* hashtable;
 typedef struct c_list* list;
 //.
@@ -19,5 +17,6 @@ string generaIDCliente();
 string generaIDCorso();
 void caricaFileClienti(hashtable h);
 void caricaFileCorso(list l);
+void pulisciSchermo();
 
 #endif

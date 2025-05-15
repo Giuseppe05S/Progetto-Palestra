@@ -55,14 +55,14 @@ Data calcoloDataScadenza(Data data, int durata){
   }
   return scadenza;
 }
-void copiaData(Data data1, Data data2){
-	data1=malloc(sizeof(struct data));
-	if(data1==NULL){
+Data copiaData(Data dataOriginale){
+	Data d=malloc(sizeof(struct data));
+	if(d==NULL){
 		printf("Errore allocazione memoria\n");
 	}
-	data1->giorno=data2->giorno;
-	data1->mese=data2->mese;
-	data1->anno=data2->anno;
+	d->giorno=dataOriginale->giorno;
+	d->mese=dataOriginale->mese;
+	d->anno=dataOriginale->anno;
 }
 void stampaData(Data data){
   printf("%d/%d/%d\n",data->giorno,data->mese,data->anno);
