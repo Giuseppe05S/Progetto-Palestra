@@ -76,13 +76,43 @@ void menuPrenotazione(){
             */
         break;
       case '2':
+      pulisciSchermo();
+      string IDClienteRicerca = malloc(sizeof(char)*7);
+      if(IDClienteRicerca == NULL){
+        printf("Errore allocazione memoria\n");
+        exit(1);
+      }
+
+      printf("==============================\n");
+      printf("\tRICERCA PRENOTAZIONE\n");
+      printf("==============================\n");
+
+      printf("Inserisci l'ID del cliente:\n");
+      scanf("%s", IDClienteRicerca);
 
         break;
       case '3':
             //scorri la coda e stampi tutte le prenotazioni di un determinato utente
+      pulisciSchermo();
+      printf("==============================\n");
+      printf("\tELENCO PRENOTAZIONI\n");
+      printf("==============================\n");
         break;
       case '4':
-            // scorri la coda affinche non trovi la prenotazione da cancellare
+        pulisciSchermo();
+      printf("==============================\n");
+      printf("\tELIMINA PRENOTAZIONE\n");
+      printf("==============================\n");
+
+      string IDPrenotazioneDaEliminare = malloc(sizeof(char)*7);
+      if(IDPrenotazioneDaEliminare == NULL){
+        printf("Errore allocazione memoria\n");
+        exit(1);
+      }
+
+      printf("Inserisci l'ID della prenotazione da eliminare:\n");
+      scanf("%s", IDPrenotazioneDaEliminare);
+        // scorri la coda affinche non trovi la prenotazione da cancellare
         break;
       case '5':
 
@@ -206,6 +236,107 @@ void menuAbbonamento(hashtable h){
       break;
   }while(selA>'6'||selA<'1');
 }
+
+void menuCorso(list listaCorsi) {
+  char selC;
+  do {
+    getchar();
+    pulisciSchermo();
+    printf("Gestore Corsi\n");
+    printf("1. Aggiungi Corso\n");
+    printf("2. Ricerca Corso\n");
+    printf("3. Elenco Corsi\n");
+    printf("4. Elimina Corso\n");
+    printf("5. Torna al Menù\n");
+    scanf("%c", &selC);
+
+    switch(selC) {
+      case '1': {
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tAGGIUNGI CORSO\n");
+        printf("==============================\n");
+
+        string nome = malloc(sizeof(char) * 50);
+        string IDCorso = malloc(sizeof(char) * 7);
+        int durata;
+        if (nome == NULL || IDCorso == NULL) {
+          printf("Errore allocazione memoria\n");
+          exit(1);
+        }
+
+        printf("Inserisci il nome del corso:\n");
+        scanf("%s", nome);
+
+        strcpy(IDCorso, generaIDCorso());
+
+        printf("\n==============================\n");
+        printf("\tCORSO AGGIUNTO\n");
+        stampaCorso(c);
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
+        break;
+      }
+
+      case '2': {
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tRICERCA CORSO\n");
+        printf("==============================\n");
+
+        string IDRicerca = malloc(sizeof(char) * 7);
+        if (IDRicerca == NULL) {
+          printf("Errore allocazione memoria\n");
+          exit(1);
+        }
+
+        printf("Inserisci l'ID del corso:\n");
+        scanf("%s", IDRicerca);
+
+        break;
+      }
+
+      case '3':
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tELENCO CORSI\n");
+        printf("==============================\n");
+        stampaLista(listaCorsi);
+        printf("Premere invio per tornare indietro\n");
+        getchar();
+        break;
+
+      case '4': {
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tELIMINA CORSO\n");
+        printf("==============================\n");
+        string IDDaEliminare = malloc(sizeof(char) * 7);
+        if (IDDaEliminare == NULL) {
+          printf("Errore allocazione memoria\n");
+          exit(1);
+        }
+        printf("Inserisci l'ID del corso da eliminare:\n");
+        scanf("%s", IDDaEliminare);
+        listaCorsi = eliminaCorso(listaCorsi, IDDaEliminare); // funzione da implementare
+        printf("Premere invio per tornare indietro\n");
+        getchar();
+        break;
+      }
+
+      case '5':
+        break;
+
+      default:
+        printf("Scelta non valida \n");
+        break;
+    }
+
+    if(selC == '5')
+      break;
+  } while(selC < '1' || selC > '5');
+}
+
 int main(){
 
   hashtable hClienti=newHashtable(30);
