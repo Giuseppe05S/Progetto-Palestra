@@ -9,4 +9,7 @@ Data creaData(int giorno,int mese,int anno);
 Data calcoloDataScadenza(Data data,int durata);
 Data copiaData(Data dataOriginale);
 void stampaData(Data data);
+int getGiorno(Data data);
+int getMese(Data data);
+int getAnno(Data data);
 #endif

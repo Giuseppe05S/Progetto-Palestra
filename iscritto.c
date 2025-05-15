@@ -52,6 +52,15 @@ Iscritto getNext(Iscritto is){
 string getID(Iscritto is){
   return is->ID;
 }
+string getNome(Iscritto is){
+  return is->nome;
+}
+string getCognome(Iscritto is){
+  return is->cognome;
+}
+int getDurata(Iscritto is){
+  return is->durata;
+}
 
 void setNext(Iscritto is, Iscritto next){
   is->next=next;
@@ -71,7 +80,7 @@ void rinnovaAbbonamento(Iscritto is, int durata){
 
 }
 void stampaMinimaCliente(Iscritto is){
-  printf("%s\t%s\t%s\n",is->ID,is->cognome,is->nome);
+  printf("%-8s %-15s %-15s\n",is->ID,is->cognome,is->nome);
 }
 
 void stampaCliente(Iscritto is){
@@ -84,4 +93,7 @@ void stampaCliente(Iscritto is){
   printf("Durata Abbonamento: %d Mesi\n", is->durata);
   printf("Data di Scadenza: ");
   stampaData(is->dataScadenza);
+}
+void scriviCliente(Iscritto is,FILE *fp){
+  fprintf(fp,"%s %s %s %d %d %d %d\n",is->ID,is->nome,is->cognome,getGiorno(is->dataIscrizione),getMese(is->dataIscrizione),getAnno(is->dataIscrizione),is->durata);
 }

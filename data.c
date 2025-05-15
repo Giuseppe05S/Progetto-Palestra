@@ -67,3 +67,15 @@ Data copiaData(Data dataOriginale){
 void stampaData(Data data){
   printf("%d/%d/%d\n",data->giorno,data->mese,data->anno);
 }
+
+int getGiorno(Data data){
+  return data->giorno;
+}
+
+int getMese(Data data){
+  return data->mese;
+}
+
+int getAnno(Data data){
+  return data->anno;
+}

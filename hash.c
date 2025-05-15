@@ -110,6 +110,39 @@ Iscritto hashSearch(hashtable h, string key) {
   }
   return NULL;  // Non trovato
 }
+int ricercaGenerica(hashtable h, int sel, string str) {
+  int trovato=0;
+  for(int i=0;i<h->size; i++){
+    if(h->table[i]!=NULL){
+
+      Iscritto is=h->table[i];
+
+      switch(sel){
+
+      	case 0: // Ricerca per nome
+          if(strcmp(getNome(is), str)==0){
+          	stampaCliente(is);
+          	trovato=1;
+          }
+          break;
+      	case 1: // Ricerca per cognome
+          if(strcmp(getCognome(is), str)==0){
+            stampaCliente(is);
+            trovato=1;
+          }
+          break;
+        case 2: // Ricerca per durata abbonamento
+          int durata=atoi(str);
+          if(getDurata(is)==durata){
+            stampaCliente(is);
+            trovato=1;
+          }
+          break;
+      }
+    }
+  }
+  return trovato;
+}
 
 void stampaHash(hashtable h) {
   if(h == NULL){
@@ -135,17 +168,38 @@ void stampaHashMinima(hashtable h) {
     return;
   }
   printf("==============================\n");
-  printf("ID\tCognome\tNome\n");
+  printf("%-8s %-15s %-15s\n","ID","Cognome","Nome");
+  Iscritto curr;
 
   int i;
   for(i=0; i < h->size; i++) {
-    Iscritto curr = h->table[i];
+    curr = h->table[i];
     while (curr != NULL) {
       stampaMinimaCliente(curr);
       curr = getNext(curr);
     }
   }
   printf("\n");
+}
+
+void scriviFileClienti(hashtable h){
+  FILE *fp;
+  fp=fopen("iscritti.txt","w");
+  if(fp==NULL){
+    printf("Errore apertura file iscritti\n");
+    exit(0);
+  }
+  Iscritto curr;
+
+  int i;
+  for(i=0; i < h->size; i++) {
+    curr = h->table[i];
+    while (curr != NULL) {
+      scriviCliente(curr,fp);
+      curr = getNext(curr);
+    }
+  }
+  fclose(fp);
 }
 // Funzione hash che calcola l'indice basato sulla chiave e sulla dimensione della tabella.
 static int hashFun(const char *key, int size) {

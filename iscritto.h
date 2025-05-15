@@ -6,6 +6,7 @@
 
 #include "utils.h"
 #include "data.h"
+#include <stdio.h>
 
 typedef struct iscritto *Iscritto;
 
@@ -14,6 +15,10 @@ Iscritto getNext(Iscritto is);
 void stampaCliente(Iscritto is);
 void stampaMinimaCliente(Iscritto is);
 string getID(Iscritto is);
+string getNome(Iscritto is);
+string getCognome(Iscritto is);
+int getDurata(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
 void rinnovaAbbonamento(Iscritto is, int durata);
+void scriviCliente(Iscritto is,FILE *fp);
 #endif

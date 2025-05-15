@@ -97,7 +97,18 @@ void menuPrenotazione(){
 }
 
 void menuAbbonamento(hashtable h){
+
+  int durata,gg,mm,anno;
+  Data dataIscrizione;
+  Iscritto is;
+  string nome=malloc(sizeof(char)*50);
+  string cognome=malloc(sizeof(char)*50);
   string ID=malloc(sizeof(char)*7);
+
+  if(nome==NULL || cognome==NULL || ID==NULL){
+    printf("Errore nell'Allocazione\n");
+    exit(0);
+  }
   /* DA SPOSTARE TUTTE LE DICHIARAZIONI ALL'ESTERNO DEL DO WHILE*/
   char selA;
   do{
@@ -115,19 +126,6 @@ void menuAbbonamento(hashtable h){
     switch(selA){
       case '1':
         pulisciSchermo();
-        Iscritto isc;
-        string nome=malloc(sizeof(char)*50);
-        string cognome=malloc(sizeof(char)*50);
-
-
-        if(nome==NULL || cognome==NULL || ID==NULL){
-          printf("Errore nell'Allocazione\n");
-          exit(0);
-        }
-
-        int durata,gg,mm,anno;
-        Data dataIscrizione;
-
         printf("==============================\n");
         printf("\tAGGIUNGI CLIENTE\n");
         printf("==============================\n");
@@ -143,11 +141,11 @@ void menuAbbonamento(hashtable h){
         scanf("%d",&durata);
 
         strcpy(ID,generaIDCliente());
-        isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
+        is=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
         printf("\n==============================\n");
         printf("\tCLIENTE AGGIUNTO\n");
-        stampaCliente(isc);
-        if(insertHash(h,isc)==0){
+        stampaCliente(is);
+        if(insertHash(h,is)==0){
           printf("Errore nell'inserimento\n");
         }
         printf("\nPremere invio per tornare indietro\n");
@@ -155,19 +153,30 @@ void menuAbbonamento(hashtable h){
         break;
       case '2':
         pulisciSchermo();
+
         printf("==============================\n");
         printf("\tRINNOVO ABBONAMENTO\n");
         printf("==============================\n");
-        Iscritto is;
+
         int nuovaDurata;
         printf("Inserisci l'ID del Cliente\n");
         stampaHashMinima(h);
         scanf("%s",ID);
+
         is=hashSearch(h,ID);
+        if(is==NULL){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("Cliente Inesistente\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+        }
 
         do{
-        printf("Di quanti mesi vuoi espandere l'abbonamento?\n");
-        scanf("%d",&nuovaDurata);
+          printf("Di quanti mesi vuoi espandere l'abbonamento?\n");
+          scanf("%d",&nuovaDurata);
         }while(nuovaDurata<0);
 
         rinnovaAbbonamento(is,nuovaDurata);
@@ -178,23 +187,127 @@ void menuAbbonamento(hashtable h){
         getchar();
         break;
       case '3':
-        pulisciSchermo();
+        char selR;
+        do{
+          getchar();
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("\tRICERCA ABBONAMENTO\n");
+          printf("==============================\n");
+          printf("Per cosa vuoi Ricercare?\n");
+          printf("1. ID\n");
+          printf("2. Nome\n");
+          printf("3. Cognome\n");
+          printf("4. Durata Abbonamento\n");
+          printf("5. Esci\n");
+          scanf("%c",&selR);
 
 
 
-        printf("Premere invio per tornare indietro\n");
+          switch(selR){
+            case '1':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tRICERCA PER ID\n");
+              printf("==============================\n");
+              printf("Inserisci l'ID del cliente\n");
+              scanf("%s",ID);
+              is=hashSearch(h,ID);
+              pulisciSchermo();
+              if(is==NULL){
+                printf("==============================\n");
+                printf("Cliente Insistente\n");
+                printf("==============================\n");
+                break;
+              }
+              printf("==============================\n");
+              printf("\tCLIENTE TROVATO\n");
+              printf("==============================\n");
+              stampaCliente(is);
+              break;
+            case '2':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tRICERCA PER NOME\n");
+              printf("==============================\n");
+              printf("Inserisci il nome del cliente\n");
+              scanf("%s",nome);
+              if(ricercaGenerica(h,0,nome)==0){
+                printf("==============================\n");
+                printf("Cliente Insistente\n");
+                printf("==============================\n");
+                break;
+              }
+              break;
+            case '3':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tRICERCA PER COGNOME\n");
+              printf("==============================\n");
+              printf("Inserisci il cognome del cliente\n");
+              scanf("%s",cognome);
+              if(ricercaGenerica(h,1,cognome)==0){
+                pulisciSchermo();
+                printf("==============================\n");
+                printf("Cliente Insistente\n");
+                printf("==============================\n");
+                break;
+              }
+              break;
+          }
+        }while(selA>'5'||selA<'1');
+
+
+        printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
       case '4':
-        pulisciSchermo();
+        char selElenco;
 
-        stampaHash(h);
+        do{
+          getchar();
+          pulisciSchermo();
+          printf("Come vuoi visualizzare l'elenco?\n");
+          printf("1. Visione Essenziale (ID, Cognome, Nome)\n");
+          printf("2. Visione Estesa (Tutti i Dati)\n");
+          printf("3. Esci\n");
+          scanf("%c",&selElenco);
+          switch(selElenco){
+            case '1':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tElenco Clienti\n");
+              stampaHashMinima(h);
 
-        printf("Premere invio per tornare indietro\n");
-        getchar();
+              printf("Premere invio per tornare indietro\n");
+              getchar();
+              break;
+            case '2':
+              pulisciSchermo();
+              stampaHash(h);
+              printf("Premere invio per tornare indietro\n");
+              getchar();
+              break;
+          }
+        }while(selElenco>'3'||selElenco<'1');
         break;
       case '5':
-
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("\tCancella Cliente\n");
+        printf("==============================\n");
+        printf("Inserisci l'ID del Cliente da cancellare\n");
+        stampaHashMinima(h);
+        scanf("%s",ID);
+        is=hashDelete(h,ID);
+        if(is==NULL){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("Cliente Inesistente\n");
+          printf("==============================\n");
+        }
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
         break;
         case '6':
           break;
@@ -216,7 +329,7 @@ int main(){
 
   listaCorsi=reverseList(listaCorsi);
 
-  stampaLista(listaCorsi);
+  //stampaLista(listaCorsi);
 
   char selettore;
   do{
@@ -241,4 +354,5 @@ int main(){
       printf("Scelta non valida \n");
     }
   }while(selettore!='3');
+  scriviFileClienti(hClienti);
 }

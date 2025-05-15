@@ -39,6 +39,8 @@ string generaIDCorso(){
 
 void caricaFileClienti(hashtable h){
   FILE *fp;
+  static int maxIDCliente=0;
+  int temp;
   fp=fopen("iscritti.txt","r");
   if(fp==NULL){
     printf("Errore apertura file iscritti\n");
@@ -66,13 +68,17 @@ void caricaFileClienti(hashtable h){
       printf("Errore nell'inserimento\n");
       exit(0);
     }
-
+	temp=atoi(ID+3);
+  	if(temp>maxIDCliente){
+    	maxIDCliente=temp;
+ 	}
   }
   /*Tengo traccia dell'ultimo ID caricato dal cliente
    *in modo da poter continuare la generazione di id che
    *verranno poi inseriti a mano
    */
-  IDCounterCliente=atoi(ID+3);
+
+  IDCounterCliente=maxIDCliente;
 
   fclose(fp);
   free(nome);
@@ -81,6 +87,8 @@ void caricaFileClienti(hashtable h){
 }
 
 void caricaFileCorso(list l){
+  int maxIDCorso=0;
+  int temp;
   FILE *fp;
   fp=fopen("corsi.txt","r");
   if(fp==NULL){
@@ -106,13 +114,17 @@ void caricaFileCorso(list l){
       printf("Errore nell'inserimento\n");
       exit(0);
     }
+    temp=atoi(ID+3);
+  	if(temp>maxIDCorso){
+    	maxIDCorso=temp;
+ 	}
   }
   /*Tengo traccia dell'ultimo ID caricato del corso
    *in modo da poter continuare la generazione di ID che
    *verranno poi inseriti a mano
    */
 
-  IDCounterCorso=atoi(ID+3);
+  IDCounterCorso=maxIDCorso;
 
   fclose(fp);
   free(nome);
