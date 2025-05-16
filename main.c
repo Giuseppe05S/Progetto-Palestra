@@ -178,6 +178,7 @@ void menuAbbonamento(hashtable h){
         if(insertHash(h,is)==0){
           printf("Errore nell'inserimento\n");
         }
+        scriviFileClienti(h);
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
@@ -213,6 +214,7 @@ void menuAbbonamento(hashtable h){
         printf("==============================\n");
         printf("\tCLIENTE AGGIORNATO\n");
         stampaCliente(is);
+        scriviFileClienti(h);
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
@@ -232,8 +234,6 @@ void menuAbbonamento(hashtable h){
           printf("5. Esci\n");
           scanf("%c",&selR);
 
-
-
           switch(selR){
             case '1':
               pulisciSchermo();
@@ -243,16 +243,13 @@ void menuAbbonamento(hashtable h){
               printf("Inserisci l'ID del cliente\n");
               scanf("%s",ID);
               is=hashSearch(h,ID);
-              pulisciSchermo();
+
               if(is==NULL){
-                printf("==============================\n");
+                printf("\n==============================\n");
                 printf("Cliente Insistente\n");
                 printf("==============================\n");
                 break;
               }
-              printf("==============================\n");
-              printf("\tCLIENTE TROVATO\n");
-              printf("==============================\n");
               stampaCliente(is);
               break;
             case '2':
@@ -277,7 +274,20 @@ void menuAbbonamento(hashtable h){
               printf("Inserisci il cognome del cliente\n");
               scanf("%s",cognome);
               if(ricercaGenerica(h,1,cognome)==0){
-                pulisciSchermo();
+                printf("==============================\n");
+                printf("Cliente Insistente\n");
+                printf("==============================\n");
+                break;
+              }
+              break;
+            case '4':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("  RICERCA DURATA ABBONAMENTO\n");
+              printf("==============================\n");
+              printf("Inserisci il numero di mesi\n");
+              scanf("%d",&durata);
+              if(ricercaPerDurata(h,durata)==0){
                 printf("==============================\n");
                 printf("Cliente Insistente\n");
                 printf("==============================\n");
@@ -293,10 +303,12 @@ void menuAbbonamento(hashtable h){
         break;
       case '4':
         char selElenco;
-
         do{
           getchar();
           pulisciSchermo();
+          printf("==============================\n");
+          printf("\tELENCO CLIENTI\n");
+          printf("==============================\n");
           printf("Come vuoi visualizzare l'elenco?\n");
           printf("1. Visione Essenziale (ID, Cognome, Nome)\n");
           printf("2. Visione Estesa (Tutti i Dati)\n");
@@ -306,7 +318,8 @@ void menuAbbonamento(hashtable h){
             case '1':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tElenco Clienti\n");
+              printf("\tELENCO CLIENTI\n");
+              printf("==============================\n");
               stampaHashMinima(h);
 
               printf("Premere invio per tornare indietro\n");
@@ -324,18 +337,21 @@ void menuAbbonamento(hashtable h){
       case '5':
         pulisciSchermo();
         printf("==============================\n");
-        printf("\tCancella Cliente\n");
+        printf("\tCANCELLA CLIENTE\n");
         printf("==============================\n");
         printf("Inserisci l'ID del Cliente da cancellare\n");
         stampaHashMinima(h);
         scanf("%s",ID);
         is=hashDelete(h,ID);
         if(is==NULL){
-          pulisciSchermo();
           printf("==============================\n");
-          printf("Cliente Inesistente\n");
+          printf("CLIENTE INESISTENTE\n");
           printf("==============================\n");
         }
+        printf("==============================\n");
+        printf("\tCLIENTE CANCELLATO \n");
+        printf("==============================\n");
+        scriviFileClienti(h);
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
@@ -350,8 +366,21 @@ void menuAbbonamento(hashtable h){
   }while(selA>'6'||selA<'1');
 }
 
-void menuCorso(list listaCorsi) {
+void menuCorso(list lCorsi) {
+  //Dichiarazione delle variabili
   char selC;
+  string nome = malloc(sizeof(char) * 50);
+  string IDCorso = malloc(sizeof(char) * 7);
+  Data dataLezione;
+  int gg,mm,anno;
+  int ora,minuti;
+  int durata;
+  Corso c;
+  if(nome==NULL || IDCorso==NULL){
+    printf("Errore allocazione memoria\n");
+    exit(1);
+  }
+
   do {
     getchar();
     pulisciSchermo();
@@ -370,72 +399,183 @@ void menuCorso(list listaCorsi) {
         printf("\tAGGIUNGI CORSO\n");
         printf("==============================\n");
 
-        string nome = malloc(sizeof(char) * 50);
-        string IDCorso = malloc(sizeof(char) * 7);
-        int durata;
-        if (nome == NULL || IDCorso == NULL) {
-          printf("Errore allocazione memoria\n");
-          exit(1);
-        }
-
         printf("Inserisci il nome del corso:\n");
-        scanf("%s", nome);
+        scanf("%s",nome);
+        printf("Inserisci la data del corso (GG/MM/AAAA):\n");;
+        scanf("%d/%d/%d",&gg,&mm,&anno);
+        printf("Inserisci l'orario del corso (HH:MM)\n");
+        scanf("%d:%d",&ora,&minuti);
+
 
         strcpy(IDCorso, generaIDCorso());
-
+        dataLezione=creaData(gg,mm,anno);
+        c=creaCorso(IDCorso,nome,dataLezione,ora,minuti,0);
+        if(c==NULL){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("\tDATI NON VALIDI\n");
+          printf("       CORSO NON SALVATO\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+        }
         printf("\n==============================\n");
         printf("\tCORSO AGGIUNTO\n");
         stampaCorso(c);
+        if(insertList(lCorsi,0,c)==0){
+          printf("Errore nell'inserimento");
+        }
+        scriviFileCorso(lCorsi);
+
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
       }
 
-      case '2': {
-        pulisciSchermo();
-        printf("==============================\n");
-        printf("\tRICERCA CORSO\n");
-        printf("==============================\n");
+      case '2':
+        char selRicerca;
+        do{
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("\tCERCA CORSO\n");
+          printf("==============================\n");
+          printf("1. ID\n");
+          printf("2. Nome\n");
+          printf("3. Lezione Imminente\n");//da implementare
+          printf("4. Data\n");
+          printf("5. Orario\n");
+          printf("6. Esci\n");
+          scanf("%c", &selRicerca);
+          switch(selRicerca) {
+            case '1':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tRICERCA PER ID\n");
+              printf("==============================\n");
+              printf("Inserisci l'ID del corso:\n");
+              scanf("%s", IDCorso);
 
-        string IDRicerca = malloc(sizeof(char) * 7);
-        if (IDRicerca == NULL) {
-          printf("Errore allocazione memoria\n");
-          exit(1);
-        }
+              if(ricercaGenericaLista(lCorsi,0,IDCorso)==0){
+                printf("==============================\n");
+                printf("\tCORSO INESISTENTE\n");
+                printf("==============================\n");
+                printf("\nPremere invio per tornare indietro\n");
+                getchar();
+              }
 
-        printf("Inserisci l'ID del corso:\n");
-        scanf("%s", IDRicerca);
+              printf("\nPremere invio per tornare indietro\n");
+              getchar();
+              break;
+            case '2':
+              pulisciSchermo();
+              getchar();
+              printf("==============================\n");
+              printf("\tRICERCA PER NOME\n");
+              printf("==============================\n");
+              printf("Inserisci il Nome del corso:\n");
+              //scanf("%s", nome);
+              //da implementare ovunque ci sia una stringa
+              fgets(nome, strlen(nome), stdin);
+              // Rimuovi il carattere newline dalla stringa
+              nome[strcspn(nome, "\n")] = '\0';
+              if(ricercaGenericaLista(lCorsi,1,nome)==0){
+                printf("==============================\n");
+                printf("\tCORSO INESISTENTE\n");
+                printf("==============================\n");
+                printf("\nPremere invio per tornare indietro\n");
+                getchar();
+              }
 
+              printf("\nPremere invio per tornare indietro\n");
+              getchar();
+              break;
+            case '3'://da implementare
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tLEZIONE IMMINENTE\n");
+              printf("==============================\n");
+
+              if(ricercaGenericaLista(lCorsi,1,nome)==0){
+                printf("==============================\n");
+                printf("\tCORSO INESISTENTE\n");
+                printf("==============================\n");
+                printf("\nPremere invio per tornare indietro\n");
+                getchar();
+              }
+
+              printf("\nPremere invio per tornare indietro\n");
+              getchar();
+              break;
+            case '4':
+              int gg,mm,anno;
+              pulisciSchermo();
+              printf("==============================\n");
+              printf("\tRICERCA PER DATA\n");
+              printf("==============================\n");
+              printf("Inserisci la data del corso (GG/MM/AAAA):\n");
+              scanf("%d/%d/%d",&gg,&mm,&anno);
+              Data cerca=creaData(gg,mm,anno);
+
+              if(ricercaData(lCorsi,cerca)==0){
+                printf("==============================\n");
+                printf("\tCORSO INESISTENTE\n");
+                printf("==============================\n");
+                printf("\nPremere invio per tornare indietro\n");
+                getchar();
+              }
+
+              printf("\nPremere invio per tornare indietro\n");
+              getchar();
+              break;
+            case '5':
+              pulisciSchermo();
+              printf("==============================\n");
+              printf(" RICERCA PER ORARIO LEZIONI\n");
+              printf("==============================\n");
+              printf("Inserisci l'orario del corso (HH:MM):\n");
+              scanf("%d:%d",&ora,&minuti);
+
+              if(ricercaOrario(lCorsi,ora,minuti)==0){
+                printf("==============================\n");
+                printf("\tCORSO INESISTENTE\n");
+                printf("==============================\n");
+                printf("\nPremere invio per tornare indietro\n");
+                getchar();
+              }
+
+              printf("\nPremere invio per tornare indietro\n");
+              getchar();
+              break;
+          }
+        }while(selRicerca>'6'||selRicerca<'1');
         break;
-      }
 
       case '3':
         pulisciSchermo();
-        printf("==============================\n");
-        printf("\tELENCO CORSI\n");
-        printf("==============================\n");
-        stampaLista(listaCorsi);
+
+        stampaLista(lCorsi);
+
         printf("Premere invio per tornare indietro\n");
         getchar();
         break;
 
-      case '4': {
+      case '4'://DA IMPLEMENTARE
         pulisciSchermo();
         printf("==============================\n");
         printf("\tELIMINA CORSO\n");
         printf("==============================\n");
         string IDDaEliminare = malloc(sizeof(char) * 7);
-        if (IDDaEliminare == NULL) {
+        if(IDDaEliminare == NULL){
           printf("Errore allocazione memoria\n");
           exit(1);
         }
         printf("Inserisci l'ID del corso da eliminare:\n");
         scanf("%s", IDDaEliminare);
-        listaCorsi = eliminaCorso(listaCorsi, IDDaEliminare); // funzione da implementare
+       // listaCorsi = eliminaCorso(listaCorsi, IDDaEliminare); // funzione da implementare
         printf("Premere invio per tornare indietro\n");
         getchar();
         break;
-      }
 
       case '5':
         break;
@@ -458,7 +598,7 @@ int main(){
   caricaFileClienti(hClienti);
   caricaFileCorso(listaCorsi);
 
-  listaCorsi=reverseList(listaCorsi);
+  //listaCorsi=reverseList(listaCorsi);
 
   //stampaLista(listaCorsi);
 
@@ -468,7 +608,8 @@ int main(){
     printf("Gestore Palestra\n");
     printf("1. Gestione Abbonamenti\n");
     printf("2. Gestione Prenotazione\n");
-    printf("3. Esci\n");
+    printf("3. Gestione Corso\n");
+    printf("4. Esci\n");
     scanf("%c",&selettore);
 
     switch(selettore){
@@ -480,10 +621,15 @@ int main(){
         menuPrenotazione();
         getchar();
         break;
+        case '3':
+          menuCorso(listaCorsi);
+          getchar();
+          break;
     }
-    if(selettore!='1'&&selettore!='2'&&selettore!='3'){
+    if(selettore!='1'&&selettore!='2'&&selettore!='3'&&selettore!='4'){
       printf("Scelta non valida \n");
     }
-  }while(selettore!='3');
+  }while(selettore!='4');
   scriviFileClienti(hClienti);
+  scriviFileCorso(listaCorsi);
 }

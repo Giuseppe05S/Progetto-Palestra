@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include"liste.h"
 #include"corso.h"
 
@@ -117,7 +118,77 @@ list reverseList(list l){
   }
   return rev;
 }
+int ricercaGenericaLista(list l, int sel,string str){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
 
+  int trovato=0;
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    switch(sel){
+      case 0://Ricerca per ID
+        if(strcmp(getIDCorso(temp), str)==0){
+          stampaCorso(temp);
+          trovato = 1;
+        }
+        break;
+      case 1://Ricerca per Nome
+        if(strcmp(getNomeCorso(temp), str)==0){
+          stampaCorso(temp);
+          trovato = 1;
+        }
+        break;
+    }
+    curr = curr->next;
+  }
+  return trovato;
+}
+int ricercaData(list l, Data data){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
+
+  Corso temp;
+  int trovato=0;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    if(confrontaData(data,getDataCorso(temp))==0){
+      stampaCorso(temp);
+      trovato = 1;
+    }
+    curr= curr->next;
+  }
+  return trovato;
+}
+int ricercaOrario(list l, int h,int m){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
+  Orario o=creaOrario(h,m);
+  if(o==NULL){
+    printf("Errore nella creazione di orario\n");
+    exit(1);
+  }
+  Corso temp;
+  int trovato=0;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    if(confrontaOrario(o,getOrario(temp))==0){
+      stampaCorso(temp);
+      trovato = 1;
+    }
+    curr= curr->next;
+  }
+  return trovato;
+}
 // Stampa tutti gli elementi della lista di corsi
 void stampaLista(list l) {
   if (l == NULL || l->first == NULL) {
@@ -128,13 +199,29 @@ void stampaLista(list l) {
   struct node* curr = l->first;
   int i=0;
   printf("==============================\n");
-  printf("\tElenco Corsi\n");
+  printf("\tELENCO CORSI\n");
   printf("==============================\n");
   while (curr != NULL) {
-    printf("Corso %d:\n", i);
+    //printf("Corso %d:\n", i);
       stampaCorso(curr->c);
       curr = curr->next;
       i++;
     }
   printf("\n");
+}
+void scriviFileCorso(list l){
+  FILE *fp;
+  fp=fopen("corsi.txt","w");
+  if(fp==NULL){
+    printf("Errore apertura file iscritti\n");
+    exit(0);
+  }
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    scriviCorso(temp,fp);
+    curr= curr->next;
+  }
+  fclose(fp);
 }

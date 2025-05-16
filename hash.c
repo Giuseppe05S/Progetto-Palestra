@@ -143,14 +143,30 @@ int ricercaGenerica(hashtable h, int sel, string str) {
   }
   return trovato;
 }
-
+int ricercaPerDurata(hashtable h, int durata) {
+  int trovato=0;
+  Iscritto curr;
+  for(int i=0;i<h->size;i++){
+    if(h->table[i]!=NULL){
+      curr = h->table[i];
+      while(curr != NULL){
+        if(getDurata(curr)== durata){
+          stampaCliente(curr);
+          trovato=1;
+        }
+        curr = getNext(curr); // Vai al prossimo nodo
+      }
+    }
+  }
+  return trovato;
+}
 void stampaHash(hashtable h) {
   if(h == NULL){
     printf("Tabella vuota\n");
     return;
   }
   printf("==============================\n");
-  printf("\tElenco Clienti\n");
+  printf("\tELENCO CLIENTI\n");
   printf("==============================\n");
   int i;
   for(i=0; i < h->size; i++) {

@@ -99,6 +99,8 @@ void caricaFileCorso(list l){
   string ID=malloc(sizeof(char)*10);
   string nome=malloc(sizeof(char)*50);
   Data dataLezione;
+  int ora,minuti;
+  int nPartecipanti;
   string orario=malloc(sizeof(char)*6);
   if(ID==NULL || nome==NULL || orario==NULL){
     printf("Errore nell'Allocazione\n");
@@ -107,9 +109,9 @@ void caricaFileCorso(list l){
 
   Corso newCorso;
 
-  while(fscanf(fp,"%s%s%d%d%d%s", ID, nome, &gg, &mm, &anno, orario) != EOF){
+  while(fscanf(fp,"%s%s%d%d%d%d:%d%d", ID, nome, &gg, &mm, &anno, &ora, &minuti,&nPartecipanti) != EOF){
     dataLezione=creaData(gg,mm,anno);
-    newCorso=creaCorso(ID,nome,dataLezione,orario);
+    newCorso=creaCorso(ID,nome,dataLezione,ora,minuti,nPartecipanti);
     if(insertList(l,0,newCorso)==0){
       printf("Errore nell'inserimento\n");
       exit(0);
