@@ -7,6 +7,8 @@
 #include "iscritto.h"
 #include "data.h"
 #include "liste.h"
+#include "listaPrenotazione.h"
+#include "prenotazione.h"
 #include "utils.h"
 #include "hash.h"
 
@@ -37,8 +39,18 @@ int testData(){
 	return 1;
 }
 
-void menuPrenotazione(){
+void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
   char selP;
+  Prenotazione pre;
+  string IDCliente=malloc(sizeof(char)*7);
+  string IDCorso=malloc(sizeof(char)*7);
+  string IDPrenotazione=malloc(sizeof(char)*7);
+  Data dataPrenotazione;
+  int gg,mm,anno;
+  if(IDCliente==NULL||IDCorso==NULL||IDPrenotazione==NULL){
+    printf("Errore apertura file\n");
+    return;
+  }
   do{
     getchar();
     pulisciSchermo();
@@ -51,67 +63,92 @@ void menuPrenotazione(){
     scanf("%c",&selP);
 
     switch(selP){
-      case '1':
+      case '1': //da aggiungere l'incremento dei posti occupati del corso
         pulisciSchermo();
-        string IDCliente=malloc(sizeof(char)*7);
-        string IDCorso=malloc(sizeof(char)*7);
-        Data dPrenotazione;
-        int gg,mm,anno;
-
+		getchar();
         printf("==============================\n");
-        printf("\tAGGIUNGI PRENOTAZIONE\n");
+        printf("    AGGIUNGI PRENOTAZIONE\n");
         printf("==============================\n");
 
-        printf("Inserisci l'ID del cliente\n");
-        scanf("%s",IDCliente);
+        printf("Inserisci l'ID del Cliente\n");
+        fgets(IDCliente,7,stdin);
+        IDCliente[strcspn(IDCliente, "\n")] = '\0';
 
-        printf("Inserisci la data della prenotazione(GG/MM/AAAA):\n");
+        if(hashSearch(hClienti,IDCliente)==NULL){
+          pulisciSchermo();
+		  printf("==============================\n");
+          printf("     Cliente non trovato\n");
+		  printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
+          return;
+        }
+		getchar();
+        printf("Inserisci l'ID del Corso\n");
+        fgets(IDCorso,7,stdin);
+        IDCorso[strcspn(IDCorso, "\n")] = '\0';
+
+        if(ricercaGenericaLista(lCorsi,0,IDCorso)==0){
+		  pulisciSchermo();
+		  printf("==============================\n");
+          printf("      Corso non trovato\n");
+		  printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
+          return;
+        }
+
+        printf("\nInserisci la data della prenotazione(GG/MM/AAAA):\n");
         scanf("%d/%d/%d",&gg,&mm,&anno);
-        dPrenotazione=creaData(gg,mm,anno);
-           /*chiediamo l'id cliente
-             stampiamo i corsi disponibili
-            chiediamo l'ID del corso da prenotare
-            Data=oggi
-            creiamo la prenotazione
-            */
+        dataPrenotazione=creaData(gg,mm,anno);
+
+        strcpy(IDPrenotazione,generaIDPrenotazione());
+        pre=creaPrenotazione(IDPrenotazione,IDCorso,IDCliente,dataPrenotazione);
+
+        if(insertListPrenotati(lPrenotati,0,pre)==0){
+          printf("Errore nell'Inserimento\n");
+        }
+
+		pulisciSchermo();
+		printf("==============================\n");
+        printf("    PRENOTAZIONE AGGIUNTA\n");
+		printf("==============================\n");
+		stampaPrenotazione(pre);
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
         break;
       case '2':
-      pulisciSchermo();
-      string IDClienteRicerca = malloc(sizeof(char)*7);
-      if(IDClienteRicerca == NULL){
-        printf("Errore allocazione memoria\n");
-        exit(1);
-      }
-
-      printf("==============================\n");
-      printf("\tRICERCA PRENOTAZIONE\n");
-      printf("==============================\n");
-
-      printf("Inserisci l'ID del cliente:\n");
-      scanf("%s", IDClienteRicerca);
+		pulisciSchermo();
 
         break;
       case '3':
-            //scorri la coda e stampi tutte le prenotazioni di un determinato utente
-      pulisciSchermo();
-      printf("==============================\n");
-      printf("\tELENCO PRENOTAZIONI\n");
-      printf("==============================\n");
-        break;
+		pulisciSchermo();
+
+        stampaListaPrenotazioni(lPrenotati);
+
+		printf("\nPremere invio per tornare indietro\n");
+        getchar();
+		break;
       case '4':
         pulisciSchermo();
-      printf("==============================\n");
-      printf("\tELIMINA PRENOTAZIONE\n");
-      printf("==============================\n");
+		getchar();
+		printf("==============================\n");
+        printf("\tCANCELLA PRENOTAZIONE\n");
+		printf("==============================\n");
+		printf("Inserisci l'ID del Cliente\n");
+		fgets(IDCliente,7,stdin);
+		//Controllo che il cliente esista
+		if(hashSearch(hClienti,IDCliente)==NULL){
+          pulisciSchermo();
+		  printf("==============================\n");
+          printf("     Cliente non trovato\n");
+		  printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
+          return;
+        }
 
-      string IDPrenotazioneDaEliminare = malloc(sizeof(char)*7);
-      if(IDPrenotazioneDaEliminare == NULL){
-        printf("Errore allocazione memoria\n");
-        exit(1);
-      }
-
-      printf("Inserisci l'ID della prenotazione da eliminare:\n");
-      scanf("%s", IDPrenotazioneDaEliminare);
+/*chiedi l'ID utente
+stampi tutte le prenotazioni dell'utente
+l'utente scrive ID della prenotazione da cancellare
+*/
         // scorri la coda affinche non trovi la prenotazione da cancellare
         break;
       case '5':
@@ -594,7 +631,7 @@ int main(){
 
   hashtable hClienti=newHashtable(30);
   list listaCorsi=newList();
-
+  listP lPrenotati=newListPrenotati();
   caricaFileClienti(hClienti);
   caricaFileCorso(listaCorsi);
 
@@ -618,13 +655,13 @@ int main(){
         getchar();
         break;
       case '2':
-        menuPrenotazione();
+        menuPrenotazione(listaCorsi,hClienti,lPrenotati);
         getchar();
         break;
-        case '3':
-          menuCorso(listaCorsi);
-          getchar();
-          break;
+      case '3':
+		menuCorso(listaCorsi);
+		getchar();
+		break;
     }
     if(selettore!='1'&&selettore!='2'&&selettore!='3'&&selettore!='4'){
       printf("Scelta non valida \n");

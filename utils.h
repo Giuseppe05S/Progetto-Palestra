@@ -14,6 +14,7 @@ typedef struct c_list* list;
 //posizione typedef string
 
 string generaIDCliente();
+string generaIDPrenotazione();
 string generaIDCorso();
 void caricaFileClienti(hashtable h);
 void caricaFileCorso(list l);

@@ -11,6 +11,7 @@
 #include "hash.h"
 
 static int IDCounterCorso=0;
+static int IDCounterPrenotazione=0;
 static int IDCounterCliente=0;
 
 string generaIDCliente(){
@@ -24,7 +25,17 @@ string generaIDCliente(){
   snprintf(IDCliente, 7, "CLT%03d", IDCounterCliente);
   return IDCliente;
 }
+string generaIDPrenotazione(){
+  IDCounterPrenotazione++;
+  string IDPrenotazione=malloc(sizeof(char)*7);
+  if(IDPrenotazione==NULL){
+    printf("Errore allocazione memoria\n");
+    exit(1);
+  }
 
+  snprintf(IDPrenotazione, 7, "PRT%03d", IDCounterPrenotazione);
+  return IDPrenotazione;
+}
 string generaIDCorso(){
   IDCounterCorso++;
   string IDCorso=malloc(sizeof(char)*7);

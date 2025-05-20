@@ -6,6 +6,7 @@
 
 #include "data.h"
 #include "utils.h"
+#include <stdio.h>
 
 typedef struct prenotazione *Prenotazione;
 
@@ -15,6 +16,9 @@ Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCl
 //Elima una determinata prenotazione
 void eliminaPrenotazione(Prenotazione pr);
 
+Data getDataPrenotazione(Prenotazione pr);
+
 //Stampa gli attributi della struttura prenotazione
 void stampaPrenotazione(Prenotazione p);
+void scriviPrenotazione(Prenotazione p,FILE *fp);
 #endif
