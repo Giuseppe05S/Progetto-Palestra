@@ -14,9 +14,10 @@ int insertList(list l, int pos, Corso val);
 int removeList(list l, int pos);
 void stampaLista(list l);
 list reverseList(list l);
-int ricercaGenericaLista(list l, int sel,string str);
-int ricercaData(list l, Data data);
-int ricercaOrario(list l, int h,int m);
+list ricercaGenericaLista(list l, int sel,string str);
+int isEmpty(list l);
+list ricercaData(list l, Data data);
+list ricercaOrario(list l, int h,int m);
 void scriviFileCorso(list l);
 
 /*

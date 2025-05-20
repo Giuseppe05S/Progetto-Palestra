@@ -28,7 +28,11 @@ list newList(void){
     }
     return l;
 }
-
+int isEmpty(list l){
+if (l == NULL||l->first == NULL){
+	return 1;
+	}
+}
 int insertList(list l, int pos, Corso val){
     struct node* tmp = insertNode(l->first, pos, val); // Chiama insertNode per inserire un nuovo nodo nella lista
     if(tmp == NULL)
@@ -118,13 +122,12 @@ list reverseList(list l){
   }
   return rev;
 }
-int ricercaGenericaLista(list l, int sel,string str){
+list ricercaGenericaLista(list l, int sel,string str){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
   }
-
-  int trovato=0;
+  list result=newList();
   Corso temp;
   struct node* curr = l->first;
   while(curr!=NULL){
@@ -132,62 +135,57 @@ int ricercaGenericaLista(list l, int sel,string str){
     switch(sel){
       case 0://Ricerca per ID
         if(strcmp(getIDCorso(temp), str)==0){
-          stampaCorso(temp);
-          trovato = 1;
+          insertList(result, 0, temp);
         }
         break;
       case 1://Ricerca per Nome
         if(strcmp(getNomeCorso(temp), str)==0){
-          stampaCorso(temp);
-          trovato = 1;
+          insertList(result, 0, temp);
         }
         break;
     }
     curr = curr->next;
   }
-  return trovato;
+  return result;
 }
-int ricercaData(list l, Data data){
+list ricercaData(list l, Data data){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
   }
-
+  list result=newList();
   Corso temp;
-  int trovato=0;
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->c;
     if(confrontaData(data,getDataCorso(temp))==0){
-      stampaCorso(temp);
-      trovato = 1;
+      insertList(result, 0, temp);
     }
     curr= curr->next;
   }
-  return trovato;
+  return result;
 }
-int ricercaOrario(list l, int h,int m){
+list ricercaOrario(list l, int h,int m){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
   }
+	list result=newList();
   Orario o=creaOrario(h,m);
   if(o==NULL){
     printf("Errore nella creazione di orario\n");
     exit(1);
   }
   Corso temp;
-  int trovato=0;
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->c;
     if(confrontaOrario(o,getOrario(temp))==0){
-      stampaCorso(temp);
-      trovato = 1;
+      insertList(result, 0, temp);
     }
     curr= curr->next;
   }
-  return trovato;
+  return result;
 }
 // Stampa tutti gli elementi della lista di corsi
 void stampaLista(list l) {
@@ -198,9 +196,6 @@ void stampaLista(list l) {
 
   struct node* curr = l->first;
   int i=0;
-  printf("==============================\n");
-  printf("\tELENCO CORSI\n");
-  printf("==============================\n");
   while (curr != NULL) {
     //printf("Corso %d:\n", i);
       stampaCorso(curr->c);
@@ -209,6 +204,7 @@ void stampaLista(list l) {
     }
   printf("\n");
 }
+
 void scriviFileCorso(list l){
   FILE *fp;
   fp=fopen("corsi.txt","w");
