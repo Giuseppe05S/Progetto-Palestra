@@ -13,4 +13,5 @@ int getGiorno(Data data);
 int getMese(Data data);
 int getAnno(Data data);
 int confrontaData(Data d1, Data d2);
+Data dataOggi();
 #endif

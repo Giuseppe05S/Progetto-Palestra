@@ -132,6 +132,13 @@ Orario getOrario(Corso co){
   }
   return co->oraLezione;
 }
+void incrementaPartecipanti(Corso co){
+	if(co==NULL){
+	printf("Il corso non esiste\n");
+	return;
+	}
+	co->numPartecipanti++;
+}
 void scriviCorso(Corso co,FILE *fp){
   fprintf(fp,"%s %s %d %d %d %02d:%02d %d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti,co->numPartecipanti);
 }

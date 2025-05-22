@@ -1,10 +1,10 @@
 //file liste.c
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include"liste.h"
-#include"corso.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "liste.h"
+#include "corso.h"
 
 struct c_list {
     struct node *first;
@@ -220,4 +220,11 @@ void scriviFileCorso(list l){
     curr= curr->next;
   }
   fclose(fp);
+}
+Corso getFirstCorso(list l){
+  if (l == NULL || l->first == NULL) {
+    printf("La lista è vuota o non inizializzata.\n");
+    return NULL;
+  }
+  return l->first->c;
 }

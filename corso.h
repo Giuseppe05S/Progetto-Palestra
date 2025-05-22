@@ -21,5 +21,6 @@ Orario getOrario(Corso co);
 int confrontaOrario(Orario o1, Orario o2);
 Orario creaOrario(int ora,int minuti);
 void scriviCorso(Corso co,FILE *fp);
+void incrementaPartecipanti(Corso co);
 
 #endif

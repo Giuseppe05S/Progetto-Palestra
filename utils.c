@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "iscritto.h"
+#include "prenotazione.h"
+#include "listaPrenotazione.h"
 #include "data.h"
 #include "liste.h"
 #include "hash.h"
@@ -151,4 +153,47 @@ void pulisciSchermo(){
   #else
     system("clear"); // per altri SO
   #endif
+}
+
+void caricaFilePrenotazioni(listP l){
+  int maxIDPrenotazione=0;
+  int temp;
+  FILE *fp;
+  fp=fopen("prenotazioni.txt","r");
+  if(fp==NULL){
+    printf("Errore apertura file prenotazioni\n");
+    exit(0);
+  }
+  int gg,mm,anno;
+  string IDPrenotazione=malloc(sizeof(char)*10);
+  string IDCorso=malloc(sizeof(char)*10);
+  string IDCliente=malloc(sizeof(char)*10);
+  Data dataPrenotazione;
+
+  if(IDPrenotazione==NULL || IDCorso==NULL|| IDCliente==NULL){
+    printf("Errore nell'Allocazione\n");
+    exit(0);
+  }
+
+  Prenotazione newPrenotazione;
+
+  while(fscanf(fp,"%s%s%s%d%d%d", IDPrenotazione,IDCorso,IDCliente,&gg, &mm, &anno) != EOF){
+    dataPrenotazione=creaData(gg,mm,anno);
+    newPrenotazione=creaPrenotazione(IDPrenotazione,IDCorso,IDCliente,dataPrenotazione);
+    if(insertListPrenotati(l,0,newPrenotazione)==0){
+      printf("Errore nell'inserimento\n");
+      exit(0);
+    }
+    temp=atoi(IDPrenotazione+3);
+    if(temp>maxIDPrenotazione){
+      maxIDPrenotazione=temp;
+    }
+  }
+
+  IDCounterPrenotazione=maxIDPrenotazione;
+
+  fclose(fp);
+  free(IDPrenotazione);
+  free(IDCorso);
+  free(IDCliente);
 }

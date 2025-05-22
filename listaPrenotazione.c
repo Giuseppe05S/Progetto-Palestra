@@ -8,7 +8,7 @@
 #include "data.h"
 
 
-struct c_list {
+struct c_listP {
     struct node *first;
     int size;
 };
@@ -22,8 +22,8 @@ static struct node* insertNode(struct node* l, int pos, Prenotazione val);
 static struct node* removeNode(struct node* l, int pos);
 
 listP newListPrenotati(void){
-    struct c_list *l;
-    l = malloc(sizeof(struct c_list));
+    struct c_listP *l;
+    l = malloc(sizeof(struct c_listP));
     if (l != NULL){
         l->first = NULL;
         l->size = 0;
@@ -105,7 +105,7 @@ static struct node* removeNode(struct node* l, int pos){
     }
     return l; // Restituisce il puntatore al primo nodo della lista, che potrebbe essere stato aggiornato
 }
-listP reverseListPrenotazioni(list l){
+listP reverseListPrenotazioni(listP l){
   listP rev=newListPrenotati();
   Prenotazione temp;
   struct node* curr = l->first;
@@ -121,36 +121,37 @@ listP reverseListPrenotazioni(list l){
   return rev;
 }
 // da controllare se serve
-/*int ricercaGenericaLista(listP l, int sel,string str){
+listP ricercaListaPrenotati(listP l, int sel,string str){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
   }
-
-  int trovato=0;
+  listP result = newListPrenotati();
   Prenotazione temp;
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->p;
     switch(sel){
-      case 0://Ricerca per ID Prenotazione
-        if(strcmp(getIDCorso(temp), str)==0){
-          stampaPrenotazione(temp);
-          trovato = 1;
+      case 0://Ricerca per ID Cliente
+        if(strcmp(getIDClientePrenotazione(temp), str)==0){
+          insertListPrenotati(result, 0, temp);
         }
         break;
-      case 1://Ricerca per ID per Iscritto
-        if(strcmp(getNomeCorso(temp), str)==0){
-          stampaCorso(temp);
-          trovato = 1;
+      case 1://Ricerca per ID Corso
+        if(strcmp(getIDCorsoPrenotazione(temp), str)==0){
+          insertListPrenotati(result, 0, temp);
         }
         break;
     }
     curr = curr->next;
   }
-  return trovato;
+  return result;
 }
-*/
+int isEmptyPrenotazione(listP l){
+  if (l == NULL||l->first == NULL){
+    return 1;
+  }
+}
 int ricercaDataPrenotazione(listP l, Data data){
   if(l == NULL){
     printf("Lista vuota\n");
@@ -205,7 +206,7 @@ void stampaListaPrenotazioni(listP l) {
   struct node* curr = l->first;
   int i=0;
   printf("==============================\n");
-  printf("\tELENCO PRENOTAZIONI\n");
+  printf("      ELENCO PRENOTAZIONI\n");
   printf("==============================\n");
   while (curr != NULL) {
     //printf("Corso %d:\n", i);

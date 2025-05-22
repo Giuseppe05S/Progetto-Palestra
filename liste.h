@@ -19,6 +19,7 @@ int isEmpty(list l);
 list ricercaData(list l, Data data);
 list ricercaOrario(list l, int h,int m);
 void scriviFileCorso(list l);
+Corso getFirstCorso(list l);
 
 /*
 static struct node* insertNode(struct node* l, int pos, Corso val);

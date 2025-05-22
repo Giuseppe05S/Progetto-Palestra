@@ -10,6 +10,7 @@ typedef char *string;
 // Forward declarations
 typedef struct hash* hashtable;
 typedef struct c_list* list;
+typedef struct c_listP *listP;
 //.
 //posizione typedef string
 
@@ -18,6 +19,7 @@ string generaIDPrenotazione();
 string generaIDCorso();
 void caricaFileClienti(hashtable h);
 void caricaFileCorso(list l);
+void caricaFilePrenotazioni(listP l);
 void pulisciSchermo();
 
 #endif

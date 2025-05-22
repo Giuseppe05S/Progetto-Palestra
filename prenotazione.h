@@ -17,6 +17,8 @@ Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCl
 void eliminaPrenotazione(Prenotazione pr);
 
 Data getDataPrenotazione(Prenotazione pr);
+string getIDClientePrenotazione(Prenotazione pr);
+string getIDCorsoPrenotazione(Prenotazione pr);
 
 //Stampa gli attributi della struttura prenotazione
 void stampaPrenotazione(Prenotazione p);

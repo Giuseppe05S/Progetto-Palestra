@@ -52,15 +52,21 @@ void eliminaPrenotazione(Prenotazione pr){
 Data getDataPrenotazione(Prenotazione pr){
   return pr->dataPrenotazione;
 }
+string getIDCorsoPrenotazione(Prenotazione pr){
+  return pr->IDCorso;
+}
+string getIDClientePrenotazione(Prenotazione pr){
+  return pr->IDCliente;
+}
 void stampaPrenotazione(Prenotazione p){
   printf("==============================\n");
-  printf("IDPrenotazione: %s\n", p->IDPrenotazione);
-  printf("IDCorso: %s\n",p->IDCorso);
-  printf("IDCliente: %s\n",p->IDCliente);
+  printf("ID Prenotazione: %s\n", p->IDPrenotazione);
+  printf("ID Corso: %s\n",p->IDCorso);
+  printf("ID Cliente: %s\n",p->IDCliente);
   printf("Data Prenotazione: ");
   stampaData(p->dataPrenotazione);
 }
 
 void scriviPrenotazione(Prenotazione p,FILE *fp){
-  fprintf(fp,"%s %s %s %d %d %d",p->IDPrenotazione,p->IDCorso,p->IDCliente,getGiorno(p->dataPrenotazione),getMese(p->dataPrenotazione),getAnno(p->dataPrenotazione));
+  fprintf(fp,"%s %s %s %d %d %d\n",p->IDPrenotazione,p->IDCorso,p->IDCliente,getGiorno(p->dataPrenotazione),getMese(p->dataPrenotazione),getAnno(p->dataPrenotazione));
 }

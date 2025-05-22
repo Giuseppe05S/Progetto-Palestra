@@ -3,6 +3,7 @@
 //
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 #include "data.h"
 
 struct data{
@@ -131,4 +132,15 @@ int confrontaData(Data d1, Data d2){// -1 se d1 < d2, 0 se d1 == d2, 1 se d1 > d
 
   // Tutti uguali
   return 0;
+}
+Data dataOggi(){
+  time_t t = time(NULL);            // Ottieni tempo corrente
+  //la struttura struct tm e' presente nella libreria <time.h>, così come la funzione localtime
+  struct tm *tm_info = localtime(&t);  // Converti in tempo locale
+
+  int giorno = tm_info->tm_mday;
+  int mese = tm_info->tm_mon + 1;     // tm_mon parte da 0 (gennaio)
+  int anno = tm_info->tm_year + 1900; // tm_year parte da 1900
+
+  return creaData(giorno, mese, anno);
 }
