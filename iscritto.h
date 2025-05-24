@@ -20,5 +20,6 @@ string getCognome(Iscritto is);
 int getDurata(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
 void rinnovaAbbonamento(Iscritto is, int durata);
+void eliminaIscritto(Iscritto is);
 void scriviCliente(Iscritto is,FILE *fp);
 #endif

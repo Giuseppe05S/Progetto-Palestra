@@ -20,6 +20,8 @@ list ricercaData(list l, Data data);
 list ricercaOrario(list l, int h,int m);
 void scriviFileCorso(list l);
 Corso getFirstCorso(list l);
+int cancellaCorso(list l,string IDCorso);
+void stampaListaEssenziale(list l);
 
 /*
 static struct node* insertNode(struct node* l, int pos, Corso val);

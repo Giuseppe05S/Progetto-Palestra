@@ -83,6 +83,17 @@ void stampaCorso(Corso co){
       printf("Numero Partecipanti: %d\n", co->numPartecipanti);
   }
 }
+void stampaCorsoEssenziale(Corso co){
+  //Precondizione
+  if(co==NULL){
+    printf("Il corso non esiste\n");
+    return;
+  }
+  if(Disponibilita(co)){
+    printf("%-8s %-12s %02d/%02d/%04d   %02d:%02d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti);
+
+  }
+}
 string getIDCorso(Corso co){
   if(co==NULL){
     printf("Il corso non esiste\n");
@@ -138,6 +149,13 @@ void incrementaPartecipanti(Corso co){
 	return;
 	}
 	co->numPartecipanti++;
+}
+void decrementaPartecipanti(Corso co){
+  if(co==NULL){
+    printf("Il corso non esiste\n");
+    return;
+  }
+  co->numPartecipanti--;
 }
 void scriviCorso(Corso co,FILE *fp){
   fprintf(fp,"%s %s %d %d %d %02d:%02d %d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti,co->numPartecipanti);

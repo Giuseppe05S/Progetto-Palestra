@@ -19,6 +19,7 @@ void eliminaPrenotazione(Prenotazione pr);
 Data getDataPrenotazione(Prenotazione pr);
 string getIDClientePrenotazione(Prenotazione pr);
 string getIDCorsoPrenotazione(Prenotazione pr);
+string getIDPrenotazione(Prenotazione pr);
 
 //Stampa gli attributi della struttura prenotazione
 void stampaPrenotazione(Prenotazione p);

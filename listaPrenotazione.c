@@ -142,10 +142,75 @@ listP ricercaListaPrenotati(listP l, int sel,string str){
           insertListPrenotati(result, 0, temp);
         }
         break;
+      case 2://Ricerca per ID Prenotazione
+        if(strcmp(getIDPrenotazione(temp), str)==0){
+          insertListPrenotati(result, 0, temp);
+        }
+        break;
     }
     curr = curr->next;
   }
   return result;
+}
+int cancellaPrenotazione(listP l,string IDPrenotazione,string IDCliente){
+  Prenotazione temp;
+  int i=0;
+  struct node* curr = l->first;
+  while(curr != NULL){
+    temp = curr->p;
+    if((strcmp(getIDPrenotazione(temp), IDPrenotazione) == 0)&&(strcmp(getIDClientePrenotazione(temp), IDCliente)==0)){
+      if(removeListPrenotati(l,i)==0){
+        //errore nella cancellazione
+        return 0;
+        }
+        return 1;
+    }
+    curr = curr->next;
+    i++;
+  }
+  return 0;
+}
+int cancellaPrenotazioneDi(listP l,int sel,string ID){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
+  int elementiCancellati=0;
+  Prenotazione temp;
+  int i=0;
+  struct node* curr = l->first;
+  struct node* next;
+  while(curr != NULL){
+    temp = curr->p;
+    // Salva il puntatore al nodo successivo PRIMA di eventualmente cancellare
+    next = curr->next;
+    switch(sel){
+      case 0://Cancella tutte le prenotazioni di un cliente
+        if(strcmp(getIDClientePrenotazione(temp), ID)==0){
+          removeListPrenotati(l,i);
+          /*quando rimuovo un elemento dalla lista, tutti gli elementi vengono scalati,
+          senza decrementare i, mi ritroverei a saltare alcuni elementi della lista
+          */
+          elementiCancellati++;
+        }else i++;//incremento solo se non cancello
+        break;
+      case 1://Cancella tutte le prenotazioni di un corso
+        if(strcmp(getIDCorsoPrenotazione(temp), ID)==0){
+          removeListPrenotati(l,i);
+          elementiCancellati++;
+        }else i++; //incremento solo se non cancello
+        break;
+    }
+    curr = next;
+  }
+  return elementiCancellati;
+}
+Prenotazione getFirstPrenotazione(listP l){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
+  return l->first->p;
 }
 int isEmptyPrenotazione(listP l){
   if (l == NULL||l->first == NULL){
@@ -171,43 +236,16 @@ int ricercaDataPrenotazione(listP l, Data data){
   }
   return trovato;
 }
-//non dovrebbe servire
-/*int ricercaOrario(listP l, int h,int m){
-  if(l == NULL){
-    printf("Lista vuota\n");
-    return 0;
-  }
-  Orario o=creaOrario(h,m);
-  if(o==NULL){
-    printf("Errore nella creazione di orario\n");
-    exit(1);
-  }
-  Corso temp;
-  int trovato=0;
-  struct node* curr = l->first;
-  while(curr!=NULL){
-    temp = curr->c;
-    if(confrontaOrario(o,getOrario(temp))==0){
-      stampaCorso(temp);
-      trovato = 1;
-    }
-    curr= curr->next;
-  }
-  return trovato;
-}
-*/
+
 // Stampa tutti gli elementi della lista di corsi
 void stampaListaPrenotazioni(listP l) {
   if (l == NULL || l->first == NULL) {
-    printf("La lista è vuota o non inizializzata.\n");
+    printf("Non ci sono prenotazioni.\n");
     return;
   }
 
   struct node* curr = l->first;
   int i=0;
-  printf("==============================\n");
-  printf("      ELENCO PRENOTAZIONI\n");
-  printf("==============================\n");
   while (curr != NULL) {
     //printf("Corso %d:\n", i);
       stampaPrenotazione(curr->p);

@@ -165,9 +165,6 @@ void stampaHash(hashtable h) {
     printf("Tabella vuota\n");
     return;
   }
-  printf("==============================\n");
-  printf("\tELENCO CLIENTI\n");
-  printf("==============================\n");
   int i;
   for(i=0; i < h->size; i++) {
     Iscritto curr = h->table[i];

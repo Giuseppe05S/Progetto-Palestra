@@ -58,6 +58,9 @@ string getIDCorsoPrenotazione(Prenotazione pr){
 string getIDClientePrenotazione(Prenotazione pr){
   return pr->IDCliente;
 }
+string getIDPrenotazione(Prenotazione pr){
+  return pr->IDPrenotazione;
+}
 void stampaPrenotazione(Prenotazione p){
   printf("==============================\n");
   printf("ID Prenotazione: %s\n", p->IDPrenotazione);

@@ -204,7 +204,22 @@ void stampaLista(list l) {
     }
   printf("\n");
 }
-
+void stampaListaEssenziale(list l) {
+  if (l == NULL || l->first == NULL) {
+    printf("La lista è vuota o non inizializzata.\n");
+    return;
+  }
+  printf("%-8s %-12s %-12s %s\n", "ID", "Nome", "Data", "Orario");
+  struct node* curr = l->first;
+  int i=0;
+  while (curr != NULL) {
+    //printf("Corso %d:\n", i);
+      stampaCorsoEssenziale(curr->c);
+      curr = curr->next;
+      i++;
+    }
+  printf("\n");
+}
 void scriviFileCorso(list l){
   FILE *fp;
   fp=fopen("corsi.txt","w");
@@ -227,4 +242,22 @@ Corso getFirstCorso(list l){
     return NULL;
   }
   return l->first->c;
+}
+int cancellaCorso(list l,string IDCorso){
+  Corso temp;
+  int i=0;
+  struct node* curr = l->first;
+  while(curr != NULL){
+    temp = curr->c;
+    if(strcmp(getIDCorso(temp), IDCorso) == 0){
+      if(removeList(l,i)==0){
+        //errore nella cancellazione
+        return 0;
+        }
+        return 1;
+    }
+    curr = curr->next;
+    i++;
+  }
+  return 0;
 }

@@ -13,11 +13,12 @@ listP newListPrenotati(void); //Crea una nuova lista vuota e restituisce la list
 int insertListPrenotati(listP l, int pos, Prenotazione val);
 int removeListPrenotati(listP l, int pos);
 listP reverseListPrenotazioni(listP l);
-listP ricercaListaPrenotati(listP l, int sel,string str);
+listP ricercaListaPrenotati(listP l, int sel,string str);//0 per Cliente e 1 per Corso
 void stampaListaPrenotazioni(listP l);
-int isEmptyPrenotazione(listP l);
+int isEmptyPrenotazione(listP l);//1 se vuota, altrimenti 0
 int ricercaDataPrenotazione(listP l, Data data);
-//int ricercaOrario(list l, int h,int m);
 void scriviFilePrenotazione(listP l);
-
+int cancellaPrenotazioneDi(listP l,int sel,string ID);//0 per Cliente e 1 per Corso
+int cancellaPrenotazione(listP l,string IDCorso,string IDCliente);
+Prenotazione getFirstPrenotazione(listP l);
 #endif
