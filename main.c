@@ -48,16 +48,19 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
   string IDCliente=malloc(sizeof(char)*7);
   string IDCorso=malloc(sizeof(char)*7);
   string IDPrenotazione=malloc(sizeof(char)*7);
+  string IDCancellare=malloc(sizeof(char)*7);
   Data dataPrenotazione;
   int gg,mm,anno;
-  if(IDCliente==NULL||IDCorso==NULL||IDPrenotazione==NULL){
+  if(IDCliente==NULL||IDCorso==NULL||IDPrenotazione==NULL||IDCancellare==NULL){
     printf("Errore apertura file\n");
     return;
   }
   do{
     getchar();
     pulisciSchermo();
-    printf("Gestore Prenotazioni\n");
+    printf("==============================\n");
+    printf("     GESTORE PRENOTAZIONI\n");
+    printf("==============================\n");
     printf("1. Prenota Corso\n");
     printf("2. Ricerca Prenotazione\n");
     printf("3. Elenco Prenotazione\n");
@@ -68,40 +71,45 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
     switch(selP){
       case '1': //da aggiungere l'incremento dei posti occupati del corso
         pulisciSchermo();
-		    getchar();
+		getchar();
         printf("==============================\n");
         printf("    AGGIUNGI PRENOTAZIONE\n");
         printf("==============================\n");
         printf("\nInserisci l'ID del Cliente\n");
-		    scanf("%s",IDCliente);
-		    i=hashSearch(hClienti,IDCliente);
+		stampaHashMinima(hClienti);
+        scanf("%s",IDCliente);
+		i=hashSearch(hClienti,IDCliente);
         if(i==NULL){
           pulisciSchermo();
-		      printf("==============================\n");
-          printf("     Cliente non trovato\n");
-		      printf("==============================\n");
-		      printf("\nPremere invio per tornare indietro\n");
+          printf("==============================\n");
+          printf("     CLIENTE NON TROVATO\n");
+          printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
           getchar();
 		      break;
         }
-        stampaCliente(i);
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("           CLIENTE\n");
 
+        stampaCliente(i);
+        printf("==============================\n");
         getchar();
         printf("\nInserisci l'ID del Corso\n");
-		    scanf("%s",IDCorso);
-		    result=ricercaGenericaLista(lCorsi,0,IDCorso);
+		stampaListaEssenziale(lCorsi);
+        scanf("%s",IDCorso);
+		result=ricercaGenericaLista(lCorsi,0,IDCorso);
         if(isEmpty(result)==1){
-		      pulisciSchermo();
-		      printf("==============================\n");
-          printf("      Corso non trovato\n");
-		      printf("==============================\n");
-		      printf("\nPremere invio per tornare indietro\n");
+		  pulisciSchermo();
+          printf("==============================\n");
+          printf("      CORSO NON TROVATO\n");
+          printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
           getchar();
-		    break;
+		  break;
         }
         getchar();
-		    stampaLista(result);
-        printf("Premere invio per continuare\n");
+        printf("\nPremere invio per continuare\n");
         getchar();
 
         strcpy(IDPrenotazione,generaIDPrenotazione());
@@ -109,14 +117,14 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
 
         if(insertListPrenotati(lPrenotati,0,pre)==0){
           printf("Errore nell'Inserimento\n");
-		      break;
+		  break;
         }
         incrementaPartecipanti(getFirstCorso(result));
-		    pulisciSchermo();
-		    printf("==============================\n");
+		pulisciSchermo();
+		printf("==============================\n");
         printf("    PRENOTAZIONE AGGIUNTA\n");
-		    printf("==============================\n");
-		    stampaPrenotazione(pre);
+		printf("==============================\n");
+		stampaPrenotazione(pre);
         scriviFilePrenotazione(lPrenotati);
         scriviFileCorso(lCorsi);
         printf("\nPremere invio per tornare indietro\n");
@@ -145,17 +153,19 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
               printf("==============================\n");
               printf("Inserisci l'ID del Cliente\n");
               scanf("%s",IDCliente);
+              //Controllo che il cliente sia presente nella lista e ne stampo i dettagli
               i=hashSearch(hClienti,IDCliente);
               if(i==NULL){
                 pulisciSchermo();
                 printf("==============================\n");
-                printf("     Cliente non trovato\n");
+                printf("     CLIENTE NON TROVATO\n");
                 printf("==============================\n");
                 printf("\nPremere invio per tornare indietro\n");
                 getchar();
                 break;
               }
               stampaCliente(i);
+              //Controllo se il cliente ha prenotazioni o meno
               resultP=ricercaListaPrenotati(lPrenotati,0,IDCliente);
               if(isEmptyPrenotazione(resultP)==1){
                 pulisciSchermo();
@@ -166,6 +176,9 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
                 getchar();
                 break;
               }
+              printf("==============================\n");
+              printf("     ELENCO PRENOTAZIONI\n");
+              printf("==============================\n");
               stampaListaPrenotazioni(resultP);
               printf("\nPremere invio per tornare indietro\n");
               getchar();
@@ -178,16 +191,20 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
               printf("==============================\n");
               printf("Inserisci l'ID del Corso\n");
               scanf("%s",IDCorso);
+              //Controllo se il corso presenta prenotati o meno
               resultP=ricercaListaPrenotati(lPrenotati,1,IDCorso);
               if(isEmptyPrenotazione(resultP)==1){
                 pulisciSchermo();
                 printf("==============================\n");
-                printf("IL CLIENTE NON HA PRENOTAZIONI\n");
+                printf("  IL CORSO NON HA PRENOTATI\n");
                 printf("==============================\n");
                 printf("\nPremere invio per tornare indietro\n");
                 getchar();
                 break;
               }
+              printf("==============================\n");
+              printf("     ELENCO PRENOTAZIONI\n");
+              printf("==============================\n");
               stampaListaPrenotazioni(resultP);
               printf("\nPremere invio per tornare indietro\n");
               getchar();
@@ -196,41 +213,88 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
         }while(selRicercaPrenotazione>'3'||selRicercaPrenotazione<'1');
         break;
       case '3':
-		    pulisciSchermo();
-
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("     ELENCO PRENOTAZIONI\n");
+        printf("==============================\n");
         stampaListaPrenotazioni(lPrenotati);
 
-		    printf("\nPremere invio per tornare indietro\n");
+        printf("\nPremere invio per tornare indietro\n");
         getchar();
 		break;
       case '4':
         pulisciSchermo();
-		    getchar();
-		    printf("==============================\n");
+        getchar();
+        printf("==============================\n");
         printf("\tCANCELLA PRENOTAZIONE\n");
-		    printf("==============================\n");
-		    printf("Inserisci l'ID del Cliente\n");
-		    scanf("%s",IDCliente);
+        printf("==============================\n");
+        printf("Inserisci l'ID del Cliente\n");
+        scanf("%s",IDCliente);
 
-		    //Controllo che il cliente esista
-		    if(hashSearch(hClienti,IDCliente)==NULL){
+		    //Controllo che il cliente sia presente nella lista dei clienti
+        if(hashSearch(hClienti,IDCliente)==NULL){
           pulisciSchermo();
-		      printf("==============================\n");
+          printf("==============================\n");
           printf("     Cliente non trovato\n");
-		      printf("==============================\n");
-		      printf("\nPremere invio per tornare indietro\n");
-          return;
+		  printf("==============================\n");
+		  printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+        }
+        //Controllo che il cliente abbia prenotazioni da cancellare
+        resultP=ricercaListaPrenotati(lPrenotati,0,IDCliente);
+        if(isEmptyPrenotazione(resultP)==1){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("IL CLIENTE NON HA PRENOTAZIONI\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+        }
+        //stampa più semplice e essenziale, da implementare
+        //Stampo le prenotazioni del cliente e richiedo la prenotazione da cancellare
+        printf("==============================\n");
+        printf("     ELENCO PRENOTAZIONI\n");
+        printf("==============================\n");
+        stampaListaPrenotazioni(resultP);
+        printf("Inserire l'ID della Prenotazione da Cancellare\n");
+        scanf("%s",IDCancellare);
+        //ricerco la prenotazione per decrementare il numero di partecipanti alla lezione
+        resultP=ricercaListaPrenotati(lPrenotati,2,IDCancellare);
+        if(isEmptyPrenotazione(resultP)==1){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("   PRENOTAZIONE INESISTENTE\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
         }
 
-/*chiedi l'ID utente
-stampi tutte le prenotazioni dell'utente
-l'utente scrive ID della prenotazione da cancellare
-*/
-        // scorri la coda affinche non trovi la prenotazione da cancellare
+        if(cancellaPrenotazione(lPrenotati,IDCancellare,IDCliente)==0){
+          pulisciSchermo();
+          printf("==============================\n");
+          printf(" PRENOTAZIONE NON CANCELLATA\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+        }
+        result=ricercaGenericaLista(lCorsi,0,getIDCorsoPrenotazione(getFirstPrenotazione(resultP)));
+        decrementaPartecipanti(getFirstCorso(result));
+        pulisciSchermo();
+        printf("==============================\n");
+        printf("   PRENOTAZIONE CANCELLATA\n");
+        printf("==============================\n");
+        scriviFilePrenotazione(lPrenotati);
+        scriviFileCorso(lCorsi);
+        printf("\nPremere invio per tornare indietro\n");
+        getchar();
         break;
-      case '5':
+      /*case '5':
 
-        break;
+        break;*/
       default:
         printf("Scelta non valida \n");
         break;
@@ -240,7 +304,7 @@ l'utente scrive ID della prenotazione da cancellare
   }while(selP>'5'||selP<'1');
 }
 
-void menuAbbonamento(hashtable h){
+void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
 
   int durata,gg,mm,anno;
   Data dataIscrizione;
@@ -257,11 +321,13 @@ void menuAbbonamento(hashtable h){
   do{
     getchar();
     pulisciSchermo();
-    printf("Gestore Abbonamenti\n");
+    printf("==============================\n");
+    printf("       GESTORE CLIENTI\n");
+    printf("==============================\n");
     printf("1. Crea Abbonamento\n");
     printf("2. Rinnova Abbonamento\n");
     printf("3. Ricerca Abbonamento\n");
-    printf("4. Elenco Abbonamenti\n");
+    printf("4. Elenco Clienti\n");
     printf("5. Elimina Abbonamento\n");
     printf("6. Torna al Menù\n");
     scanf("%c",&selA);
@@ -270,7 +336,7 @@ void menuAbbonamento(hashtable h){
       case '1':
         pulisciSchermo();
         printf("==============================\n");
-        printf("\tAGGIUNGI CLIENTE\n");
+        printf("       AGGIUNGI CLIENTE\n");
         printf("==============================\n");
         printf("Inserisci nome\n");
         scanf("%s",nome);
@@ -282,50 +348,59 @@ void menuAbbonamento(hashtable h){
         dataIscrizione=creaData(gg,mm,anno);
         printf("Inserisci la durata dell'abbonamento in mesi (ES. 1, 3, 6, ...)\n");
         scanf("%d",&durata);
-
+        /*
+        Genero l'ID del Cliente e controllo
+        che l'inserimento sia andato a buon fine
+        */
         strcpy(ID,generaIDCliente());
         is=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
-        printf("\n==============================\n");
-        printf("\tCLIENTE AGGIUNTO\n");
-        stampaCliente(is);
         if(insertHash(h,is)==0){
-          printf("Errore nell'inserimento\n");
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("   ERRORE NELL'INSERIMENTO\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
         }
+        printf("\n==============================\n");
+        printf("       CLIENTE AGGIUNTO\n");
+        stampaCliente(is);
+        //Ad ogni inserimento scrivo il nuovo iscritto nel file
         scriviFileClienti(h);
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
       case '2':
         pulisciSchermo();
-
         printf("==============================\n");
-        printf("\tRINNOVO ABBONAMENTO\n");
+        printf("     RINNOVO ABBONAMENTO\n");
         printf("==============================\n");
 
         int nuovaDurata;
         printf("Inserisci l'ID del Cliente\n");
         stampaHashMinima(h);
         scanf("%s",ID);
-
+        //Controllo se il cliente esiste nella lista
         is=hashSearch(h,ID);
         if(is==NULL){
           pulisciSchermo();
           printf("==============================\n");
-          printf("Cliente Inesistente\n");
+          printf("     CLIENTE INESISTENTE\n");
           printf("==============================\n");
           printf("\nPremere invio per tornare indietro\n");
           getchar();
           break;
         }
 
-        do{
+        do{//Ciclo affinchè non inserisce una durata valida
           printf("Di quanti mesi vuoi espandere l'abbonamento?\n");
           scanf("%d",&nuovaDurata);
         }while(nuovaDurata<0);
 
         rinnovaAbbonamento(is,nuovaDurata);
         printf("==============================\n");
-        printf("\tCLIENTE AGGIORNATO\n");
+        printf("      CLIENTE AGGIORNATO\n");
         stampaCliente(is);
         scriviFileClienti(h);
         printf("\nPremere invio per tornare indietro\n");
@@ -337,7 +412,7 @@ void menuAbbonamento(hashtable h){
           getchar();
           pulisciSchermo();
           printf("==============================\n");
-          printf("\tRICERCA ABBONAMENTO\n");
+          printf("     RICERCA ABBONAMENTO\n");
           printf("==============================\n");
           printf("Per cosa vuoi Ricercare?\n");
           printf("1. ID\n");
@@ -351,15 +426,17 @@ void menuAbbonamento(hashtable h){
             case '1':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tRICERCA PER ID\n");
+              printf("       RICERCA PER ID\n");
               printf("==============================\n");
               printf("Inserisci l'ID del cliente\n");
               scanf("%s",ID);
+              printf("\n");
+              //Controllo se il cliente esiste nella lista
               is=hashSearch(h,ID);
-
               if(is==NULL){
-                printf("\n==============================\n");
-                printf("Cliente Insistente\n");
+                pulisciSchermo();
+                printf("==============================\n");
+                printf("     CLIENTE INESISTENTE\n");
                 printf("==============================\n");
                 break;
               }
@@ -368,13 +445,19 @@ void menuAbbonamento(hashtable h){
             case '2':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tRICERCA PER NOME\n");
+              printf("       RICERCA PER NOME\n");
               printf("==============================\n");
               printf("Inserisci il nome del cliente\n");
               scanf("%s",nome);
+              /*Controllo se il cliente esiste nella lista
+              * se esiste ne stampo i dettagli.
+              * La ricerca per 0 è per il nome del Cliente
+              */
+              printf("\n");
               if(ricercaGenerica(h,0,nome)==0){
+                pulisciSchermo();
                 printf("==============================\n");
-                printf("Cliente Insistente\n");
+                printf("     CLIENTE INESISTENTE\n");
                 printf("==============================\n");
                 break;
               }
@@ -382,13 +465,19 @@ void menuAbbonamento(hashtable h){
             case '3':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tRICERCA PER COGNOME\n");
+              printf("     RICERCA PER COGNOME\n");
               printf("==============================\n");
               printf("Inserisci il cognome del cliente\n");
               scanf("%s",cognome);
+              /*Controllo se il cliente esiste nella lista
+              * se esiste ne stampo i dettagli.
+              * La ricerca per 1 è per il cognome del Cliente
+              */
+              printf("\n");
               if(ricercaGenerica(h,1,cognome)==0){
+                pulisciSchermo();
                 printf("==============================\n");
-                printf("Cliente Insistente\n");
+                printf("     CLIENTE INESISTENTE\n");
                 printf("==============================\n");
                 break;
               }
@@ -400,9 +489,11 @@ void menuAbbonamento(hashtable h){
               printf("==============================\n");
               printf("Inserisci il numero di mesi\n");
               scanf("%d",&durata);
+              printf("\n");
               if(ricercaPerDurata(h,durata)==0){
+                pulisciSchermo();
                 printf("==============================\n");
-                printf("Cliente Insistente\n");
+                printf("     CLIENTE INESISTENTE\n");
                 printf("==============================\n");
                 break;
               }
@@ -419,7 +510,7 @@ void menuAbbonamento(hashtable h){
           getchar();
           pulisciSchermo();
           printf("==============================\n");
-          printf("\tELENCO CLIENTI\n");
+          printf("        ELENCO CLIENTI\n");
           printf("==============================\n");
           printf("Come vuoi visualizzare l'elenco?\n");
           printf("1. Visione Essenziale (ID, Cognome, Nome)\n");
@@ -430,7 +521,7 @@ void menuAbbonamento(hashtable h){
             case '1':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tELENCO CLIENTI\n");
+              printf("        ELENCO CLIENTI\n");
               printf("==============================\n");
               stampaHashMinima(h);
 
@@ -439,6 +530,9 @@ void menuAbbonamento(hashtable h){
               break;
             case '2':
               pulisciSchermo();
+              printf("==============================\n");
+              printf("        ELENCO CLIENTI\n");
+              printf("==============================\n");
               stampaHash(h);
               printf("Premere invio per tornare indietro\n");
               getchar();
@@ -449,28 +543,36 @@ void menuAbbonamento(hashtable h){
       case '5':
         pulisciSchermo();
         printf("==============================\n");
-        printf("\tCANCELLA CLIENTE\n");
+        printf("       CANCELLA CLIENTE\n");
         printf("==============================\n");
+        //Nel richiedere l'ID stampo tutti i clienti in versione sintetica
         printf("Inserisci l'ID del Cliente da cancellare\n");
         stampaHashMinima(h);
         scanf("%s",ID);
+        //ricerco l'iscritto da cancellare, ritornandolo e liberandolo nel main
         is=hashDelete(h,ID);
         if(is==NULL){
+          pulisciSchermo();
           printf("==============================\n");
-          printf("CLIENTE INESISTENTE\n");
+          printf("     CLIENTE INESISTENTE\n");
           printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
         }
+        //Funzione per liberare lo spazio occupato da iscritto
+
         printf("==============================\n");
-        printf("\tCLIENTE CANCELLATO \n");
+        printf("      CLIENTE CANCELLATO\n");
         printf("==============================\n");
+        printf("N° Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,0,getID(is)));
+
+        eliminaIscritto(is);
+        //Anche per la cancellazione la scrittura avviene subito dopo l'operazione
         scriviFileClienti(h);
+        scriviFilePrenotazione(lPrenotati);
         printf("\nPremere invio per tornare indietro\n");
         getchar();
-        break;
-        case '6':
-          break;
-      default:
-        printf("Scelta non valida \n");
         break;
     }
     if(selA=='6')
@@ -478,7 +580,7 @@ void menuAbbonamento(hashtable h){
   }while(selA>'6'||selA<'1');
 }
 
-void menuCorso(list lCorsi) {
+void menuCorso(list lCorsi,listP lPrenotati) {
   //Dichiarazione delle variabili
   char selC;
   string nome = malloc(sizeof(char) * 50);
@@ -497,7 +599,9 @@ void menuCorso(list lCorsi) {
   do {
     getchar();
     pulisciSchermo();
-    printf("Gestore Corsi\n");
+    printf("==============================\n");
+    printf("        GESTORE CORSI\n");
+    printf("==============================\n");
     printf("1. Aggiungi Corso\n");
     printf("2. Ricerca Corso\n");
     printf("3. Elenco Corsi\n");
@@ -509,7 +613,7 @@ void menuCorso(list lCorsi) {
       case '1': {
         pulisciSchermo();
         printf("==============================\n");
-        printf("\tAGGIUNGI CORSO\n");
+        printf("        AGGIUNGI CORSO\n");
         printf("==============================\n");
 
         printf("Inserisci il nome del corso:\n");
@@ -526,19 +630,23 @@ void menuCorso(list lCorsi) {
         if(c==NULL){
           pulisciSchermo();
           printf("==============================\n");
-          printf("\tDATI NON VALIDI\n");
-          printf("       CORSO NON SALVATO\n");
+          printf("    ERRORE NELLA CREAZIONE\n");
           printf("==============================\n");
           printf("\nPremere invio per tornare indietro\n");
           getchar();
           break;
         }
-        printf("\n==============================\n");
-        printf("\tCORSO AGGIUNTO\n");
-        stampaCorso(c);
         if(insertList(lCorsi,0,c)==0){
-          printf("Errore nell'inserimento");
+          pulisciSchermo();
+          printf("==============================\n");
+          printf("   ERRORE NELL'INSERIMENTO\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
         }
+        printf("\n==============================\n");
+        printf("        CORSO AGGIUNTO\n");
+        stampaCorso(c);
         scriviFileCorso(lCorsi);
 
         printf("\nPremere invio per tornare indietro\n");
@@ -551,7 +659,7 @@ void menuCorso(list lCorsi) {
         do{
           pulisciSchermo();
           printf("==============================\n");
-          printf("\tCERCA CORSO\n");
+          printf("         CERCA CORSO\n");
           printf("==============================\n");
           printf("1. ID\n");
           printf("2. Nome\n");
@@ -564,18 +672,23 @@ void menuCorso(list lCorsi) {
             case '1':
               pulisciSchermo();
               printf("==============================\n");
-              printf("\tRICERCA PER ID\n");
+              printf("        RICERCA PER ID\n");
               printf("==============================\n");
               printf("Inserisci l'ID del corso:\n");
               scanf("%s", IDCorso);
-				result=ricercaGenericaLista(lCorsi,0,IDCorso);
+              /*
+               *La ricerca del corso a differenza di quella per iscritto
+               *ritorna una lista, in quanto in altri punti del codice
+               *ci occorre lavorare sui risultati ottenuti
+               */
+			  result=ricercaGenericaLista(lCorsi,0,IDCorso);
               if(isEmpty(result)==1){
                 printf("==============================\n");
-                printf("\tCORSO INESISTENTE\n");
+                printf("      CORSO INESISTENTE\n");
                 printf("==============================\n");
                 printf("\nPremere invio per tornare indietro\n");
                 getchar();
-				break;
+                break;
               }
 			  stampaLista(result);
 			  printf("\nPremere invio per tornare indietro\n");
@@ -601,14 +714,12 @@ void menuCorso(list lCorsi) {
 			  stampaLista(result);
               printf("\nPremere invio per tornare indietro\n");
               getchar();
-
               break;
             case '3'://da implementare
               pulisciSchermo();
               printf("==============================\n");
               printf("\tLEZIONE IMMINENTE\n");
               printf("==============================\n");
-
 
               printf("\nPremere invio per tornare indietro\n");
               getchar();
@@ -645,7 +756,7 @@ void menuCorso(list lCorsi) {
 			  result=ricercaOrario(lCorsi,ora,minuti);
               if(isEmpty(result)==1){
                 printf("==============================\n");
-                printf("\tCORSO INESISTENTE\n");
+                printf("      CORSO INESISTENTE\n");
                 printf("==============================\n");
                 printf("\nPremere invio per tornare indietro\n");
                 getchar();
@@ -662,8 +773,9 @@ void menuCorso(list lCorsi) {
       case '3':
         pulisciSchermo();
 		printf("==============================\n");
-  		printf("\tELENCO CORSI\n");
+  		printf("         ELENCO CORSI\n");
   		printf("==============================\n");
+        //stampaListaEssenziale(lCorsi);
         stampaLista(lCorsi);
 
         printf("Premere invio per tornare indietro\n");
@@ -673,23 +785,30 @@ void menuCorso(list lCorsi) {
       case '4'://DA IMPLEMENTARE
         pulisciSchermo();
         printf("==============================\n");
-        printf("\tELIMINA CORSO\n");
+        printf("        ELIMINA CORSO\n");
         printf("==============================\n");
-        string IDDaEliminare = malloc(sizeof(char) * 7);
-        if(IDDaEliminare == NULL){
-          printf("Errore allocazione memoria\n");
-          exit(1);
-        }
         printf("Inserisci l'ID del corso da eliminare:\n");
-        scanf("%s", IDDaEliminare);
-       // listaCorsi = eliminaCorso(listaCorsi, IDDaEliminare); // funzione da implementare
-        printf("Premere invio per tornare indietro\n");
+        printf("NB: Verranno cancellate tutte le prenotazioni associate al corso\n");
+        stampaListaEssenziale(lCorsi);
+        scanf("%s", IDCorso);
+		if(cancellaCorso(lCorsi, IDCorso)==0){
+		  printf("==============================\n");
+          printf("      CORSO INESISTENTE\n");
+          printf("==============================\n");
+          printf("\nPremere invio per tornare indietro\n");
+          getchar();
+          break;
+		}
+
+        printf("==============================\n");
+        printf("       CORSO CANCELLATO\n");
+        printf("==============================\n");
+        printf("N° Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,1,IDCorso));
+        scriviFileCorso(lCorsi);
+        scriviFilePrenotazione(lPrenotati);
+        printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
-
-      case '5':
-        break;
-
       default:
         printf("Scelta non valida \n");
         break;
@@ -725,11 +844,11 @@ int main(){
 
     switch(selettore){
       case '1':
-        menuAbbonamento(hClienti);
+        menuCliente(hClienti,lPrenotati,listaCorsi);
         getchar();
         break;
       case '2':
-        menuCorso(listaCorsi);
+        menuCorso(listaCorsi,lPrenotati);
         getchar();
         break;
       case '3':
