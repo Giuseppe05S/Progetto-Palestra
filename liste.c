@@ -165,6 +165,65 @@ list ricercaData(list l, Data data){
   }
   return result;
 }
+list ricercaMese(list l, int mm){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return 0;
+  }
+  list result=newList();
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    if(mm==getMese(getDataCorso(temp))){
+      insertList(result, 0, temp);
+    }
+    curr= curr->next;
+  }
+  return result;
+}
+void lezioniInEvidenza(list l){
+  int primo=0, secondo=0, terzo=0;
+  Corso primoC=NULL;
+  Corso secondoC=NULL;
+  Corso terzoC=NULL;
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return;
+  }
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    if(getNumPartecipantiCorso(temp)>primo){
+      terzo = secondo;
+      terzoC = secondoC;
+      secondo = primo;
+      secondoC = primoC;
+      primo = getNumPartecipantiCorso(temp);
+      primoC = temp;
+      }else if(getNumPartecipantiCorso(temp)>secondo){
+        terzo = secondo;
+        terzoC = secondoC;
+        secondo = getNumPartecipantiCorso(temp);
+        secondoC = temp;
+        }else if(getNumPartecipantiCorso(temp)>terzo){
+          terzo = getNumPartecipantiCorso(temp);
+          terzoC = temp;
+          }
+    curr = curr->next;
+  }
+  if(primoC!=NULL){
+    stampaCorso(primoC);
+  }
+  if(secondoC!=NULL){
+    stampaCorso(secondoC);
+  }
+  if(terzoC!=NULL){
+    stampaCorso(terzoC);
+  }
+
+}
 list ricercaOrario(list l, int h,int m){
   if(l == NULL){
     printf("Lista vuota\n");

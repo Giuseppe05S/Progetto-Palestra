@@ -12,6 +12,6 @@ void stampaData(Data data);
 int getGiorno(Data data);
 int getMese(Data data);
 int getAnno(Data data);
-int confrontaData(Data d1, Data d2);
+int confrontaData(Data d1, Data d2);// -1 se d1 < d2, 0 se d1 == d2, 1 se d1 > d2
 Data dataOggi();
 #endif

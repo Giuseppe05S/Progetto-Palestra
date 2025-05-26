@@ -91,7 +91,6 @@ void stampaCorsoEssenziale(Corso co){
   }
   if(Disponibilita(co)){
     printf("%-8s %-12s %02d/%02d/%04d   %02d:%02d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti);
-
   }
 }
 string getIDCorso(Corso co){
@@ -114,6 +113,13 @@ Data getDataCorso(Corso co){
     return NULL;
   }
   return co->dataLezione;
+}
+int getNumPartecipantiCorso(Corso co){
+if(co==NULL){
+    printf("Il corso non esiste\n");
+    return 0;
+  }
+  return co->numPartecipanti;
 }
 int confrontaOrario(Orario o1, Orario o2){ // -1 se o1< o2, 0 se o1== o2, 1 se o1> o2
   if(o1 == NULL || o2 == NULL){

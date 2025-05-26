@@ -101,12 +101,12 @@ Iscritto hashSearch(hashtable h, string key) {
     return NULL;
   
   int idx = hashFun(key, h->size);         // Calcola l'indice nella tabella
-  Iscritto curr = h->table[idx];       // Inizia dalla testa della lista
+  Iscritto curr = h->table[idx];           // Inizia dalla testa della lista
   while (curr != NULL) {
     if (strcmp(getID(curr), key) == 0) {
-      return curr;                     // Trovato!
+      return curr;         // Trovato!
     }
-    curr = getNext(curr);                   // Vai al prossimo nodo
+    curr = getNext(curr);  // Vai al prossimo nodo
   }
   return NULL;  // Non trovato
 }
@@ -121,14 +121,24 @@ int ricercaGenerica(hashtable h, int sel, string str) {
 
       	case 0: // Ricerca per nome
           if(strcmp(getNome(is), str)==0){
-          	stampaCliente(is);
-          	trovato=1;
+            if(controlloAbbonamento(is)==0){
+          	  stampaCliente(is);
+          	  trovato=1;
+              break;
+            }else{
+              trovato=-1;
+            }
           }
           break;
       	case 1: // Ricerca per cognome
           if(strcmp(getCognome(is), str)==0){
-            stampaCliente(is);
-            trovato=1;
+            if(controlloAbbonamento(is)==0){
+              stampaCliente(is);
+              trovato=1;
+              break;
+            }else{
+              trovato=-1;
+            }
           }
           break;
         case 2: // Ricerca per durata abbonamento
@@ -143,23 +153,7 @@ int ricercaGenerica(hashtable h, int sel, string str) {
   }
   return trovato;
 }
-int ricercaPerDurata(hashtable h, int durata) {
-  int trovato=0;
-  Iscritto curr;
-  for(int i=0;i<h->size;i++){
-    if(h->table[i]!=NULL){
-      curr = h->table[i];
-      while(curr != NULL){
-        if(getDurata(curr)== durata){
-          stampaCliente(curr);
-          trovato=1;
-        }
-        curr = getNext(curr); // Vai al prossimo nodo
-      }
-    }
-  }
-  return trovato;
-}
+
 void stampaHash(hashtable h) {
   if(h == NULL){
     printf("Tabella vuota\n");

@@ -87,7 +87,16 @@ void rinnovaAbbonamento(Iscritto is, int durata){
 void stampaMinimaCliente(Iscritto is){
   printf("%-8s %-15s %-15s\n",is->ID,is->cognome,is->nome);
 }
-
+int controlloAbbonamento(Iscritto is){
+  if(is==NULL||is->durata<=0){
+    printf("DATI NON VALIDI\n");
+    return -1;
+  }
+  if(confrontaData(is->dataScadenza,dataOggi())==-1){
+    return 1;//Abbonamento Scaduto
+  }
+  return 0;//Abbonamento Valido
+}
 void stampaCliente(Iscritto is){
   printf("==============================\n");
   printf("ID: %s\n",is->ID);

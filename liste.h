@@ -18,8 +18,10 @@ list ricercaGenericaLista(list l, int sel,string str);
 int isEmpty(list l);
 list ricercaData(list l, Data data);
 list ricercaOrario(list l, int h,int m);
+void lezioniInEvidenza(list l);
 void scriviFileCorso(list l);
 Corso getFirstCorso(list l);
+list ricercaMese(list l, int mm);
 int cancellaCorso(list l,string IDCorso);
 void stampaListaEssenziale(list l);
 

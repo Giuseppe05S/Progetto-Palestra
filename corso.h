@@ -18,6 +18,7 @@ string getIDCorso(Corso co);
 string getNomeCorso(Corso co);
 Data getDataCorso(Corso co);
 Orario getOrario(Corso co);
+int getNumPartecipantiCorso(Corso co);
 int confrontaOrario(Orario o1, Orario o2);
 Orario creaOrario(int ora,int minuti);
 void scriviCorso(Corso co,FILE *fp);

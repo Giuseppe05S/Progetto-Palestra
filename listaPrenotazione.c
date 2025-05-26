@@ -217,7 +217,7 @@ int isEmptyPrenotazione(listP l){
     return 1;
   }
 }
-int ricercaDataPrenotazione(listP l, Data data){
+int ricercaDataPrenotazione(listP l, int mm){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
@@ -228,7 +228,7 @@ int ricercaDataPrenotazione(listP l, Data data){
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->p;
-    if(confrontaData(data,getDataPrenotazione(temp))==0){
+    if(mm==getMese(getDataPrenotazione(temp))){
       stampaPrenotazione(temp);
       trovato = 1;
     }

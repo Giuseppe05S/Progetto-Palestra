@@ -26,7 +26,6 @@ void destroyHashtable(hashtable h);
 //Funzione di ricerca in base alla chiave
 Iscritto hashSearch(hashtable h, string key);
 int ricercaGenerica(hashtable h, int sel, string str);
-int ricercaPerDurata(hashtable h, int durata);
 
 void stampaHash(hashtable h);
 void stampaHashMinima(hashtable h);
