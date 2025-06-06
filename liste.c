@@ -29,9 +29,10 @@ list newList(void){
     return l;
 }
 int isEmpty(list l){
-if (l == NULL||l->first == NULL){
-	return 1;
+  if (l == NULL||l->first == NULL){
+	  return 1;
 	}
+  return 0;
 }
 int insertList(list l, int pos, Corso val){
     struct node* tmp = insertNode(l->first, pos, val); // Chiama insertNode per inserire un nuovo nodo nella lista
@@ -183,14 +184,15 @@ list ricercaMese(list l, int mm){
   return result;
 }
 void lezioniInEvidenza(list l){
-  int primo=0, secondo=0, terzo=0;
-  Corso primoC=NULL;
-  Corso secondoC=NULL;
-  Corso terzoC=NULL;
   if(l == NULL){
     printf("Lista vuota\n");
     return;
   }
+  int primo=0, secondo=0, terzo=0;
+  Corso primoC=NULL;
+  Corso secondoC=NULL;
+  Corso terzoC=NULL;
+
   Corso temp;
   struct node* curr = l->first;
   while(curr!=NULL){
@@ -273,7 +275,7 @@ void stampaListaEssenziale(list l) {
   int i=0;
   while (curr != NULL) {
     //printf("Corso %d:\n", i);
-      stampaCorsoEssenziale(curr->c);
+      stampaCorsoCompatta(curr->c);
       curr = curr->next;
       i++;
     }
@@ -303,6 +305,10 @@ Corso getFirstCorso(list l){
   return l->first->c;
 }
 int cancellaCorso(list l,string IDCorso){
+  if(l==NULL || l->first==NULL){
+    printf("La lista è vuota o non inizializzata.\n");
+    return 0;
+  }
   Corso temp;
   int i=0;
   struct node* curr = l->first;

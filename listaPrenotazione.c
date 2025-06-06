@@ -188,9 +188,6 @@ int cancellaPrenotazioneDi(listP l,int sel,string ID){
       case 0://Cancella tutte le prenotazioni di un cliente
         if(strcmp(getIDClientePrenotazione(temp), ID)==0){
           removeListPrenotati(l,i);
-          /*quando rimuovo un elemento dalla lista, tutti gli elementi vengono scalati,
-          senza decrementare i, mi ritroverei a saltare alcuni elementi della lista
-          */
           elementiCancellati++;
         }else i++;//incremento solo se non cancello
         break;
@@ -217,7 +214,7 @@ int isEmptyPrenotazione(listP l){
     return 1;
   }
 }
-int ricercaDataPrenotazione(listP l, int mm){
+int ricercaMesePrenotazione(listP l, int mm){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;

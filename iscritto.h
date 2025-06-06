@@ -17,6 +17,7 @@ void stampaMinimaCliente(Iscritto is);
 string getID(Iscritto is);
 string getNome(Iscritto is);
 string getCognome(Iscritto is);
+Data getDataScadenza(Iscritto is);
 int getDurata(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
 void rinnovaAbbonamento(Iscritto is, int durata);

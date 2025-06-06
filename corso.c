@@ -59,7 +59,7 @@ Corso creaCorso(string ID, string nome, Data dataLezione, int ora,int minuti,int
   co->oraLezione=creaOrario(ora,minuti);
   co->numPartecipanti=nPartecipanti;
 
-  if(co->oraLezione==NULL){
+  if(co->oraLezione==NULL||co->dataLezione==NULL){
     printf("Errore nella creazione di Orario\n");
     return NULL;
   }
@@ -83,7 +83,7 @@ void stampaCorso(Corso co){
       printf("Numero Partecipanti: %d\n", co->numPartecipanti);
   }
 }
-void stampaCorsoEssenziale(Corso co){
+void stampaCorsoCompatta(Corso co){
   //Precondizione
   if(co==NULL){
     printf("Il corso non esiste\n");
@@ -117,14 +117,14 @@ Data getDataCorso(Corso co){
 int getNumPartecipantiCorso(Corso co){
 if(co==NULL){
     printf("Il corso non esiste\n");
-    return 0;
+    exit(1);
   }
   return co->numPartecipanti;
 }
 int confrontaOrario(Orario o1, Orario o2){ // -1 se o1< o2, 0 se o1== o2, 1 se o1> o2
   if(o1 == NULL || o2 == NULL){
     printf("Errore: uno dei due orari è NULL.\n");
-    return 0;
+    exit(1);
   }
   // Confronta le ore
   if (o1->ora < o2->ora){
@@ -164,9 +164,17 @@ void decrementaPartecipanti(Corso co){
   co->numPartecipanti--;
 }
 void scriviCorso(Corso co,FILE *fp){
+  if(co==NULL){
+    printf("Il corso non esiste\n");
+    return;
+  }
   fprintf(fp,"%s %s %d %d %d %02d:%02d %d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti,co->numPartecipanti);
 }
 int Disponibilita(Corso co){
+  if(co==NULL){
+    printf("Il corso non esiste\n");
+    exit(1);
+  }
   if(co->numPartecipanti<maxPartecipanti)
     return 1;
   else

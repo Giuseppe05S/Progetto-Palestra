@@ -19,10 +19,14 @@ struct iscritto{
 };
 
 Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata,string ID){
+  if(nome==NULL||cognome==NULL||dataIscrizione==NULL||durata<1||ID==NULL){
+    printf("Valori sbagliati o inesistenti\n");
+    return NULL;
+  }
   	Iscritto is=malloc(sizeof(struct iscritto));
   	if(is==NULL){
     	printf("Errore allocazione memoria\n");
-    	exit(1);
+    	return NULL;
   	}
 
     is->nome=malloc(strlen(nome)+1);
@@ -30,7 +34,7 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
     is->ID=malloc(sizeof(char)*7);
     if(is->nome==NULL || is->cognome==NULL || is->ID==NULL){
       printf("Errore allocazione memoria\n");
-      exit(1);
+      return NULL;
     }
 	//Data viene creata prima
   	//Controlla data prima di invocare CreaIscritto
@@ -42,31 +46,69 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
   	is->durata=durata;
   	strcpy(is->ID,ID);
     is->next=NULL;
+    if(is->dataIscrizione==NULL||is->dataScadenza==NULL){
+      printf("Errore nella data\n");
+      return NULL;
+    }
 	return is;
 }
 
 Iscritto getNext(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   return is->next;
 }
 
 string getID(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   return is->ID;
 }
 string getNome(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   return is->nome;
 }
 string getCognome(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   return is->cognome;
 }
 int getDurata(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   return is->durata;
 }
-
+Data getDataScadenza(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
+  return is->dataScadenza;
+}
 void setNext(Iscritto is, Iscritto next){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   is->next=next;
 }
 
 void eliminaIscritto(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   free(is->ID);
   free(is->nome);
   free(is->cognome);
@@ -82,15 +124,23 @@ void rinnovaAbbonamento(Iscritto is, int durata){
   }
   is->durata+=durata;
   is->dataScadenza=calcoloDataScadenza(is->dataIscrizione,is->durata);
+  if(is->dataScadenza==NULL){
+    printf("Errore nella Data\n");
+    exit(1);
+  }
 }
 
 void stampaMinimaCliente(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   printf("%-8s %-15s %-15s\n",is->ID,is->cognome,is->nome);
 }
 int controlloAbbonamento(Iscritto is){
-  if(is==NULL||is->durata<=0){
+  if(is==NULL){
     printf("DATI NON VALIDI\n");
-    return -1;
+    exit(1);
   }
   if(confrontaData(is->dataScadenza,dataOggi())==-1){
     return 1;//Abbonamento Scaduto
@@ -98,6 +148,10 @@ int controlloAbbonamento(Iscritto is){
   return 0;//Abbonamento Valido
 }
 void stampaCliente(Iscritto is){
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   printf("==============================\n");
   printf("ID: %s\n",is->ID);
   printf("Nome: %s\n",is->nome);

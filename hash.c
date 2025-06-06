@@ -33,10 +33,6 @@ hashtable newHashtable(int size) {
   h->size = size;
   h->table = (Iscritto *) calloc (size,sizeof(Iscritto));
 
-  // for(i=0; i<size; i++) {
-  // h->table[i] = NULL;
-  // }
-
   return h;
 }
 // Funzione per inserire un elemento in una tabella hash.

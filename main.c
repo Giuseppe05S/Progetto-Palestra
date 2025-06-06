@@ -11,6 +11,7 @@
 #include "prenotazione.h"
 #include "utils.h"
 #include "hash.h"
+#include "test.h"
 
 int testData(){
 	FILE *fp;
@@ -931,7 +932,7 @@ void menuReport(list lCorsi,hashtable hClienti,listP lPrenotati){
         printf("==============================\n");
         printf("Inserisci il numero del mese che ti interessa (Gennaio-1,...)\n");
         scanf("%d",&meseReport);
-        if(ricercaDataPrenotazione(lPrenotati,meseReport)==0){
+        if(ricercaMesePrenotazione(lPrenotati,meseReport)==0){
           printf("==============================\n");
           printf("   NON CI SONO PRENOTAZIONI\n");
           printf("==============================\n");
@@ -974,6 +975,8 @@ int main(){
   caricaFileClienti(hClienti);
   caricaFileCorso(listaCorsi);
   caricaFilePrenotazioni(lPrenotati);
+
+  mainTest(hClienti,listaCorsi, lPrenotati);
 
   char selettore;
   do{

@@ -16,7 +16,7 @@ listP reverseListPrenotazioni(listP l);
 listP ricercaListaPrenotati(listP l, int sel,string str);//0 per Cliente e 1 per Corso
 void stampaListaPrenotazioni(listP l);
 int isEmptyPrenotazione(listP l);//1 se vuota, altrimenti 0
-int ricercaDataPrenotazione(listP l, int mm);
+int ricercaMesePrenotazione(listP l, int mm);
 void scriviFilePrenotazione(listP l);
 int cancellaPrenotazioneDi(listP l,int sel,string ID);//0 per Cliente e 1 per Corso
 int cancellaPrenotazione(listP l,string IDCorso,string IDCliente);
