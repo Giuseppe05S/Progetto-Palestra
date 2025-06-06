@@ -214,24 +214,23 @@ int isEmptyPrenotazione(listP l){
     return 1;
   }
 }
-int ricercaMesePrenotazione(listP l, int mm){
+listP ricercaMesePrenotazione(listP l, int mm){
   if(l == NULL){
     printf("Lista vuota\n");
     return 0;
   }
-
+  listP result=newListPrenotati();
   Prenotazione temp;
   int trovato=0;
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->p;
     if(mm==getMese(getDataPrenotazione(temp))){
-      stampaPrenotazione(temp);
-      trovato = 1;
+      insertListPrenotati(result, 0, temp);
     }
     curr= curr->next;
   }
-  return trovato;
+  return result;
 }
 
 // Stampa tutti gli elementi della lista di corsi
@@ -266,4 +265,7 @@ void scriviFilePrenotazione(listP l){
     curr= curr->next;
   }
   fclose(fp);
+}
+int getSize(listP l){
+  return l->size;
 }

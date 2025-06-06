@@ -183,11 +183,12 @@ list ricercaMese(list l, int mm){
   }
   return result;
 }
-void lezioniInEvidenza(list l){
+list lezioniInEvidenza(list l){
   if(l == NULL){
     printf("Lista vuota\n");
-    return;
+    return NULL;
   }
+  list classifica=newList();
   int primo=0, secondo=0, terzo=0;
   Corso primoC=NULL;
   Corso secondoC=NULL;
@@ -215,16 +216,18 @@ void lezioniInEvidenza(list l){
           }
     curr = curr->next;
   }
-  if(primoC!=NULL){
-    stampaCorso(primoC);
+
+
+  if(terzoC!=NULL){
+    insertList(classifica, 0, terzoC);
   }
   if(secondoC!=NULL){
-    stampaCorso(secondoC);
+    insertList(classifica, 0, secondoC);
   }
-  if(terzoC!=NULL){
-    stampaCorso(terzoC);
+  if(primoC!=NULL){
+    insertList(classifica, 0, primoC);
   }
-
+  return classifica;
 }
 list ricercaOrario(list l, int h,int m){
   if(l == NULL){
@@ -325,4 +328,16 @@ int cancellaCorso(list l,string IDCorso){
     i++;
   }
   return 0;
+}
+void scriviLezioniInEvidenza(list l, FILE *fp){
+  if(l==NULL || l->first==NULL){
+    fprintf(fp,"Non ci sono corsi in evidenza");
+  }
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    scriviCorso(temp,fp);
+    curr= curr->next;
+  }
 }

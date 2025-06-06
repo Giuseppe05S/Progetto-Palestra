@@ -13,33 +13,6 @@
 #include "hash.h"
 #include "test.h"
 
-int testData(){
-	FILE *fp;
-	fp=fopen("testDataInput.txt","r");
-    if(fp==NULL){
-      	printf("Errore apertura file\n");
-        return 0;
-    }
-	int gg,mm,aa,durata;
-	Data d[10];
-    Data ds[10];
-	int i=0,j;
-	//Leggo le date e le durate degli abbonamenti dal file
-    while(fscanf(fp,"%d%d%d%d",&gg,&mm,&aa,&durata)!=EOF){
-		d[i]=creaData(gg,mm,aa);
-        ds[i]=calcoloDataScadenza(d[i],durata);
-        i++;
-    }
-
-	fclose(fp);
-    //Verifica delle date lette e delle date calcolate
-	for(j=0;j<i;j++){
-		stampaData(d[j]);
-        stampaData(ds[j]);
-	}
-	return 1;
-}
-
 void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
   char selP;
   Prenotazione pre;
@@ -909,62 +882,40 @@ void menuCorso(list lCorsi,listP lPrenotati) {
       break;
   } while(selC < '1' || selC > '5');
 }
-void menuReport(list lCorsi,hashtable hClienti,listP lPrenotati){
-  char sel;
-  int meseReport;
-  list result;
-  do{
-    pulisciSchermo();
-    printf("==============================\n");
-    printf("        REPORT MENSILE\n");
-    printf("==============================\n");
-    printf("1. Prenotazioni di un Mese\n");
-    printf("2. Lezioni più frequentate\n");
-    printf("3. Esci\n");
-    scanf("%c",&sel);
 
-    switch(sel){
+void report(list lCorsi,hashtable hClienti,listP lPrenotati){
 
-      case '1':
-        pulisciSchermo();
-        printf("==============================\n");
-        printf("    PRENOTAZIONI MENSILI\n");
-        printf("==============================\n");
-        printf("Inserisci il numero del mese che ti interessa (Gennaio-1,...)\n");
-        scanf("%d",&meseReport);
-        if(ricercaMesePrenotazione(lPrenotati,meseReport)==0){
-          printf("==============================\n");
-          printf("   NON CI SONO PRENOTAZIONI\n");
-          printf("==============================\n");
-          printf("\nPremere invio per tornare indietro\n");
-          getchar();
-          break;
-        }
-        printf("\nPremere invio per tornare indietro\n");
-        getchar();
-        break;
-      case '2':
-        pulisciSchermo();
-        printf("==============================\n");
-        printf("   TOP 3 LEZIONI DEL MESE\n");
-        printf("==============================\n");
-        printf("Inserisci il numero del mese che ti interessa (Gen-1,...)\n");
-        scanf("%d",&meseReport);
-        result=ricercaMese(lCorsi,meseReport);
-        if(isEmpty(result)==1){
-          printf("==============================\n");
-          printf("     NON CI SONO LEZIONI\n");
-          printf("==============================\n");
-          printf("Premere invio per tornare indietro\n");
-          getchar();
-        }
-        lezioniInEvidenza(result);
-        printf("\nPremere invio per tornare indietro\n");
-        getchar();
-        break;
-    }
+  string mesi[]={"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
+  string reportMese=malloc(sizeof(char)*20);
+  if(reportMese==NULL){
+    printf("Errore di allocazione\n");
+    exit(0);
+  }
+  printf("==============================\n");
+  printf("        Report Generato\n    Controllare la cartella\n");
+  printf("==============================\n");
+  list corsiDelMese=newList();
+  list classifica=newList();
+  listP prenotazioniDelMese=newListPrenotati();
 
-  }while(sel>'3'||sel<'1');
+  int meseReport=getMese(dataOggi());
+  sprintf(reportMese,"report_%s.txt",mesi[meseReport-1]);
+
+  FILE *f=fopen(reportMese,"w");
+  if(f==NULL){
+    printf("Errore nell'apertura del file\n");
+    exit(0);
+  }
+  prenotazioniDelMese=ricercaMesePrenotazione(lPrenotati,meseReport);
+  corsiDelMese=ricercaMese(lCorsi,meseReport);
+  classifica=lezioniInEvidenza(corsiDelMese);
+  fprintf(f,"Report di %s\n",mesi[meseReport-1]);
+  fprintf(f,"\nNumero Prenotazioni del Mese: %d\n",getSize(prenotazioniDelMese));
+  fprintf(f,"\nCorsi del Mese:\n");
+  scriviLezioniInEvidenza(classifica,f);
+  fclose(f);
+  printf("Premere invio per tornare indietro\n");
+  getchar();
 }
 
 int main(){
@@ -1003,7 +954,7 @@ int main(){
         getchar();
 		    break;
       case '4':
-        menuReport(listaCorsi,hClienti,lPrenotati);
+        report(listaCorsi,hClienti,lPrenotati);
         getchar();
         break;
     }
