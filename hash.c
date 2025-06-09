@@ -12,7 +12,7 @@
 
 struct hash {
     int size;              // Dimensione della tabella hash.
-    Iscritto *table;   // Puntatore a un array di puntatori a 'item'.
+    Iscritto *table;   // Puntatore a un array di puntatori a iscritto.
 };
 
 //Prototipi dichiarati in quanto chiamati

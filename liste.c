@@ -332,12 +332,14 @@ int cancellaCorso(list l,string IDCorso){
 void scriviLezioniInEvidenza(list l, FILE *fp){
   if(l==NULL || l->first==NULL){
     fprintf(fp,"Non ci sono corsi in evidenza");
+    return;
   }
   Corso temp;
   struct node* curr = l->first;
   while(curr!=NULL){
     temp = curr->c;
-    scriviCorso(temp,fp);
+    fprintf(fp,"%s %s %d/%d/%d %d\n",getIDCorso(temp),getNomeCorso(temp),getGiorno(getDataCorso(temp)),getMese(getDataCorso(temp)),getAnno(getDataCorso(temp)),getNumPartecipantiCorso(temp));
+    //scriviCorso(temp,fp);
     curr= curr->next;
   }
 }

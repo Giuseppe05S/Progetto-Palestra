@@ -704,10 +704,9 @@ void menuCorso(list lCorsi,listP lPrenotati) {
           printf("==============================\n");
           printf("1. ID\n");
           printf("2. Nome\n");
-          printf("3. Lezione Imminente\n");//da implementare
-          printf("4. Data\n");
-          printf("5. Orario\n");
-          printf("6. Esci\n");
+          printf("3. Data\n");
+          printf("4. Orario\n");
+          printf("5. Esci\n");
           scanf("%c", &selRicerca);
           switch(selRicerca) {
             case '1':
@@ -756,16 +755,7 @@ void menuCorso(list lCorsi,listP lPrenotati) {
               printf("\nPremere invio per tornare indietro\n");
               getchar();
               break;
-            case '3'://da implementare
-              pulisciSchermo();
-              printf("==============================\n");
-              printf("\tLEZIONE IMMINENTE\n");
-              printf("==============================\n");
-
-              printf("\nPremere invio per tornare indietro\n");
-              getchar();
-              break;
-            case '4':
+            case '3':
               int gg,mm,anno;
               pulisciSchermo();
               printf("==============================\n");
@@ -787,7 +777,7 @@ void menuCorso(list lCorsi,listP lPrenotati) {
               printf("\nPremere invio per tornare indietro\n");
               getchar();
               break;
-            case '5':
+            case '4':
               pulisciSchermo();
               printf("==============================\n");
               printf(" RICERCA PER ORARIO LEZIONI\n");
@@ -808,7 +798,7 @@ void menuCorso(list lCorsi,listP lPrenotati) {
               getchar();
               break;
           }
-        }while(selRicerca>'6'||selRicerca<'1');
+        }while(selRicerca>'5'||selRicerca<'1');
         break;
 
       case '3':
@@ -928,7 +918,6 @@ int main(){
   caricaFilePrenotazioni(lPrenotati);
 
   mainTest(hClienti,listaCorsi, lPrenotati);
-
   char selettore;
   do{
     pulisciSchermo();

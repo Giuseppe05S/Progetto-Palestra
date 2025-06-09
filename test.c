@@ -15,6 +15,8 @@
 int runTest(string nomeTest, int sel, hashtable hClienti,list lCorsi, listP lPrenotazioni);
 int testValiditàAbbonamento(string input, string output, string oracle, hashtable hClienti);
 int testCorrettaRegistrazionePrenotazione(string input,string output,string oracle, hashtable hClienti,list lCorsi);
+int testReport(string input, string output, string oracle, hashtable hClienti);
+
 void mainTest(hashtable hClienti,list lCorsi, listP lPrenotazioni){
 
 	FILE* testSuite = fopen("testSuite.txt","r");
@@ -66,9 +68,11 @@ int runTest(string nomeTest, int sel, hashtable hClienti,list lCorsi, listP lPre
 			//TC2: Abbonamento scaduto
 			//TC3: Cliente inesistente
 			value=testValiditàAbbonamento(input,output,oracle,hClienti);
+			return value;
 			break;
 		case 3:
-
+			value=testReport(input,output,oracle,hClienti);
+			return value;
 			break;
 	}
 }
@@ -155,6 +159,81 @@ int testValiditàAbbonamento(string input, string output, string oracle, hashtab
 	else
 		return 0;
 }
+int testReport(string input, string output, string oracle, hashtable hClienti){
+
+	FILE *fileInput,*fileOutput;
+	fileInput = fopen(input,"r");
+	fileOutput = fopen(output,"w");
+	if(fileInput == NULL || fileOutput == NULL){
+		printf("Errore apertura file\n");
+		return 0;
+	}
+
+	string mesi[]={"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
+	int meseR=getMese(dataOggi());
+	/*Non ricevo la lista corsi e prenotazioni da parametri,
+	* in quanto durante l'esecuzione della funzione, vado ad
+	* alterale valori come il numero di partecipanti ad un corso,
+	* per evitare quindi di rimodificare i valori, carico in una
+	* nuova lista gli stessi corsi e le stesse prenotazioni, in
+	* modo da usare i valori già presenti, in aggiunta a quelli
+	* del test, che verranno poi scartati al termine del programma.
+	*/
+	list lCorsi=newList();
+	listP PrenotatiTest=newListPrenotati();
+	caricaFileCorso(lCorsi);
+	caricaFilePrenotazioni(PrenotatiTest);
+
+	string IDCliente=malloc(sizeof(char)*7);
+	string IDCorso=malloc(sizeof(char)*7);
+	if(IDCliente==NULL || IDCorso==NULL){
+		printf("Errore nell'allocazione delle stringhe\n");
+		fclose(fileInput);
+		fclose(fileOutput);
+		return 0;
+	}
+	list resultCorso=newList();
+	list corsiDelMese=newList();
+	list classifica=newList();
+
+	Prenotazione newPrenotazione;
+	//Carichiamo gli elementi nella nuova lista prenotazioni.
+	while(fscanf(fileInput,"%s %s",IDCorso,IDCliente)!=EOF){
+		resultCorso=ricercaGenericaLista(lCorsi,0,IDCorso);
+		if((hashSearch(hClienti,IDCliente)==NULL) || isEmpty(resultCorso)==1){
+			fprintf(fileOutput,"Cliente o Corso inesistente");
+			return 0;
+		}else{
+			newPrenotazione=creaPrenotazione(generaIDPrenotazione(),IDCorso,IDCliente,dataOggi());
+			if(newPrenotazione==NULL){
+				fprintf(fileOutput,"Errore nella creazione della prenotazione\n");
+				return 0;
+			}
+			if(insertListPrenotati(PrenotatiTest,0,newPrenotazione)==0){
+				fprintf(fileOutput,"Errore nell'inserimento");
+				return 0;
+			}
+			incrementaPartecipanti(getFirstCorso(resultCorso));
+		}
+	}
+
+
+	corsiDelMese=ricercaMese(lCorsi,meseR);
+	classifica=lezioniInEvidenza(corsiDelMese);
+	fprintf(fileOutput,"Report di %s\n",mesi[meseR-1]);
+	fprintf(fileOutput,"\nNumero Prenotazioni del Mese: %d\n",getSize(PrenotatiTest));
+	fprintf(fileOutput,"\nCorsi del Mese:\n");
+	scriviLezioniInEvidenza(classifica,fileOutput);
+	fclose(fileOutput);
+	fclose(fileInput);
+	free(IDCliente);
+	free(IDCorso);
+	if(confrontaFile(output,oracle))
+		return 1;
+	else
+		return 0;
+}
+
 int confrontaFile(string file1,string file2){
     FILE *f1=fopen(file1,"r");
     FILE *f2=fopen(file2,"r");

@@ -1,3 +1,4 @@
+CLT003 Emanuele Palumbo 3 6 2025 5
 CLT002 Giovanni Scarico 15 4 2025 1
 CLT005 Salvatore Esposito 18 5 2025 9
 CLT004 Gennaro Esposito 15 5 2025 1
