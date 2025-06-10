@@ -146,7 +146,7 @@ void stampaListaPrenotazioni(listP l);
 */
 int isEmptyPrenotazione(listP l);
 /*
-•  Funzione: ricercaDataPrenotazione
+•  Funzione: ricercaMesePrenotazione
 •  ----------------------------------
 •  Cerca e stampa tutte le prenotazioni effettuate in un mese specifico.
 *
@@ -164,7 +164,7 @@ int isEmptyPrenotazione(listP l);
 •  Ritorna:
 *   1 se è stata trovata almeno una prenotazione del mese specificato, 0 altrimenti.
 */
-int ricercaDataPrenotazione(listP l, int mm);
+listP ricercaMesePrenotazione(listP l, int mm);
 /*
 •  Funzione: scriviFilePrenotazione
 •  ---------------------------------
@@ -245,4 +245,5 @@ int cancellaPrenotazione(listP l,string IDCorso,string IDCliente);
 *   La prima prenotazione della lista.
 */
 Prenotazione getFirstPrenotazione(listP l);
+int getSize(listP l);
 #endif

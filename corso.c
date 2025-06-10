@@ -114,7 +114,7 @@ Corso creaCorso(string ID, string nome, Data dataLezione, int ora,int minuti,int
   co->oraLezione=creaOrario(ora,minuti);
   co->numPartecipanti=nPartecipanti;
 
-  if(co->oraLezione==NULL){
+  if(co->oraLezione==NULL||co->dataLezione==NULL){
     printf("Errore nella creazione di Orario\n");
     return NULL;
   }
@@ -159,7 +159,7 @@ void stampaCorso(Corso co){
   }
 }
 /*
- * Funzione: stampaCorsoEssenziale
+ * Funzione: stampaCorsoCompatta
  * ---------------------------------
  * Stampa le informazioni essenziali del corso in formato compatto su una singola riga.
  *
@@ -178,7 +178,7 @@ void stampaCorso(Corso co){
  *   - Stampa ID, nome, data e orario in formato tabulare compatto
  *   - Utilizza formattazione con larghezza fissa per allineamento
  */
-void stampaCorsoEssenziale(Corso co){
+void stampaCorsoCompatta(Corso co){
   //Precondizione
   if(co==NULL){
     printf("Il corso non esiste\n");

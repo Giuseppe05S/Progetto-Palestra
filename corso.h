@@ -259,7 +259,7 @@ void incrementaPartecipanti(Corso co);
  * Ritorna:
  *   Niente (void).
  */
-void stampaCorsoEssenziale(Corso co);
+void stampaCorsoCompatta(Corso co);
 /*
  * Funzione: decrementaPartecipanti
  * --------------------------------

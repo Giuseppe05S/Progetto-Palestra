@@ -182,6 +182,7 @@ int getDurata(Iscritto is);
 •  Ritorna:
 *   Nessun valore (void).
 */
+Data getDataScadenza(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
 /*
 •  Funzione: rinnovaAbbonamento
