@@ -95,7 +95,7 @@ Data calcoloDataScadenza(Data data, int durata){
   scadenza=malloc(sizeof(struct data));
   if(scadenza==NULL){
     printf("Errore allocazione memoria\n");
-    exit(1);
+    return NULL;
   }
 
   scadenza->giorno=data->giorno;
@@ -191,7 +191,7 @@ void stampaData(Data data){
 int getGiorno(Data data){
   if(data==NULL){
     printf("Valori inesistenti\n");
-    return -1;
+    exit(1);
   }
   return data->giorno;
 }
@@ -217,7 +217,7 @@ int getGiorno(Data data){
 int getMese(Data data){
   if(data==NULL){
     printf("Valori inesistenti\n");
-    return -1;
+    exit(1);
   }
   return data->mese;
 }
@@ -243,7 +243,7 @@ int getMese(Data data){
 int getAnno(Data data){
   if(data==NULL){
     printf("Valori inesistenti\n");
-    return -1;
+    exit(1);
   }
   return data->anno;
 }

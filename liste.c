@@ -29,9 +29,10 @@ list newList(void){
     return l;
 }
 int isEmpty(list l){
-if (l == NULL||l->first == NULL){
-	return 1;
+  if (l == NULL||l->first == NULL){
+	  return 1;
 	}
+  return 0;
 }
 int insertList(list l, int pos, Corso val){
     struct node* tmp = insertNode(l->first, pos, val); // Chiama insertNode per inserire un nuovo nodo nella lista
@@ -182,15 +183,17 @@ list ricercaMese(list l, int mm){
   }
   return result;
 }
-void lezioniInEvidenza(list l){
+list lezioniInEvidenza(list l){
+  if(l == NULL){
+    printf("Lista vuota\n");
+    return NULL;
+  }
+  list classifica=newList();
   int primo=0, secondo=0, terzo=0;
   Corso primoC=NULL;
   Corso secondoC=NULL;
   Corso terzoC=NULL;
-  if(l == NULL){
-    printf("Lista vuota\n");
-    return;
-  }
+
   Corso temp;
   struct node* curr = l->first;
   while(curr!=NULL){
@@ -213,16 +216,18 @@ void lezioniInEvidenza(list l){
           }
     curr = curr->next;
   }
-  if(primoC!=NULL){
-    stampaCorso(primoC);
+
+
+  if(terzoC!=NULL){
+    insertList(classifica, 0, terzoC);
   }
   if(secondoC!=NULL){
-    stampaCorso(secondoC);
+    insertList(classifica, 0, secondoC);
   }
-  if(terzoC!=NULL){
-    stampaCorso(terzoC);
+  if(primoC!=NULL){
+    insertList(classifica, 0, primoC);
   }
-
+  return classifica;
 }
 list ricercaOrario(list l, int h,int m){
   if(l == NULL){
@@ -273,7 +278,7 @@ void stampaListaEssenziale(list l) {
   int i=0;
   while (curr != NULL) {
     //printf("Corso %d:\n", i);
-      stampaCorsoEssenziale(curr->c);
+      stampaCorsoCompatta(curr->c);
       curr = curr->next;
       i++;
     }
@@ -303,6 +308,10 @@ Corso getFirstCorso(list l){
   return l->first->c;
 }
 int cancellaCorso(list l,string IDCorso){
+  if(l==NULL || l->first==NULL){
+    printf("La lista è vuota o non inizializzata.\n");
+    return 0;
+  }
   Corso temp;
   int i=0;
   struct node* curr = l->first;
@@ -319,4 +328,18 @@ int cancellaCorso(list l,string IDCorso){
     i++;
   }
   return 0;
+}
+void scriviLezioniInEvidenza(list l, FILE *fp){
+  if(l==NULL || l->first==NULL){
+    fprintf(fp,"Non ci sono corsi in evidenza");
+    return;
+  }
+  Corso temp;
+  struct node* curr = l->first;
+  while(curr!=NULL){
+    temp = curr->c;
+    fprintf(fp,"%s %s %d/%d/%d %d\n",getIDCorso(temp),getNomeCorso(temp),getGiorno(getDataCorso(temp)),getMese(getDataCorso(temp)),getAnno(getDataCorso(temp)),getNumPartecipantiCorso(temp));
+    //scriviCorso(temp,fp);
+    curr= curr->next;
+  }
 }

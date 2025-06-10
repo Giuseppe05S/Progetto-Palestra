@@ -20,28 +20,39 @@ struct prenotazione{
 
 
 Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCliente, Data dataPrenotazione){
-
+  if(IDPrenotazione == NULL||IDCorso == NULL||IDCliente == NULL||dataPrenotazione == NULL){
+    printf("Valori sbagliati o inesistenti\n");
+    return NULL;
+  }
   Prenotazione pr;
 
   pr=malloc(sizeof(struct prenotazione));
   pr->IDPrenotazione=malloc(strlen(IDPrenotazione)+1);
   pr->IDCorso=malloc(strlen(IDCorso)+1);
   pr->IDCliente=malloc(strlen(IDCliente)+1);
-  //da verificare se allocare la data
+
   if(pr->IDPrenotazione==NULL || pr->IDCorso==NULL || pr->IDCliente==NULL){
     printf("Errore allocazione memoria\n");
-    exit(1);
+    return NULL;
   }
 
   strcpy(pr->IDPrenotazione,IDPrenotazione);
   strcpy(pr->IDCorso,IDCorso);
   strcpy(pr->IDCliente,IDCliente);
   pr->dataPrenotazione=copiaData(dataPrenotazione);
+  if(pr->dataPrenotazione==NULL){
+    printf("Errore nella data\n");
+    return NULL;
+  }
 
   return pr;
 }
 
 void eliminaPrenotazione(Prenotazione pr){
+  if(pr==NULL){
+    printf("La prenotazione non esiste\n");
+    return;
+  }
   free(pr->IDPrenotazione);
   free(pr->IDCorso);
   free(pr->IDCliente);
@@ -50,18 +61,38 @@ void eliminaPrenotazione(Prenotazione pr){
 }
 
 Data getDataPrenotazione(Prenotazione pr){
+  if(pr==NULL){
+    printf("La prenotazione non esiste\n");
+    exit(1);
+  }
   return pr->dataPrenotazione;
 }
 string getIDCorsoPrenotazione(Prenotazione pr){
+  if(pr==NULL){
+    printf("La prenotazione non esiste\n");
+    exit(1);
+  }
   return pr->IDCorso;
 }
 string getIDClientePrenotazione(Prenotazione pr){
+  if(pr==NULL){
+    printf("La prenotazione non esiste\n");
+    exit(1);
+  }
   return pr->IDCliente;
 }
 string getIDPrenotazione(Prenotazione pr){
+  if(pr==NULL){
+    printf("La prenotazione non esiste\n");
+    exit(1);
+  }
   return pr->IDPrenotazione;
 }
 void stampaPrenotazione(Prenotazione p){
+  if(p==NULL){
+    printf("La prenotazione non esiste\n");
+    return;
+  }
   printf("==============================\n");
   printf("ID Prenotazione: %s\n", p->IDPrenotazione);
   printf("ID Corso: %s\n",p->IDCorso);

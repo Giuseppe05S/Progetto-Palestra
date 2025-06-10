@@ -12,7 +12,7 @@
 
 struct hash {
     int size;              // Dimensione della tabella hash.
-    Iscritto *table;   // Puntatore a un array di puntatori a 'item'.
+    Iscritto *table;   // Puntatore a un array di puntatori a iscritto.
 };
 
 //Prototipi dichiarati in quanto chiamati
@@ -53,10 +53,6 @@ hashtable newHashtable(int size) {
   }
   h->size = size;
   h->table = (Iscritto *) calloc (size,sizeof(Iscritto));
-
-  // for(i=0; i<size; i++) {
-  // h->table[i] = NULL;
-  // }
 
   return h;
 }

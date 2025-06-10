@@ -27,6 +27,7 @@ string generaIDCliente(){
   snprintf(IDCliente, 7, "CLT%03d", IDCounterCliente);
   return IDCliente;
 }
+
 string generaIDPrenotazione(){
   IDCounterPrenotazione++;
   string IDPrenotazione=malloc(sizeof(char)*7);
@@ -76,20 +77,19 @@ void caricaFileClienti(hashtable h){
   while(fscanf(fp,"%s%s%s%d%d%d%d", ID, nome, cognome, &gg, &mm, &anno, &durata) != EOF){
     dataIscrizione=creaData(gg,mm,anno);
     isc=CreaIscritto(nome,cognome,dataIscrizione,durata,ID);
-
+    if(isc==NULL){
+      printf("Errore nella creazione di iscritto\n");
+      exit(0);
+    }
     if(insertHash(h,isc)==0){
       printf("Errore nell'inserimento\n");
       exit(0);
     }
-	temp=atoi(ID+3);
+	  temp=atoi(ID+3);
   	if(temp>maxIDCliente){
     	maxIDCliente=temp;
- 	}
+ 	  }
   }
-  /*Tengo traccia dell'ultimo ID caricato dal cliente
-   *in modo da poter continuare la generazione di id che
-   *verranno poi inseriti a mano
-   */
 
   IDCounterCliente=maxIDCliente;
 
@@ -100,7 +100,7 @@ void caricaFileClienti(hashtable h){
 }
 
 void caricaFileCorso(list l){
-  int maxIDCorso=0;
+  static int maxIDCorso=0;
   int temp;
   FILE *fp;
   fp=fopen("corsi.txt","r");
@@ -114,8 +114,7 @@ void caricaFileCorso(list l){
   Data dataLezione;
   int ora,minuti;
   int nPartecipanti;
-  string orario=malloc(sizeof(char)*6);
-  if(ID==NULL || nome==NULL || orario==NULL){
+  if(ID==NULL || nome==NULL){
     printf("Errore nell'Allocazione\n");
     exit(0);
   }
@@ -125,6 +124,10 @@ void caricaFileCorso(list l){
   while(fscanf(fp,"%s%s%d%d%d%d:%d%d", ID, nome, &gg, &mm, &anno, &ora, &minuti,&nPartecipanti) != EOF){
     dataLezione=creaData(gg,mm,anno);
     newCorso=creaCorso(ID,nome,dataLezione,ora,minuti,nPartecipanti);
+    if(newCorso==NULL){
+      printf("Errore nella creazione di corso\n");
+      exit(0);
+    }
     if(insertList(l,0,newCorso)==0){
       printf("Errore nell'inserimento\n");
       exit(0);
@@ -143,7 +146,6 @@ void caricaFileCorso(list l){
 
   fclose(fp);
   free(nome);
-  free(orario);
   free(ID);
 }
 
@@ -156,7 +158,7 @@ void pulisciSchermo(){
 }
 
 void caricaFilePrenotazioni(listP l){
-  int maxIDPrenotazione=0;
+  static int maxIDPrenotazione=0;
   int temp;
   FILE *fp;
   fp=fopen("prenotazioni.txt","r");
@@ -180,6 +182,10 @@ void caricaFilePrenotazioni(listP l){
   while(fscanf(fp,"%s%s%s%d%d%d", IDPrenotazione,IDCorso,IDCliente,&gg, &mm, &anno) != EOF){
     dataPrenotazione=creaData(gg,mm,anno);
     newPrenotazione=creaPrenotazione(IDPrenotazione,IDCorso,IDCliente,dataPrenotazione);
+    if(newPrenotazione==NULL){
+      printf("Errore nella creazione della prenotazione\n");
+      exit(0);
+    }
     if(insertListPrenotati(l,0,newPrenotazione)==0){
       printf("Errore nell'inserimento\n");
       exit(0);
