@@ -70,7 +70,6 @@ Iscritto getNext(Iscritto is);
 •  Ritorna:
 *   Nessun valore (void).
 */
-
 void stampaCliente(Iscritto is);
 /*
 •  Funzione: stampaMinimaCliente
@@ -125,7 +124,6 @@ string getID(Iscritto is);
 •  Ritorna:
 *   Stringa contenente il nome dell'iscritto.
 */
-
 string getNome(Iscritto is);
 /*
 •  Funzione: getCognome
@@ -164,6 +162,24 @@ string getCognome(Iscritto is);
 */
 int getDurata(Iscritto is);
 /*
+-  Funzione: getDataScadenza
+-  -------------------------
+-  Restituisce la data di scadenza dell'abbonamento di un iscritto.
+*
+-  Parametri:
+*   is: oggetto Iscritto di cui si vuole ottenere la data di scadenza.
+*
+-  Pre-condizione:
+*   is deve essere un oggetto Iscritto valido e inizializzato.
+*
+-  Post-condizione:
+*   Viene restituita la data di scadenza dell'abbonamento dell'iscritto.
+*
+-  Ritorna:
+*   Oggetto Data rappresentante la data di scadenza dell'abbonamento.
+*/
+Data getDataScadenza(Iscritto is);
+/*
 •  Funzione: setNext
 •  ---------------------
 •  Imposta il puntatore al prossimo iscritto nella lista collegata.
@@ -182,7 +198,6 @@ int getDurata(Iscritto is);
 •  Ritorna:
 *   Nessun valore (void).
 */
-Data getDataScadenza(Iscritto is);
 void setNext(Iscritto is, Iscritto next);
 /*
 •  Funzione: rinnovaAbbonamento

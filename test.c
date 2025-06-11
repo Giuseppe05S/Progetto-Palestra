@@ -17,6 +17,30 @@ int testValiditàAbbonamento(string input, string output, string oracle, hashtab
 int testCorrettaRegistrazionePrenotazione(string input,string output,string oracle, hashtable hClienti,list lCorsi);
 int testReport(string input, string output, string oracle, hashtable hClienti);
 
+/*
+•  Funzione: mainTest
+•  -----------------------------------
+•  Funzione principale per l'esecuzione della test suite automatica.
+*
+•  Parametri:
+*   hClienti: hashtable contenente tutti i clienti registrati.
+*   lCorsi: lista dei corsi disponibili.
+*   lPrenotazioni: lista delle prenotazioni effettuate.
+*
+•  Pre-condizione:
+*   I file "testSuite.txt" deve esistere e contenere i test da eseguire.
+*   Le strutture dati devono essere inizializzate correttamente.
+*
+•  Post-condizione:
+*   Viene creato il file "testResult.txt" con i risultati dei test.
+*   Tutti i test specificati nel file vengono eseguiti.
+*
+•  Come funziona:
+•  - Apre il file testSuite.txt per leggere i test da eseguire.
+•  - Per ogni test legge nome e tipologia.
+•  - Esegue il test tramite runTest() e registra il risultato.
+•  - Scrive "Pass" o "Fail" nel file di output per ogni test.
+*/
 void mainTest(hashtable hClienti,list lCorsi, listP lPrenotazioni){
 
 	FILE* testSuite = fopen("testSuite.txt","r");
@@ -42,6 +66,30 @@ void mainTest(hashtable hClienti,list lCorsi, listP lPrenotazioni){
 	fclose(testResult);
 	free(nomeTest);
 }
+/*
+•  Funzione: runTest
+•  -----------------------------------
+•  Esegue un singolo test basato sulla tipologia specificata.
+*
+•  Parametri:
+*   nomeTest: nome del test da eseguire.
+*   sel: selettore che identifica il tipo di test (1, 2, o 3).
+*   hClienti: hashtable contenente i clienti.
+*   lCorsi: lista dei corsi disponibili.
+*   lPrenotazioni: lista delle prenotazioni.
+*
+•  Pre-condizione:
+*   I file di input, output e oracle devono esistere per il test specificato.
+*   sel deve essere un valore valido (1, 2, o 3).
+*
+•  Post-condizione:
+*   Viene eseguito il test appropriato e restituito il risultato.
+*
+•  Come funziona:
+•  - Costruisce i nomi dei file di input, output e oracle.
+•  - Seleziona il test appropriato basato sul valore di sel.
+•  - Esegue il test specifico e restituisce il risultato (1=Pass, 0=Fail).
+*/
 int runTest(string nomeTest, int sel, hashtable hClienti,list lCorsi, listP lPrenotazioni){
 
 	string input=malloc(sizeof(char)*50);
@@ -76,6 +124,33 @@ int runTest(string nomeTest, int sel, hashtable hClienti,list lCorsi, listP lPre
 			break;
 	}
 }
+/*
+•  Funzione: testCorrettaRegistrazionePrenotazione
+•  -----------------------------------
+•  Testa la corretta registrazione di una prenotazione verificando l'esistenza di cliente e corso.
+*
+•  Parametri:
+*   input: file contenente gli ID corso e cliente da testare.
+*   output: file dove scrivere i risultati del test.
+*   oracle: file contenente i risultati attesi.
+*   hClienti: hashtable contenente i clienti registrati.
+*   lCorsi: lista dei corsi disponibili.
+*
+•  Pre-condizione:
+*   I file di input e oracle devono esistere e essere leggibili.
+*   Le strutture dati devono essere inizializzate.
+*
+•  Post-condizione:
+*   Viene creato il file di output con i risultati del test.
+*   I risultati vengono confrontati con l'oracle.
+*
+•  Come funziona:
+•  - Legge coppie di ID corso e cliente dal file di input.
+•  - Verifica l'esistenza del corso nella lista e del cliente nella hashtable.
+•  - Se entrambi esistono, crea una prenotazione di test.
+•  - Scrive nel file di output l'ID corso, ID cliente e numero partecipanti.
+•  - Confronta il file di output con l'oracle per determinare il successo.
+*/
 int testCorrettaRegistrazionePrenotazione(string input,string output,string oracle, hashtable hClienti,list lCorsi){
 	FILE *fileInput,*fileOutput;
 	fileInput = fopen(input,"r");
@@ -122,6 +197,32 @@ int testCorrettaRegistrazionePrenotazione(string input,string output,string orac
 	else
 		return 0;
 }
+/*
+•  Funzione: testValiditàAbbonamento
+•  -----------------------------------
+•  Testa la validità dell'abbonamento di un cliente verificando se è scaduto o meno.
+*
+•  Parametri:
+*   input: file contenente gli ID dei clienti da verificare.
+*   output: file dove scrivere i risultati del test.
+*   oracle: file contenente i risultati attesi.
+*   hClienti: hashtable contenente i clienti registrati.
+*
+•  Pre-condizione:
+*   I file di input e oracle devono esistere e essere leggibili.
+*   La hashtable dei clienti deve essere inizializzata.
+*
+•  Post-condizione:
+*   Viene creato il file di output con lo stato dell'abbonamento.
+*   I risultati vengono confrontati con l'oracle.
+*
+•  Come funziona:
+•  - Legge gli ID dei clienti dal file di input.
+•  - Cerca ogni cliente nella hashtable.
+•  - Se il cliente esiste, controlla la validità del suo abbonamento.
+•  - Scrive "Abbonamento Valido" o "Abbonamento Scaduto" nel file di output.
+•  - Se il cliente non esiste, scrive "Cliente inesistente".
+*/
 int testValiditàAbbonamento(string input, string output, string oracle, hashtable hClienti){
 	FILE *fileInput,*fileOutput;
 	fileInput = fopen(input,"r");
@@ -159,6 +260,34 @@ int testValiditàAbbonamento(string input, string output, string oracle, hashtab
 	else
 		return 0;
 }
+/*
+•  Funzione: testReport
+•  -----------------------------------
+•  Testa la generazione di un report mensile con prenotazioni e corsi in evidenza.
+*
+•  Parametri:
+*   input: file contenente le prenotazioni di test da aggiungere.
+*   output: file dove scrivere il report generato.
+*   oracle: file contenente il report atteso.
+*   hClienti: hashtable contenente i clienti registrati.
+*
+•  Pre-condizione:
+*   I file di input e oracle devono esistere.
+*   La hashtable dei clienti deve essere inizializzata.
+*   I file dei corsi e prenotazioni devono essere disponibili.
+*
+•  Post-condizione:
+*   Viene generato un report mensile completo nel file di output.
+*   I risultati vengono confrontati con l'oracle.
+*
+•  Come funziona:
+•  - Carica corsi e prenotazioni da file in nuove strutture dati.
+•  - Legge le prenotazioni di test dal file di input.
+•  - Verifica l'esistenza di cliente e corso per ogni prenotazione.
+•  - Aggiunge le prenotazioni valide e incrementa i partecipanti.
+•  - Genera un report con numero prenotazioni del mese e corsi in evidenza.
+•  - Confronta il report generato con l'oracle.
+*/
 int testReport(string input, string output, string oracle, hashtable hClienti){
 
 	FILE *fileInput,*fileOutput;
@@ -233,7 +362,28 @@ int testReport(string input, string output, string oracle, hashtable hClienti){
 	else
 		return 0;
 }
-
+/*
+•  Funzione: confrontaFile
+•  -----------------------------------
+•  Confronta il contenuto di due file linea per linea per verificare se sono identici.
+*
+•  Parametri:
+*   file1: percorso del primo file da confrontare.
+*   file2: percorso del secondo file da confrontare.
+*
+•  Pre-condizione:
+*   Entrambi i file devono esistere e essere leggibili.
+*
+•  Post-condizione:
+*   Restituisce il risultato del confronto senza modificare i file.
+*
+•  Come funziona:
+•  - Apre entrambi i file in modalità lettura.
+•  - Legge una linea alla volta da entrambi i file.
+•  - Confronta ogni coppia di linee usando strcmp().
+•  - Se trova una differenza, interrompe il confronto.
+•  - Chiude i file e libera la memoria allocata.
+*/
 int confrontaFile(string file1,string file2){
     FILE *f1=fopen(file1,"r");
     FILE *f2=fopen(file2,"r");

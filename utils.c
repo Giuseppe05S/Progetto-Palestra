@@ -15,7 +15,20 @@
 static int IDCounterCorso=0;
 static int IDCounterPrenotazione=0;
 static int IDCounterCliente=0;
-
+/*
+• Funzione: generaIDCliente
+• -----------------------------------
+• Genera un nuovo ID univoco per un cliente nel formato "CLT###".
+*
+• Post-condizione:
+* Ritorna una stringa allocata dinamicamente contenente il nuovo ID cliente.
+*
+• Come funziona:
+• - Incrementa il contatore globale degli ID cliente.
+• - Alloca memoria per la stringa dell’ID.
+• - Usa snprintf per creare l’ID nel formato "CLT###".
+• - Restituisce la stringa generata.
+*/
 string generaIDCliente(){
   IDCounterCliente++;
   string IDCliente=malloc(sizeof(char)*7);
@@ -27,7 +40,20 @@ string generaIDCliente(){
   snprintf(IDCliente, 7, "CLT%03d", IDCounterCliente);
   return IDCliente;
 }
-
+/*
+• Funzione: generaIDPrenotazione
+• -----------------------------------
+• Genera un nuovo ID univoco per una prenotazione nel formato "PRT###".
+*
+• Post-condizione:
+* Ritorna una stringa allocata dinamicamente contenente il nuovo ID prenotazione.
+*
+• Come funziona:
+• - Incrementa il contatore globale degli ID prenotazione.
+• - Alloca memoria per la stringa.
+• - Crea l’ID con snprintf nel formato "PRT###".
+• - Restituisce la stringa.
+*/
 string generaIDPrenotazione(){
   IDCounterPrenotazione++;
   string IDPrenotazione=malloc(sizeof(char)*7);
@@ -39,6 +65,20 @@ string generaIDPrenotazione(){
   snprintf(IDPrenotazione, 7, "PRT%03d", IDCounterPrenotazione);
   return IDPrenotazione;
 }
+/*
+• Funzione: generaIDCorso
+• -----------------------------------
+• Genera un nuovo ID univoco per un corso nel formato "CRS###".
+*
+• Post-condizione:
+* Ritorna una stringa allocata dinamicamente contenente il nuovo ID corso.
+*
+• Come funziona:
+• - Incrementa il contatore globale degli ID corso.
+• - Alloca memoria per la stringa.
+• - Usa snprintf per generare la stringa "CRS###".
+• - Restituisce l’ID.
+*/
 string generaIDCorso(){
   IDCounterCorso++;
   string IDCorso=malloc(sizeof(char)*7);
@@ -50,7 +90,30 @@ string generaIDCorso(){
   snprintf(IDCorso, 7, "CRS%03d", IDCounterCorso);
   return IDCorso;
 }
-
+/*
+• Funzione: caricaFileClienti
+• -----------------------------------
+• Carica da file tutte le informazioni relative agli iscritti (clienti)
+• e le inserisce in una hashtable.
+*
+• Parametri:
+*   h: hashtable dove inserire gli iscritti.
+*
+• Pre-condizione:
+*  Il file "iscritti.txt" deve esistere e contenere dati validi.
+*  La hashtable deve essere inizializzata.
+*
+• Post-condizione:
+*  La hashtable viene popolata con tutti gli iscritti presenti nel file.
+*  Il contatore globale degli ID cliente viene aggiornato.
+*
+• Come funziona:
+• - Apre il file "iscritti.txt".
+• - Legge riga per riga i dati degli iscritti.
+• - Crea gli oggetti Iscritto e li inserisce nella hashtable.
+• - Tiene traccia del massimo ID cliente per aggiornare il contatore.
+• - Libera la memoria e chiude il file.
+*/
 void caricaFileClienti(hashtable h){
   FILE *fp;
   static int maxIDCliente=0;
@@ -98,7 +161,29 @@ void caricaFileClienti(hashtable h){
   free(cognome);
   free(ID);
 }
-
+/*
+• Funzione: caricaFileCorso
+• -----------------------------------
+• Carica tutti i corsi da file e li inserisce in una lista.
+*
+• Parametri:
+*  l: lista dove inserire i corsi caricati.
+*
+• Pre-condizione:
+*  Il file "corsi.txt" deve essere presente e valido.
+*  La lista deve essere inizializzata.
+*
+• Post-condizione:
+*  I corsi vengono inseriti nella lista.
+*  Il contatore globale degli ID corso viene aggiornato.
+*
+• Come funziona:
+• - Apre il file "corsi.txt".
+• - Legge i dati di ogni corso: ID, nome, data, ora, partecipanti.
+• - Crea gli oggetti Corso e li inserisce nella lista.
+• - Aggiorna il contatore ID corso se necessario.
+• - Libera memoria e chiude il file.
+*/
 void caricaFileCorso(list l){
   static int maxIDCorso=0;
   int temp;
@@ -148,7 +233,18 @@ void caricaFileCorso(list l){
   free(nome);
   free(ID);
 }
-
+/*
+• Funzione: pulisciSchermo
+• -----------------------------------
+• Pulisce lo schermo della console, in modo cross-platform.
+*
+• Post-condizione:
+*  La schermata del terminale viene ripulita.
+*
+• Come funziona:
+• - Verifica se il sistema operativo è Windows o Unix-like.
+• - Esegue il comando di sistema appropriato ("cls" o "clear").
+*/
 void pulisciSchermo(){
   #ifdef _WIN32
     system("cls"); //per Windows
@@ -156,7 +252,29 @@ void pulisciSchermo(){
     system("clear"); // per altri SO
   #endif
 }
-
+/*
+• Funzione: caricaFilePrenotazioni
+• -----------------------------------
+• Carica tutte le prenotazioni da file e le inserisce in una lista.
+*
+• Parametri:
+*  l: lista di prenotazioni dove inserire i dati letti dal file.
+*
+• Pre-condizione:
+*  Il file "prenotazioni.txt" deve essere presente e corretto.
+*  La lista deve essere inizializzata.
+*
+• Post-condizione:
+*  Tutte le prenotazioni vengono aggiunte alla lista.
+*  Il contatore globale degli ID prenotazione viene aggiornato.
+*
+• Come funziona:
+• - Apre il file "prenotazioni.txt".
+• - Legge ID prenotazione, ID corso, ID cliente e la data.
+• - Crea oggetti Prenotazione e li inserisce nella lista.
+• - Tiene traccia dell’ID massimo per aggiornare il contatore.
+• - Libera memoria e chiude il file.
+*/
 void caricaFilePrenotazioni(listP l){
   static int maxIDPrenotazione=0;
   int temp;

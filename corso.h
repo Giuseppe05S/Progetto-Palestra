@@ -243,7 +243,7 @@ void scriviCorso(Corso co,FILE *fp);
  */
 void incrementaPartecipanti(Corso co);
 /*
- * Funzione: stampaCorsoEssenziale
+ * Funzione: stampaCorsoCompatta
  * -------------------------------
  * Stampa solo le informazioni essenziali del corso.
  *
