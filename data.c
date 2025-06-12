@@ -163,6 +163,7 @@ Data copiaData(Data dataOriginale){
 •  - Utilizza printf per stampare i campi nel formato richiesto.
 */
 void stampaData(Data data){
+  //Pre-condizioni
   if(data==NULL){
     printf("Valori inesistenti\n");
     return;
@@ -189,6 +190,7 @@ void stampaData(Data data){
 •  - Restituisce direttamente il campo giorno della struttura.
 */
 int getGiorno(Data data){
+  //Pre-condizioni
   if(data==NULL){
     printf("Valori inesistenti\n");
     exit(1);
@@ -215,6 +217,7 @@ int getGiorno(Data data){
 •  - Restituisce direttamente il campo mese della struttura.
 */
 int getMese(Data data){
+  //Pre-condizioni
   if(data==NULL){
     printf("Valori inesistenti\n");
     exit(1);
@@ -241,6 +244,7 @@ int getMese(Data data){
 •  - Restituisce direttamente il campo anno della struttura.
 */
 int getAnno(Data data){
+  //Pre-condizioni
   if(data==NULL){
     printf("Valori inesistenti\n");
     exit(1);
@@ -269,30 +273,33 @@ int getAnno(Data data){
 •  - Se mesi uguali, confronta i giorni e restituisce il risultato.
 •  - Se tutti i campi sono uguali, restituisce 0.
 */
-int confrontaData(Data d1, Data d2){// -1 se d1 < d2, 0 se d1 == d2, 1 se d1 > d2
+int confrontaData(Data d1, Data d2){
+  // -1 se d1 < d2, 0 se d1 == d2, 1 se d1 > d2
+  //Pre-condizioni
   if(d1==NULL||d2==NULL){
     printf("Valori inesistenti\n");
     exit(1);
   }
-  if(d1->anno > d2->anno)
+
+  if(d1->anno > d2->anno)  //d1>d2
     return 1;
-  if(d1->anno < d2->anno)
+  if(d1->anno < d2->anno)  //d1<d2
     return -1;
 
   // Anno uguale, confronto i mesi
-  if(d1->mese > d2->mese)
+  if(d1->mese > d2->mese)  //d1>d2
     return 1;
-  if(d1->mese < d2->mese)
+  if(d1->mese < d2->mese)  //d1<d2
     return -1;
 
   // Mese uguale, confronto i giorni
-  if(d1->giorno > d2->giorno)
+  if(d1->giorno > d2->giorno)  //d1>d2
     return 1;
-  if(d1->giorno < d2->giorno)
+  if(d1->giorno < d2->giorno)  //d1<d2
     return -1;
 
   // Tutti uguali
-  return 0;
+  return 0;  //d1==d2
 }
 /*
 •  Funzione: dataOggi

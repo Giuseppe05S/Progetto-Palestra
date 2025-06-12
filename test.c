@@ -183,7 +183,7 @@ int testCorrettaRegistrazionePrenotazione(string input,string output,string orac
 			}
 			incrementaPartecipanti(getFirstCorso(resultCorso));
 			fprintf(fileOutput,"%s %s %d",getIDCorsoPrenotazione(testPrenotazione),getIDClientePrenotazione(testPrenotazione),getNumPartecipantiCorso(getFirstCorso(resultCorso)));
-			//decremento il numero di partecipanti in quanto la registrazione non viene registrata
+			//decremento il numero di partecipanti in quanto la registrazione non viene salvata
 			decrementaPartecipanti(getFirstCorso(resultCorso));
 		}
 	}

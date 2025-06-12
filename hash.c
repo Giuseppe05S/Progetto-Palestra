@@ -45,6 +45,9 @@ static uint32_t fnv1aHash32(const char *key);
 •  - Restituisce il puntatore alla nuova tabella hash.
 */
 hashtable newHashtable(int size) {
+  //Pre-condizioni
+  if(size<=0)
+    return NULL;
   int i;
   hashtable h = (struct hash *) malloc (sizeof(struct hash));
   if(h == NULL){
@@ -81,6 +84,11 @@ hashtable newHashtable(int size) {
 •  - Aggiorna il puntatore della tabella hash.
 */
 int insertHash(hashtable h, Iscritto elem) {
+  //Pre-condizioni
+  if(elem == NULL){
+    printf("Valori inesistenti\n");
+    exit(1);
+  }
   int idx;
   Iscritto head, curr;
   idx = hashFun(getID(elem), h->size);
@@ -121,6 +129,11 @@ int insertHash(hashtable h, Iscritto elem) {
 •  - Restituisce il puntatore all'elemento eliminato.
 */
 Iscritto hashDelete(hashtable h, string key) {
+  //Pre-condizioni
+  if(h == NULL){
+    printf("Tabella vuota\n");
+    return NULL;
+  }
   int idx;
   Iscritto prev, curr, head, temp;
   idx = hashFun(key, h->size);
@@ -161,6 +174,11 @@ Iscritto hashDelete(hashtable h, string key) {
 •  - Libera la memoria della struttura hashtable principale.
 */
 void destroyHashtable(hashtable h) {
+  //Pre-condizioni
+  if(h == NULL){
+    printf("Tabella vuota\n");
+    return;
+  }
   int i;
   for(i=0; i < h->size; i++) {
     deleteList(h->table[i]);
@@ -192,6 +210,7 @@ void destroyHashtable(hashtable h) {
 •  - Implementazione ricorsiva che procede in post-ordine.
 */
 static void deleteList(Iscritto p) {
+  //Pre-condizioni
   if(p == NULL)
     return;
   deleteList(getNext(p));
@@ -222,7 +241,8 @@ static void deleteList(Iscritto p) {
 •  - Scorre la lista di collisione confrontando gli ID.
 •  - Restituisce l'elemento se trovato, altrimenti NULL.
 */
-Iscritto hashSearch(hashtable h, string key) {
+Iscritto hashSearch(hashtable h, string key){
+  //Pre-condizioni
   if (h == NULL || key == NULL) 
     return NULL;
   
@@ -264,7 +284,11 @@ Iscritto hashSearch(hashtable h, string key) {
 •  - Stampa i dettagli degli elementi trovati.
 •  - Restituisce un codice di stato basato sui risultati.
 */
-int ricercaGenerica(hashtable h, int sel, string str) {
+int ricercaGenerica(hashtable h, int sel, string str){
+  if(h == NULL || str == NULL){
+    printf("Tabella vuota\n");
+    exit(1);
+  }
   int trovato=0;
   for(int i=0;i<h->size; i++){
     if(h->table[i]!=NULL){
@@ -330,6 +354,7 @@ int ricercaGenerica(hashtable h, int sel, string str) {
 •  - Aggiunge una riga vuota finale per formattazione.
 */
 void stampaHash(hashtable h) {
+  //Pre-condizioni
   if(h == NULL){
     printf("Tabella vuota\n");
     return;
@@ -367,7 +392,8 @@ void stampaHash(hashtable h) {
 •  - Per ogni slot, scorre la lista di collisione.
 •  - Stampa solo le informazioni essenziali di ogni iscritto.
 */
-void stampaHashMinima(hashtable h) {
+void stampaHashMinima(hashtable h){
+  //Pre-condizioni
   if(h == NULL){
     printf("Tabella vuota\n");
     return;
@@ -412,6 +438,11 @@ void stampaHashMinima(hashtable h) {
 •  - Chiude il file al termine delle operazioni.
 */
 void scriviFileClienti(hashtable h){
+  //Pre-condizioni
+  if(h == NULL){
+    printf("Tabella vuota\n");
+    return;
+  }
   FILE *fp;
   fp=fopen("iscritti.txt","w");
   if(fp==NULL){

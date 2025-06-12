@@ -30,6 +30,7 @@ static int IDCounterCliente=0;
 • - Restituisce la stringa generata.
 */
 string generaIDCliente(){
+  //incremento il contatore, dato che l'ultimo salvato è gia utilizzato
   IDCounterCliente++;
   string IDCliente=malloc(sizeof(char)*7);
   if(IDCliente==NULL){
@@ -55,6 +56,7 @@ string generaIDCliente(){
 • - Restituisce la stringa.
 */
 string generaIDPrenotazione(){
+  //incremento il contatore, dato che l'ultimo salvato è gia utilizzato
   IDCounterPrenotazione++;
   string IDPrenotazione=malloc(sizeof(char)*7);
   if(IDPrenotazione==NULL){
@@ -80,6 +82,7 @@ string generaIDPrenotazione(){
 • - Restituisce l’ID.
 */
 string generaIDCorso(){
+  //incremento il contatore, dato che l'ultimo salvato è gia utilizzato
   IDCounterCorso++;
   string IDCorso=malloc(sizeof(char)*7);
   if(IDCorso==NULL){
@@ -222,10 +225,6 @@ void caricaFileCorso(list l){
     	maxIDCorso=temp;
  	}
   }
-  /*Tengo traccia dell'ultimo ID caricato del corso
-   *in modo da poter continuare la generazione di ID che
-   *verranno poi inseriti a mano
-   */
 
   IDCounterCorso=maxIDCorso;
 

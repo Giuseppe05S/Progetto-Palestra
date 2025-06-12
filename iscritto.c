@@ -50,6 +50,7 @@ struct iscritto{
 •  - Restituisce il puntatore al nuovo iscritto creato.
 */
 Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int durata,string ID){
+  //Pre-condizioni
   if(nome==NULL||cognome==NULL||dataIscrizione==NULL||durata<1||ID==NULL){
     printf("Valori sbagliati o inesistenti\n");
     return NULL;
@@ -103,6 +104,7 @@ Iscritto CreaIscritto(string nome, string cognome, Data dataIscrizione, int dura
 •  - Restituisce direttamente il valore del puntatore next.
 */
 Iscritto getNext(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -129,6 +131,7 @@ Iscritto getNext(Iscritto is){
 •  - Restituisce il puntatore alla stringa ID.
 */
 string getID(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -155,6 +158,7 @@ string getID(Iscritto is){
 •  - Restituisce il puntatore alla stringa nome.
 */
 string getNome(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -181,6 +185,7 @@ string getNome(Iscritto is){
 •  - Restituisce il puntatore alla stringa cognome.
 */
 string getCognome(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -207,6 +212,7 @@ string getCognome(Iscritto is){
 •  - Restituisce il valore intero della durata.
 */
 int getDurata(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -234,6 +240,7 @@ int getDurata(Iscritto is){
 -  - Restituisce il campo dataScadenza dell'oggetto Iscritto.
 */
 Data getDataScadenza(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -262,6 +269,7 @@ Data getDataScadenza(Iscritto is){
 •  - Assegna il nuovo valore al campo next.
 */
 void setNext(Iscritto is, Iscritto next){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -293,6 +301,7 @@ void setNext(Iscritto is, Iscritto next){
 •  - Libera la memoria della struttura iscritto principale.
 */
 void eliminaIscritto(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -363,6 +372,7 @@ void rinnovaAbbonamento(Iscritto is, int durata){
 •  - Stampa nome con larghezza 15 caratteri allineato a sinistra.
 */
 void stampaMinimaCliente(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -392,6 +402,7 @@ void stampaMinimaCliente(Iscritto is){
 •  - Restituisce un codice di stato appropriato.
 */
 int controlloAbbonamento(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("DATI NON VALIDI\n");
     exit(1);
@@ -424,6 +435,7 @@ int controlloAbbonamento(Iscritto is){
 •  - Stampa la data di scadenza utilizzando stampaData.
 */
 void stampaCliente(Iscritto is){
+  //Pre-condizioni
   if(is==NULL){
     printf("Il cliente non esiste\n");
     exit(1);
@@ -463,5 +475,10 @@ void stampaCliente(Iscritto is){
 •  - Tutti i campi sono separati da spazi e terminati da newline.
 */
 void scriviCliente(Iscritto is,FILE *fp){
+  //Pre-condizioni
+  if(is==NULL){
+    printf("Il cliente non esiste\n");
+    exit(1);
+  }
   fprintf(fp,"%s %s %s %d %d %d %d\n",is->ID,is->nome,is->cognome,getGiorno(is->dataIscrizione),getMese(is->dataIscrizione),getAnno(is->dataIscrizione),is->durata);
 }

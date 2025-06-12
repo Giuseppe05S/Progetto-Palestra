@@ -46,6 +46,7 @@ struct prenotazione{
 •  - Restituisce NULL in caso di errore di allocazione o parametri non validi.
 */
 Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCliente, Data dataPrenotazione){
+  //Pre-condizioni
   if(IDPrenotazione == NULL||IDCorso == NULL||IDCliente == NULL||dataPrenotazione == NULL){
     printf("Valori sbagliati o inesistenti\n");
     return NULL;
@@ -95,6 +96,7 @@ Prenotazione creaPrenotazione(string IDPrenotazione, string IDCorso, string IDCl
 •  - Libera la memoria della struttura principale.
 */
 void eliminaPrenotazione(Prenotazione pr){
+  //Pre-condizioni
   if(pr==NULL){
     printf("La prenotazione non esiste\n");
     return;
@@ -126,6 +128,7 @@ void eliminaPrenotazione(Prenotazione pr){
 •  - Restituisce il campo dataPrenotazione.
 */
 Data getDataPrenotazione(Prenotazione pr){
+  //Pre-condizioni
   if(pr==NULL){
     printf("La prenotazione non esiste\n");
     exit(1);
@@ -153,6 +156,7 @@ Data getDataPrenotazione(Prenotazione pr){
 •  - Restituisce il campo IDCorso.
 */
 string getIDCorsoPrenotazione(Prenotazione pr){
+  //Pre-condizioni
   if(pr==NULL){
     printf("La prenotazione non esiste\n");
     exit(1);
@@ -180,6 +184,7 @@ string getIDCorsoPrenotazione(Prenotazione pr){
 •  - Restituisce il campo IDCliente.
 */
 string getIDClientePrenotazione(Prenotazione pr){
+  //Pre-condizioni
   if(pr==NULL){
     printf("La prenotazione non esiste\n");
     exit(1);
@@ -207,6 +212,7 @@ string getIDClientePrenotazione(Prenotazione pr){
 •  - Restituisce il campo IDPrenotazione.
 */
 string getIDPrenotazione(Prenotazione pr){
+  //Pre-condizioni
   if(pr==NULL){
     printf("La prenotazione non esiste\n");
     exit(1);
@@ -236,6 +242,7 @@ string getIDPrenotazione(Prenotazione pr){
 •  - Gestisce il caso NULL stampando un messaggio di errore.
 */
 void stampaPrenotazione(Prenotazione p){
+  //Pre-condizioni
   if(p==NULL){
     printf("La prenotazione non esiste\n");
     return;
@@ -272,5 +279,10 @@ void stampaPrenotazione(Prenotazione p){
 •  - Termina la riga con un carattere di newline.
 */
 void scriviPrenotazione(Prenotazione p,FILE *fp){
+  //Pre-condizioni
+  if(p==NULL){
+    printf("La prenotazione non esiste\n");
+    return;
+  }
   fprintf(fp,"%s %s %s %d %d %d\n",p->IDPrenotazione,p->IDCorso,p->IDCliente,getGiorno(p->dataPrenotazione),getMese(p->dataPrenotazione),getAnno(p->dataPrenotazione));
 }

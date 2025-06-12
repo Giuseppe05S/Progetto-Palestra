@@ -39,7 +39,7 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
     printf("2. Ricerca Prenotazione\n");
     printf("3. Elenco Prenotazione\n");
     printf("4. Elimina Prenotazione\n");
-    printf("5. Torna al Menù\n");
+    printf("5. Torna al Menu'\n");
     scanf("%c",&selP);
 
     switch(selP){
@@ -303,9 +303,7 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
         printf("\nPremere invio per tornare indietro\n");
         getchar();
         break;
-      /*case '5':
 
-        break;*/
       default:
         printf("Scelta non valida \n");
         break;
@@ -341,7 +339,7 @@ void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
     printf("3. Ricerca Abbonamento\n");
     printf("4. Elenco Clienti\n");
     printf("5. Elimina Abbonamento\n");
-    printf("6. Torna al Menù\n");
+    printf("6. Torna al Menu'\n");
     scanf("%c",&selA);
 
     switch(selA){
@@ -359,7 +357,11 @@ void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
         scanf("%d/%d/%d",&gg,&mm,&anno);
         dataIscrizione=creaData(gg,mm,anno);
         printf("Inserisci la durata dell'abbonamento in mesi (ES. 1, 3, 6, ...)\n");
-        scanf("%d",&durata);
+        do{
+          scanf("%d",&durata);
+          if(durata<=0)
+            printf("Durata inferiore a 1.\nRiprova l'inserimento\n");
+        }while(durata<=0);
         /*
         Genero l'ID del Cliente e controllo
         che l'inserimento sia andato a buon fine
@@ -642,7 +644,7 @@ void menuCorso(list lCorsi,listP lPrenotati) {
     printf("2. Ricerca Corso\n");
     printf("3. Elenco Corsi\n");
     printf("4. Elimina Corso\n");
-    printf("5. Torna al Menù\n");
+    printf("5. Torna al Menu'\n");
     scanf("%c", &selC);
 
     switch(selC) {
@@ -655,12 +657,12 @@ void menuCorso(list lCorsi,listP lPrenotati) {
         printf("Inserisci il nome del corso:\n");
         scanf("%s",nome);
         do{
-        printf("Inserisci la data del corso (GG/MM/AAAA):\n");;
-        scanf("%d/%d/%d",&gg,&mm,&anno);
-        dataLezione=creaData(gg,mm,anno);
-        //mi assicuro che la data della lezione sia successiva alla data odierna
-        if(confrontaData(dataLezione,dataOggi())<=0)
-          printf("Data antecedente ad OGGI\n");
+          printf("Inserisci la data del corso (GG/MM/AAAA):\n");;
+          scanf("%d/%d/%d",&gg,&mm,&anno);
+          dataLezione=creaData(gg,mm,anno);
+          //mi assicuro che la data della lezione sia successiva alla data odierna
+          if(confrontaData(dataLezione,dataOggi())<=0)
+            printf("Data antecedente ad OGGI\n");
         }while(confrontaData(dataLezione,dataOggi())<=0);
 
         printf("Inserisci l'orario del corso (HH:MM)\n");
@@ -921,7 +923,9 @@ int main(){
   char selettore;
   do{
     pulisciSchermo();
-    printf("Gestore Palestra\n");
+    printf("==============================\n");
+    printf("       Gestore Palestra\n");
+    printf("==============================\n");
     printf("1. Gestione Clienti\n");
     printf("2. Gestione Corso\n");
     printf("3. Gestione Prenotazione\n");

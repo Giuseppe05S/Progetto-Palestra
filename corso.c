@@ -90,7 +90,7 @@ Orario creaOrario(int ora,int minuti){
  *   - Restituisce il corso creato o NULL in caso di errore
  */
 Corso creaCorso(string ID, string nome, Data dataLezione, int ora,int minuti,int nPartecipanti){
-  //Precondizione
+  //Pre-condizioni
   if(ID==NULL||nome==NULL||dataLezione==NULL||(ora<0||ora>=24)||(minuti<0||minuti>=60)||nPartecipanti<0){
     return NULL;
   }
@@ -107,18 +107,17 @@ Corso creaCorso(string ID, string nome, Data dataLezione, int ora,int minuti,int
     printf("Errore allocazione memoria\n");
     return NULL;
   }
-
   strcpy(co->ID,ID);
   strcpy(co->nome,nome);
   co->dataLezione=copiaData(dataLezione);
   co->oraLezione=creaOrario(ora,minuti);
   co->numPartecipanti=nPartecipanti;
-
+  //Controllo che la data e l'orario siano stati inizializzati correttamente
   if(co->oraLezione==NULL||co->dataLezione==NULL){
     printf("Errore nella creazione di Orario\n");
     return NULL;
   }
-
+  //Post Condizione
   return co;
 }
 
@@ -143,11 +142,12 @@ Corso creaCorso(string ID, string nome, Data dataLezione, int ora,int minuti,int
  *   - Include ID, nome, data, orario e numero partecipanti
  */
 void stampaCorso(Corso co){
-  //Precondizione
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return;
   }
+  //Il Corso viene stampato solo se presenta posti disponibili
   if(Disponibilita(co)){
       printf("==============================\n");
       printf("ID: %s\n", co->ID);
@@ -179,11 +179,12 @@ void stampaCorso(Corso co){
  *   - Utilizza formattazione con larghezza fissa per allineamento
  */
 void stampaCorsoCompatta(Corso co){
-  //Precondizione
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return;
   }
+  //Il Corso viene stampato solo se presenta posti disponibili
   if(Disponibilita(co)){
     printf("%-8s %-12s %02d/%02d/%04d   %02d:%02d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti);
   }
@@ -207,6 +208,7 @@ void stampaCorsoCompatta(Corso co){
  *   - Restituisce il puntatore al campo ID della struttura
  */
 string getIDCorso(Corso co){
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return NULL;
@@ -232,6 +234,7 @@ string getIDCorso(Corso co){
  *   - Restituisce il puntatore al campo nome della struttura
  */
 string getNomeCorso(Corso co){
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return NULL;
@@ -257,6 +260,7 @@ string getNomeCorso(Corso co){
  *   - Restituisce il puntatore al campo dataLezione della struttura
  */
 Data getDataCorso(Corso co){
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return NULL;
@@ -282,7 +286,8 @@ Data getDataCorso(Corso co){
  *   - Restituisce il valore del campo numPartecipanti
  */
 int getNumPartecipantiCorso(Corso co){
-if(co==NULL){
+  //Pre-condizioni
+  if(co==NULL){
     printf("Il corso non esiste\n");
     return 0;
   }
@@ -309,7 +314,9 @@ if(co==NULL){
  *   - Se le ore sono uguali, confronta i minuti
  *   - Restituisce -1, 0 o 1 in base al confronto
  */
-int confrontaOrario(Orario o1, Orario o2){ // -1 se o1< o2, 0 se o1== o2, 1 se o1> o2
+int confrontaOrario(Orario o1, Orario o2){
+  // -1 se o1< o2, 0 se o1== o2, 1 se o1> o2
+  //Pre-condizioni
   if(o1 == NULL || o2 == NULL){
     printf("Errore: uno dei due orari è NULL.\n");
     return 0;
@@ -326,7 +333,7 @@ int confrontaOrario(Orario o1, Orario o2){ // -1 se o1< o2, 0 se o1== o2, 1 se o
     }else if (o1->minuti > o2->minuti){
       return 1;  // o1 è dopo
     }else{
-      return 0;  // orari identici
+      return 0;  // orari uguali
     }
   }
 }
@@ -349,6 +356,7 @@ int confrontaOrario(Orario o1, Orario o2){ // -1 se o1< o2, 0 se o1== o2, 1 se o
  *   - Restituisce il puntatore al campo oraLezione della struttura
  */
 Orario getOrario(Corso co){
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return NULL;
@@ -374,10 +382,12 @@ Orario getOrario(Corso co){
  *   - Incrementa il campo numPartecipanti di 1
  */
 void incrementaPartecipanti(Corso co){
+  //Pre-condizioni
 	if(co==NULL){
 	printf("Il corso non esiste\n");
 	return;
 	}
+  //side-effect
 	co->numPartecipanti++;
 }
 /*
@@ -399,10 +409,12 @@ void incrementaPartecipanti(Corso co){
  *   - Decrementa il campo numPartecipanti di 1
  */
 void decrementaPartecipanti(Corso co){
+  //Pre-condizioni
   if(co==NULL){
     printf("Il corso non esiste\n");
     return;
   }
+  //side-effect
   co->numPartecipanti--;
 }
 /*
@@ -427,6 +439,11 @@ void decrementaPartecipanti(Corso co){
  *   - Ogni corso viene scritto su una riga separata
  */
 void scriviCorso(Corso co,FILE *fp){
+  //Pre-condizioni
+  if(co==NULL||fp==NULL){
+    printf("Dati nulli\n");
+    return;
+  }
   fprintf(fp,"%s %s %d %d %d %02d:%02d %d\n",co->ID,co->nome,getGiorno(co->dataLezione),getMese(co->dataLezione),getAnno(co->dataLezione),co->oraLezione->ora,co->oraLezione->minuti,co->numPartecipanti);
 }
 /*
@@ -450,8 +467,13 @@ void scriviCorso(Corso co,FILE *fp){
  *   - Restituisce 1 se c'è disponibilità, 0 se il corso è pieno
  */
 int Disponibilita(Corso co){
+  //Pre-condizioni
+  if(co==NULL){
+    printf("Il corso non esiste\n");
+    return 0;
+  }
   if(co->numPartecipanti<maxPartecipanti)
-    return 1;
+    return 1;// Corso disponibile
   else
-     return 0;
+     return 0; //Corso pieno
 }
