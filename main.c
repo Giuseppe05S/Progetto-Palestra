@@ -13,6 +13,29 @@
 #include "hash.h"
 #include "test.h"
 
+/*
+ * Funzione: menuPrenotazione
+ * -----------------------------------
+ * Gestisce il menu principale per le operazioni sulle prenotazioni.
+ *
+ * Parametri:
+ *   lCorsi: lista dei corsi disponibili
+ *   hClienti: hashtable dei clienti registrati
+ *   lPrenotati: lista delle prenotazioni attive
+ *
+ * Pre-condizione:
+ *   Tutte le strutture dati devono essere inizializzate correttamente.
+ *
+ * Post-condizione:
+ *   Le operazioni selezionate dall'utente vengono eseguite e i file
+ *   vengono aggiornati quando necessario.
+ *
+ * Come funziona:
+ * - Presenta un menu con 5 opzioni (prenota, ricerca, elenco, elimina, esci)
+ * - Per ogni operazione, valida i dati di input e verifica le pre-condizioni
+ * - Gestisce gli errori e fornisce feedback appropriato all'utente
+ * - Mantiene sincronizzati i file di persistenza dopo ogni modifica
+ */
 void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
   char selP;
   Prenotazione pre;
@@ -313,6 +336,29 @@ void menuPrenotazione(list lCorsi,hashtable hClienti,listP lPrenotati){
   }while(selP>'5'||selP<'1');
 }
 
+/*
+ * Funzione: menuCliente
+ * -----------------------------------
+ * Gestisce tutte le operazioni relative ai clienti della palestra.
+ *
+ * Parametri:
+ *   h: hashtable dei clienti
+ *   lPrenotati: lista delle prenotazioni (per gestire cancellazioni correlate)
+ *   lCorsi: lista dei corsi (per riferimenti incrociati)
+ *
+ * Pre-condizione:
+ *   Tutte le strutture dati devono essere inizializzate.
+ *
+ * Post-condizione:
+ *   I file vengono aggiornati dopo ogni operazione di modifica.
+ *
+ * Operazioni disponibili:
+ * - Creazione nuovo abbonamento
+ * - Rinnovo abbonamento esistente
+ * - Ricerca clienti (per ID, nome, cognome, durata)
+ * - Visualizzazione elenco clienti
+ * - Eliminazione cliente (con cancellazione prenotazioni correlate)
+ */
 void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
 
   int durata,gg,mm,anno;
@@ -618,6 +664,27 @@ void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
   }while(selA>'6'||selA<'1');
 }
 
+/*
+ * Funzione: menuCorso
+ * -----------------------------------
+ * Gestisce tutte le operazioni relative ai corsi/lezioni della palestra.
+ *
+ * Parametri:
+ *   lCorsi: lista dei corsi disponibili
+ *   lPrenotati: lista prenotazioni (per gestire cancellazioni correlate)
+ *
+ * Pre-condizione:
+ *   Le strutture dati devono essere inizializzate.
+ *
+ * Post-condizione:
+ *   I file vengono aggiornati dopo ogni modifica.
+ *
+ * Operazioni disponibili:
+ * - Aggiunta nuovo corso
+ * - Ricerca corsi (per ID, nome, data, orario)
+ * - Visualizzazione elenco corsi
+ * - Eliminazione corso (con cancellazione prenotazioni correlate)
+ */
 void menuCorso(list lCorsi,listP lPrenotati) {
   //Dichiarazione delle variabili
   char selC;
@@ -875,6 +942,34 @@ void menuCorso(list lCorsi,listP lPrenotati) {
   } while(selC < '1' || selC > '5');
 }
 
+/*
+•  Funzione: report
+•  -----------------------------------
+•  Genera un report mensile sulle prenotazioni e sui corsi.
+*
+•  Parametri:
+*   lCorsi: lista dei corsi disponibili.
+*   hClienti: tabella hash contenente gli iscritti.
+*   lPrenotati: lista delle prenotazioni effettuate.
+*
+•  Pre-condizione:
+*   lCorsi ≠ NULL ∧ hClienti ≠ NULL ∧ lPrenotati ≠ NULL
+*
+•  Post-condizione:
+*   Viene creato un file di report con:
+*   - nome `report_<nome_mese>.txt`,
+*   - numero di prenotazioni del mese corrente,
+*   - corsi in evidenza del mese.
+*
+•  Come funziona:
+•  - Ottiene il mese corrente dal sistema.
+•  - Costruisce il nome del file di report in base al mese.
+•  - Seleziona dalla lista prenotazioni e corsi solo quelli del mese.
+•  - Calcola i tre corsi con più partecipanti ("lezioni in evidenza").
+•  - Scrive le informazioni nel file.
+•  - Chiude il file e attende conferma per tornare al menu.
+•  - In caso di errori (allocazione o apertura file), stampa messaggio e termina.
+*/
 void report(list lCorsi,hashtable hClienti,listP lPrenotati){
 
   string mesi[]={"Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"};
