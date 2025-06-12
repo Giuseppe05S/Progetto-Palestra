@@ -1,0 +1,8 @@
+TC1_Prenotazioni: Pass
+TC2_Prenotazioni: Pass
+TC3_Prenotazioni: Pass
+TC4_Prenotazioni: Pass
+TC1_Cliente: Pass
+TC2_Cliente: Pass
+TC3_Cliente: Pass
+TC1_Report: Pass

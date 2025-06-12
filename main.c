@@ -649,7 +649,7 @@ void menuCliente(hashtable h,listP lPrenotati,list lCorsi){
         printf("==============================\n");
         printf("      CLIENTE CANCELLATO\n");
         printf("==============================\n");
-        printf("N° Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,0,getID(is)));
+        printf("N Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,0,getID(is)));
 
         eliminaIscritto(is);
         //Anche per la cancellazione la scrittura avviene subito dopo l'operazione
@@ -926,7 +926,7 @@ void menuCorso(list lCorsi,listP lPrenotati) {
         printf("==============================\n");
         printf("       CORSO CANCELLATO\n");
         printf("==============================\n");
-        printf("N° Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,1,IDCorso));
+        printf("N Prenotazioni Cancellate: %d\n",cancellaPrenotazioneDi(lPrenotati,1,IDCorso));
         scriviFileCorso(lCorsi);
         scriviFilePrenotazione(lPrenotati);
         printf("\nPremere invio per tornare indietro\n");
